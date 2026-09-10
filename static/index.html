@@ -134,7 +134,10 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
 .sat-bar-wrap{display:flex;align-items:center;gap:8px}
 .sat-bar-bg{flex:1;background:#eee;border-radius:10px;height:16px;overflow:hidden;min-width:60px}
 .sat-bar-fill{height:100%;border-radius:10px;transition:width .5s}
-.sat-pct{font-size:12px;font-weight:700;min-width:36px;text-align:right}
+.emb-tipo-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.emb-tipo-btn{padding:8px 16px;border:1px solid #ccc;border-radius:20px;background:#fff;cursor:pointer;font-size:12px;font-weight:600;color:var(--texto-suave);transition:all .15s}
+.emb-tipo-btn:hover{border-color:var(--rojo)}
+.emb-tipo-btn.active{background:var(--rojo);color:#fff;border-color:var(--rojo)}
 
 /* Divergencia */
 .diverg-badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700}
@@ -556,27 +559,27 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
     <div id="ctrl-same-block">
       <div class="section-label">Embalaje</div>
       <div class="cond-box">
-        <div class="g3">
-          <div class="fld"><label>Tipo</label>
-            <select id="ctrl-emb-tipo" onchange="onCtrlEmbTipoChange('same')">
-              <option>Caja de cartón</option>
-              <option>Caja de madera</option>
-              <option>Caja paletizada</option>
-              <option>Otro</option>
-            </select>
+        <div class="fld">
+          <label>Tipo</label>
+          <div class="emb-tipo-btns" id="ctrl-emb-tipo-btns">
+            <button type="button" class="emb-tipo-btn active" data-val="Caja de cartón" onclick="selectEmbTipo('same',this)">Caja de cartón</button>
+            <button type="button" class="emb-tipo-btn" data-val="Caja de madera" onclick="selectEmbTipo('same',this)">Caja de madera</button>
+            <button type="button" class="emb-tipo-btn" data-val="Caja paletizada" onclick="selectEmbTipo('same',this)">Caja paletizada</button>
+            <button type="button" class="emb-tipo-btn" data-val="Pallet" onclick="selectEmbTipo('same',this)">Pallet</button>
+            <button type="button" class="emb-tipo-btn" data-val="Otro" onclick="selectEmbTipo('same',this)">Otro</button>
           </div>
-          <div class="fld" id="ctrl-emb-tipo-otro-wrap" style="display:none">
-            <label>Especificar tipo</label>
-            <select id="ctrl-emb-tipo-otro">
-              <option>Jaula de madera</option>
-              <option>Pallet de madera</option>
-              <option>Embalaje personalizado</option>
-              <option>Contenedor metálico</option>
-              <option>Contenedor plástico</option>
-              <option>Otro</option>
-            </select>
-          </div>
-          <div></div>
+          <input type="hidden" id="ctrl-emb-tipo" value="Caja de cartón">
+        </div>
+        <div class="fld" id="ctrl-emb-tipo-otro-wrap" style="display:none;margin-top:10px;max-width:280px">
+          <label>Especificar tipo</label>
+          <select id="ctrl-emb-tipo-otro">
+            <option>Jaula de madera</option>
+            <option>Contenedor personalizado</option>
+            <option>Contenedor de plástico</option>
+            <option>Contenedor metálico</option>
+          </select>
+        </div>
+        <div class="g3" style="margin-top:14px">
           <div class="fld"><label>Largo (mm)</label><input type="number" id="ctrl-emb-largo" placeholder="0"></div>
           <div class="fld"><label>Ancho (mm)</label><input type="number" id="ctrl-emb-ancho" placeholder="0"></div>
           <div class="fld"><label>Alto (mm)</label><input type="number" id="ctrl-emb-alto" placeholder="0"></div>
@@ -585,34 +588,34 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
 
       <div class="section-label">Piezas en el embalaje</div>
       <div id="ctrl-lineas-same"></div>
-      <button class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="addLinea('same')">+ Agregar pieza</button>
+      <button type="button" class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="addLinea('same')">+ Agregar pieza</button>
     </div>
 
     <!-- ═══ CASO: NO SON IDÉNTICOS ═══ -->
     <div id="ctrl-diff-block" style="display:none">
       <div class="section-label">Embalaje secundario</div>
       <div class="cond-box">
-        <div class="g3">
-          <div class="fld"><label>Tipo</label>
-            <select id="ctrl-sec-tipo" onchange="onCtrlEmbTipoChange('sec')">
-              <option>Caja de cartón</option>
-              <option>Caja de madera</option>
-              <option>Caja paletizada</option>
-              <option>Otro</option>
-            </select>
+        <div class="fld">
+          <label>Tipo</label>
+          <div class="emb-tipo-btns" id="ctrl-sec-tipo-btns">
+            <button type="button" class="emb-tipo-btn active" data-val="Caja de cartón" onclick="selectEmbTipo('sec',this)">Caja de cartón</button>
+            <button type="button" class="emb-tipo-btn" data-val="Caja de madera" onclick="selectEmbTipo('sec',this)">Caja de madera</button>
+            <button type="button" class="emb-tipo-btn" data-val="Caja paletizada" onclick="selectEmbTipo('sec',this)">Caja paletizada</button>
+            <button type="button" class="emb-tipo-btn" data-val="Pallet" onclick="selectEmbTipo('sec',this)">Pallet</button>
+            <button type="button" class="emb-tipo-btn" data-val="Otro" onclick="selectEmbTipo('sec',this)">Otro</button>
           </div>
-          <div class="fld" id="ctrl-sec-tipo-otro-wrap" style="display:none">
-            <label>Especificar tipo</label>
-            <select id="ctrl-sec-tipo-otro">
-              <option>Jaula de madera</option>
-              <option>Pallet de madera</option>
-              <option>Embalaje personalizado</option>
-              <option>Contenedor metálico</option>
-              <option>Contenedor plástico</option>
-              <option>Otro</option>
-            </select>
-          </div>
-          <div></div>
+          <input type="hidden" id="ctrl-sec-tipo" value="Caja de cartón">
+        </div>
+        <div class="fld" id="ctrl-sec-tipo-otro-wrap" style="display:none;margin-top:10px;max-width:280px">
+          <label>Especificar tipo</label>
+          <select id="ctrl-sec-tipo-otro">
+            <option>Jaula de madera</option>
+            <option>Contenedor personalizado</option>
+            <option>Contenedor de plástico</option>
+            <option>Contenedor metálico</option>
+          </select>
+        </div>
+        <div class="g3" style="margin-top:14px">
           <div class="fld"><label>Largo (mm)</label><input type="number" id="ctrl-sec-largo" placeholder="0"></div>
           <div class="fld"><label>Ancho (mm)</label><input type="number" id="ctrl-sec-ancho" placeholder="0"></div>
           <div class="fld"><label>Alto (mm)</label><input type="number" id="ctrl-sec-alto" placeholder="0"></div>
@@ -621,7 +624,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
         <div class="section-label" style="margin-top:16px;font-size:10px">Foto y saturación del embalaje secundario</div>
         <div class="img-grid" style="grid-template-columns:1fr">
           <div class="img-slot">
-            <button class="img-remove" id="rm-ctrl-sec" onclick="removeSecImg()">&#215;</button>
+            <button type="button" class="img-remove" id="rm-ctrl-sec" onclick="removeSecImg()">&#215;</button>
             <div class="img-upload" style="height:120px" onclick="document.getElementById('up-ctrl-sec').click()">
               <div class="img-upload-icon">&#9679;</div>
               <div class="img-upload-text">Foto del embalaje secundario</div>
@@ -642,7 +645,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
 
       <div class="section-label">Embalaje primario (piezas dentro del secundario)</div>
       <div id="ctrl-lineas-diff"></div>
-      <button class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="addLinea('diff')">+ Agregar pieza</button>
+      <button type="button" class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="addLinea('diff')">+ Agregar pieza</button>
     </div>
 
     <div class="fld" style="margin-top:16px"><label>Notas</label><input type="text" id="ctrl-notas" placeholder="Observaciones..."></div>
