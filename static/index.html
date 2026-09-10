@@ -72,11 +72,11 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
 .search-row input{flex:1}
 .img-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
 .img-slot{position:relative}
-.img-upload{border:2px dashed #ccc;border-radius:6px;padding:16px;text-align:center;cursor:pointer;height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;transition:border .2s;background:#fafafa}
+.img-upload{border:2px dashed #ccc;border-radius:6px;padding:16px;text-align:center;cursor:pointer;height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;transition:border .2s;background:#fafafa}
 .img-upload:hover{border-color:var(--rojo);background:#fef5f6}
 .img-upload-icon{font-size:24px;color:#ccc}
 .img-upload-text{font-size:11px;color:#aaa;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
-.img-preview{width:100%;height:110px;object-fit:cover;border-radius:4px;display:none}
+.img-preview{width:100%;height:90px;object-fit:cover;border-radius:4px;display:none}
 .img-remove{position:absolute;top:6px;right:6px;background:var(--rojo);color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:13px;font-weight:700;display:none;align-items:center;justify-content:center;line-height:1;z-index:10}
 .img-remove.visible{display:flex}
 .img-slot-label{font-size:11px;font-weight:600;color:var(--texto-suave);margin-bottom:6px;text-transform:uppercase;letter-spacing:.3px}
@@ -106,8 +106,6 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
 .toast{position:fixed;bottom:24px;right:24px;padding:12px 20px;border-radius:6px;color:#fff;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none}
 .toast.show{opacity:1}
 .toast-ok{background:var(--verde)}.toast-err{background:#e74c3c}
-
-/* Dashboard */
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
 .stat-card{background:#fff;border-radius:8px;padding:20px;box-shadow:var(--sombra);border-left:4px solid var(--rojo);display:flex;align-items:center;gap:14px}
 .stat-icon{width:44px;height:44px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -118,38 +116,19 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
 .stat-icon-orange{background:var(--naranja)}
 .stat-num{font-size:26px;font-weight:800;color:var(--texto)}
 .stat-label{font-size:11px;color:var(--texto-suave);margin-top:2px;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
-.charts-row{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:20px}
-.chart-box{background:#fff;border-radius:8px;box-shadow:var(--sombra);padding:20px}
-.chart-title{font-size:13px;font-weight:700;color:var(--texto);margin-bottom:16px}
-.chart-canvas{width:100%;height:200px;position:relative}
-.bar-chart{display:flex;align-items:flex-end;gap:6px;height:160px;padding-top:20px;padding-bottom:20px;position:relative}
-.bar-chart-labels{display:flex;gap:6px;margin-top:4px}
-.bar{flex:1;background:var(--rojo);border-radius:4px 4px 0 0;min-width:20px;transition:height .3s;position:relative;cursor:pointer}
-.bar:hover{background:var(--rojo-dark)}
-.bar-label{font-size:9px;color:#888;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.bar-tooltip{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:#333;color:#fff;font-size:10px;padding:3px 6px;border-radius:3px;white-space:nowrap;display:none;z-index:10}
-.bar:hover .bar-tooltip{display:block}
-
-/* Saturación */
 .sat-bar-wrap{display:flex;align-items:center;gap:8px}
 .sat-bar-bg{flex:1;background:#eee;border-radius:10px;height:16px;overflow:hidden;min-width:60px}
 .sat-bar-fill{height:100%;border-radius:10px;transition:width .5s}
+.sat-pct{font-size:12px;font-weight:700;min-width:36px;text-align:right}
 .emb-tipo-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
 .emb-tipo-btn{padding:8px 16px;border:1px solid #ccc;border-radius:20px;background:#fff;cursor:pointer;font-size:12px;font-weight:600;color:var(--texto-suave);transition:all .15s}
 .emb-tipo-btn:hover{border-color:var(--rojo)}
 .emb-tipo-btn.active{background:var(--rojo);color:#fff;border-color:var(--rojo)}
-
-/* Divergencia */
-.diverg-badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700}
-.diverg-ok{background:#d4edda;color:#155724}
-.diverg-warn{background:#fff3cd;color:#856404}
-.diverg-err{background:#fde8e8;color:#c0392b}
-
 .lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:2000;align-items:center;justify-content:center;cursor:zoom-out}
 .lightbox.open{display:flex}
 .lightbox img{max-width:90vw;max-height:90vh;object-fit:contain;border-radius:4px;box-shadow:0 0 40px rgba(0,0,0,.5)}
-
-@media(max-width:1100px){.stats-row{grid-template-columns:1fr 1fr}.charts-row{grid-template-columns:1fr}}
+.info-box{background:#e8f4fd;border:1px solid #bee3f8;border-radius:6px;padding:10px 14px;font-size:12px;color:#1a5276;margin-bottom:12px}
+@media(max-width:1100px){.stats-row{grid-template-columns:1fr 1fr}}
 @media(max-width:900px){
   :root{--sidebar:0px}
   .sidebar{transform:translateX(-220px);width:220px}
@@ -188,9 +167,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
 
 <div class="topbar">
   <div style="display:flex;align-items:center;gap:14px">
-    <button class="hamburger" id="hamburger" onclick="toggleSidebar()">
-      <span></span><span></span><span></span>
-    </button>
+    <button class="hamburger" id="hamburger" onclick="toggleSidebar()"><span></span><span></span><span></span></button>
     <div class="topbar-brand">CNH Industrial <span>Gestor RIAI</span></div>
   </div>
   <div class="topbar-right">
@@ -202,82 +179,25 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
 <div class="sidebar" id="sidebar">
   <div class="sidebar-nav">
     <div class="nav-section">Principal</div>
-    <div class="nav-item active" id="nav-dashboard" onclick="navTo('dashboard',this)">
-      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg></span> Dashboard
-    </div>
-    <div class="nav-item" id="nav-search" onclick="navTo('search',this)">
-      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></span> Buscar / Listar
-    </div>
-    <div class="nav-item" id="nav-create" onclick="navTo('create',this)">
-      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg></span> Crear RIAI
-    </div>
+    <div class="nav-item active" id="nav-search" onclick="navTo('search',this)">Buscar / Listar</div>
+    <div class="nav-item" id="nav-create" onclick="navTo('create',this)">Crear RIAI</div>
     <div class="nav-divider"></div>
     <div class="nav-section">Control</div>
-    <div class="nav-item" id="nav-control" onclick="navTo('control',this)">
-      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span> Control de Embalaje
-    </div>
+    <div class="nav-item" id="nav-control" onclick="navTo('control',this)">Control de Embalaje</div>
     <div class="nav-divider"></div>
     <div class="nav-section">Datos</div>
-    <div class="nav-item" id="nav-importexport" onclick="navTo('importexport',this)">
-      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></span> Importar / Exportar
-    </div>
+    <div class="nav-item" id="nav-importexport" onclick="navTo('importexport',this)">Importar / Exportar</div>
     <div class="nav-divider"></div>
     <div class="nav-section">Admin</div>
-    <div class="nav-item" id="nav-usuarios" style="display:none" onclick="navTo('usuarios',this)">
-      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></span> Usuarios
-    </div>
-    <div class="nav-item" id="nav-cuenta" onclick="navTo('cuenta',this)">
-      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg></span> Mi cuenta
-    </div>
+    <div class="nav-item" id="nav-usuarios" style="display:none" onclick="navTo('usuarios',this)">Usuarios</div>
+    <div class="nav-item" id="nav-cuenta" onclick="navTo('cuenta',this)">Mi cuenta</div>
   </div>
 </div>
 
 <div class="main" id="main">
 
-<!-- DASHBOARD -->
-<div id="page-dashboard" class="page active">
-  <div class="stats-row">
-    <div class="stat-card">
-      <div class="stat-icon stat-icon-red"><svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.07-.44.18-.88.18-1.36C18 2.53 15.92.5 13.5.5c-1.49 0-2.8.74-3.6 1.86l-.9 1.19-.9-1.19C7.3 1.24 5.99.5 4.5.5 2.08.5 0 2.53 0 4.64c0 .48.11.92.18 1.36H0v2h20V6zM2 10v10h16V10H2zm6 8H6v-6h2v6zm4 0h-2v-6h2v6zm4 0h-2v-6h2v6z"/></svg></div>
-      <div><div class="stat-num" id="stat-total">—</div><div class="stat-label">RIAIs registrados</div></div>
-    </div>
-    <div class="stat-card" style="border-left-color:var(--verde)">
-      <div class="stat-icon stat-icon-green"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-      <div><div class="stat-num" id="stat-pn-unicos">—</div><div class="stat-label">PNs únicos relevados</div></div>
-    </div>
-    <div class="stat-card" style="border-left-color:var(--azul)">
-      <div class="stat-icon stat-icon-blue"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg></div>
-      <div><div class="stat-num" id="stat-controles">—</div><div class="stat-label">Registros de control</div></div>
-    </div>
-    <div class="stat-card" style="border-left-color:var(--naranja)">
-      <div class="stat-icon stat-icon-orange"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div>
-      <div><div class="stat-num" id="stat-divergencia">—</div><div class="stat-label">PNs con divergencia</div></div>
-    </div>
-  </div>
-
-  <div class="charts-row">
-    <div class="chart-box">
-      <div class="chart-title">PNs relevados por día (últimos 14 días)</div>
-      <div class="bar-chart" id="chart-bars"></div>
-      <div class="bar-chart-labels" id="chart-labels"></div>
-    </div>
-    <div class="chart-box">
-      <div class="chart-title">Divergencia RIAI vs Control</div>
-      <div id="diverg-list" style="font-size:13px"></div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-header">Últimos registros de control</div>
-    <table class="data-table">
-      <thead><tr><th>Fecha</th><th>PN</th><th>Proveedor</th><th>Dimensiones</th><th>Qty/caja</th><th>Saturación</th></tr></thead>
-      <tbody id="dash-ctrl-body"><tr><td colspan="6" style="text-align:center;color:#aaa;padding:16px">Cargando...</td></tr></tbody>
-    </table>
-  </div>
-</div>
-
 <!-- SEARCH -->
-<div id="page-search" class="page">
+<div id="page-search" class="page active">
   <div class="card">
     <div class="card-header">Buscar RIAIs</div>
     <div class="search-row">
@@ -297,9 +217,9 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
     <h2 style="font-size:16px;font-weight:700" id="form-title">Nuevo RIAI</h2>
     <div class="btn-group">
-      <button class="btn btn-secondary" onclick="clearForm()">Limpiar</button>
-      <button class="btn btn-outline" onclick="previewRIAI()">Vista previa</button>
-      <button class="btn btn-success" onclick="saveRIAI()">Guardar RIAI</button>
+      <button type="button" class="btn btn-secondary" onclick="clearForm()">Limpiar</button>
+      <button type="button" class="btn btn-outline" onclick="previewRIAI()">Vista previa</button>
+      <button type="button" class="btn btn-success" onclick="saveRIAI()">Guardar RIAI</button>
     </div>
   </div>
 
@@ -307,19 +227,13 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
     <div class="card-header">Configuración del documento</div>
     <div class="g4">
       <div class="fld"><label>Idioma</label>
-        <select id="f-lang" onchange="applyLang()">
-          <option value="es">Español</option><option value="pt">Português</option><option value="en">English</option>
-        </select>
+        <select id="f-lang"><option value="es">Español</option><option value="pt">Português</option><option value="en">English</option></select>
       </div>
       <div class="fld"><label>Unidad de longitud</label>
-        <select id="f-unit-len" onchange="applyUnits()">
-          <option value="mm">Milímetros (mm)</option><option value="cm">Centímetros (cm)</option><option value="in">Pulgadas (inch)</option>
-        </select>
+        <select id="f-unit-len"><option value="mm">Milímetros (mm)</option><option value="cm">Centímetros (cm)</option><option value="in">Pulgadas (inch)</option></select>
       </div>
       <div class="fld"><label>Unidad de peso</label>
-        <select id="f-unit-wt" onchange="applyUnits()">
-          <option value="kg">Kilogramos (kg)</option><option value="lb">Libras (lb)</option>
-        </select>
+        <select id="f-unit-wt"><option value="kg">Kilogramos (kg)</option><option value="lb">Libras (lb)</option></select>
       </div>
       <div class="fld"><label>Fecha de elaboración</label><input type="date" id="f-date"></div>
       <div class="fld"><label>Estado</label>
@@ -329,90 +243,84 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
   </div>
 
   <div class="card">
-    <div class="card-header" id="lbl-supplier">Información del proveedor</div>
+    <div class="card-header">Información del proveedor</div>
     <div class="g2">
-      <div class="fld"><label id="lbl-suppname">Nombre del proveedor</label>
+      <div class="fld"><label>Nombre del proveedor</label>
         <div class="ac-wrap">
           <input type="text" id="f-supplier-name" placeholder="Escribir para buscar..." oninput="onSupplierInput()" onblur="setTimeout(()=>document.getElementById('supplier-ac').style.display='none',200)">
           <div id="supplier-ac" class="ac-list"></div>
         </div>
       </div>
-      <div class="fld"><label id="lbl-suppcod">Código del proveedor</label>
-        <input type="text" id="f-supplier-code"><div class="auto-tag" id="lbl-auto-supp">Se completa automáticamente</div>
-      </div>
-      <div class="fld s2"><label id="lbl-suppaddr">Dirección de envío</label><input type="text" id="f-supplier-addr"></div>
-      <div class="fld"><label id="lbl-suppcontact">Persona de contacto</label><input type="text" id="f-supplier-contact"></div>
-      <div class="fld"><label id="lbl-suppemail">Email</label><input type="text" id="f-supplier-email"></div>
-      <div class="fld"><label id="lbl-suppphone">Teléfono</label><input type="text" id="f-supplier-phone"></div>
+      <div class="fld"><label>Código del proveedor</label><input type="text" id="f-supplier-code"><div class="auto-tag">Se completa automáticamente</div></div>
+      <div class="fld s2"><label>Dirección de envío</label><input type="text" id="f-supplier-addr"></div>
+      <div class="fld"><label>Persona de contacto</label><input type="text" id="f-supplier-contact"></div>
+      <div class="fld"><label>Email</label><input type="text" id="f-supplier-email"></div>
+      <div class="fld"><label>Teléfono</label><input type="text" id="f-supplier-phone"></div>
     </div>
   </div>
 
   <div class="card">
-    <div class="card-header" id="lbl-piece">Datos de la pieza</div>
+    <div class="card-header">Datos de la pieza</div>
     <div class="g3">
-      <div class="fld"><label id="lbl-pn">PN</label><input type="text" id="f-pn" oninput="onPNChange()"></div>
-      <div class="fld s2"><label id="lbl-desc">Descripción</label><input type="text" id="f-desc"><div class="auto-tag" id="lbl-auto-pn">Automático por PN</div></div>
-      <div class="fld"><label id="lbl-largo">Largo</label><input type="number" id="f-largo" placeholder="0"></div>
-      <div class="fld"><label id="lbl-ancho">Ancho</label><input type="number" id="f-ancho" placeholder="0"></div>
-      <div class="fld"><label id="lbl-alto">Alto</label><input type="number" id="f-alto" placeholder="0"></div>
-      <div class="fld"><label id="lbl-peso">Peso pieza</label><input type="number" id="f-peso" step="0.0001" placeholder="0.0000" oninput="recalcAll()"></div>
+      <div class="fld"><label>PN</label><input type="text" id="f-pn" oninput="onPNChange()"></div>
+      <div class="fld s2"><label>Descripción</label><input type="text" id="f-desc"><div class="auto-tag">Automático por PN</div></div>
+      <div class="fld"><label>Largo (mm)</label><input type="number" id="f-largo" placeholder="0"></div>
+      <div class="fld"><label>Ancho (mm)</label><input type="number" id="f-ancho" placeholder="0"></div>
+      <div class="fld"><label>Alto (mm)</label><input type="number" id="f-alto" placeholder="0"></div>
+      <div class="fld"><label>Peso pieza (kg)</label><input type="number" id="f-peso" step="0.0001" placeholder="0.0000" oninput="recalcAll()"></div>
       <div class="fld"><label>MOQ</label><input type="number" id="f-moq" placeholder="0"></div>
-      <div class="fld"><label id="lbl-proyecto">Proyecto</label><input type="text" id="f-proyecto"></div>
+      <div class="fld"><label>Proyecto</label><input type="text" id="f-proyecto"></div>
     </div>
   </div>
 
   <div class="card">
-    <div class="card-header" id="lbl-pkg">Información principal de embalaje</div>
+    <div class="card-header">Información principal de embalaje</div>
     <div class="fld" style="margin-bottom:12px">
-      <label id="lbl-same">El embalaje primario y secundario son idénticos</label>
+      <label>El embalaje primario y secundario son idénticos</label>
       <div class="radio-row">
-        <label><input type="radio" name="same-pkg" value="no" checked onchange="onSamePkgChange()"> <span id="lbl-no">No (son diferentes)</span></label>
-        <label><input type="radio" name="same-pkg" value="si" onchange="onSamePkgChange()"> <span id="lbl-si">Sí (son idénticos)</span></label>
+        <label><input type="radio" name="same-pkg" value="no" checked onchange="onSamePkgChange()"> No (son diferentes)</label>
+        <label><input type="radio" name="same-pkg" value="si" onchange="onSamePkgChange()"> Sí (son idénticos)</label>
       </div>
     </div>
 
     <div id="pkg-different">
-      <div class="section-label" id="lbl-prim">Embalaje primario</div>
+      <div class="section-label">Embalaje primario</div>
       <div class="cond-box">
         <div class="g3">
-          <div class="fld"><label id="lbl-e1tipo">Tipo</label>
-            <select id="f-p1-tipo"><option>Caja</option><option>Caja con tapa</option></select>
-          </div>
-          <div class="fld"><label id="lbl-e1ret">Retornable</label>
-            <select id="f-p1-ret"><option value="No">No</option><option value="Sí">Sí</option></select>
-          </div>
-          <div class="fld"><label id="lbl-e1mat">Material</label>
+          <div class="fld"><label>Tipo</label><select id="f-p1-tipo"><option>Caja</option><option>Caja con tapa</option></select></div>
+          <div class="fld"><label>Retornable</label><select id="f-p1-ret"><option value="No">No</option><option value="Sí">Sí</option></select></div>
+          <div class="fld"><label>Material</label>
             <select id="f-p1-mat">
               <option>Cartón de pared simple</option><option>Cartón de pared doble</option>
               <option>Cartón de pared triple</option><option>Metal</option>
               <option>Plástico</option><option>Madera</option><option>Mezcla</option>
             </select>
           </div>
-          <div class="fld"><label id="lbl-e1desc">Descripción</label><input type="text" id="f-p1-desc"></div>
-          <div class="fld"><label id="lbl-e1l">Largo</label><input type="number" id="f-p1-largo" placeholder="0"></div>
-          <div class="fld"><label id="lbl-e1w">Ancho</label><input type="number" id="f-p1-ancho" placeholder="0"></div>
-          <div class="fld"><label id="lbl-e1h">Alto</label><input type="number" id="f-p1-alto" placeholder="0"></div>
-          <div class="fld"><label id="lbl-e1pv">Peso embalaje</label><input type="number" id="f-p1-pesoemb" step="0.001" placeholder="0.000" oninput="recalcAll()"></div>
-          <div class="fld"><label id="lbl-e1cap">Capacidad (pcs)</label><input type="number" id="f-p1-cap" placeholder="0" oninput="recalcAll()"></div>
-          <div class="fld"><label id="lbl-e1pb">Peso bruto</label><input type="number" id="f-p1-bruto" readonly><div class="auto-tag" id="lbl-auto-bruto">(Cap × Peso) + Peso embalaje</div></div>
-          <div class="fld"><label id="lbl-e1cajascapa">Cajas por capa</label><input type="number" id="f-p1-cajascapa" placeholder="—"><div class="auto-tag">Desde el simulador</div></div>
-          <div class="fld"><label id="lbl-e1capas">Capas</label><input type="number" id="f-p1-capas" placeholder="—"><div class="auto-tag">Desde el simulador</div></div>
+          <div class="fld"><label>Descripción</label><input type="text" id="f-p1-desc"></div>
+          <div class="fld"><label>Largo</label><input type="number" id="f-p1-largo" placeholder="0"></div>
+          <div class="fld"><label>Ancho</label><input type="number" id="f-p1-ancho" placeholder="0"></div>
+          <div class="fld"><label>Alto</label><input type="number" id="f-p1-alto" placeholder="0"></div>
+          <div class="fld"><label>Peso embalaje</label><input type="number" id="f-p1-pesoemb" step="0.001" placeholder="0.000" oninput="recalcAll()"></div>
+          <div class="fld"><label>Capacidad (pcs)</label><input type="number" id="f-p1-cap" placeholder="0" oninput="recalcAll()"></div>
+          <div class="fld"><label>Peso bruto</label><input type="number" id="f-p1-bruto" readonly><div class="auto-tag">(Cap × Peso) + Peso embalaje</div></div>
+          <div class="fld"><label>Cajas por capa</label><input type="number" id="f-p1-cajascapa" placeholder="—"></div>
+          <div class="fld"><label>Capas</label><input type="number" id="f-p1-capas" placeholder="—"></div>
         </div>
       </div>
 
-      <div class="section-label" id="lbl-coloc">Colocación del embalaje primario</div>
+      <div class="section-label">Colocación del embalaje primario</div>
       <div class="cond-box">
         <div class="fld">
-          <label id="lbl-coloc-q">Los paquetes se colocan</label>
+          <label>Los paquetes se colocan</label>
           <div class="radio-row">
-            <label><input type="radio" name="colocacion" value="pallet" checked onchange="onColocacionChange()"> <span id="lbl-sobre">Sobre un pallet</span></label>
-            <label><input type="radio" name="colocacion" value="dentro" onchange="onColocacionChange()"> <span id="lbl-dentro">Dentro de otro embalaje</span></label>
+            <label><input type="radio" name="colocacion" value="pallet" checked onchange="onColocacionChange()"> Sobre un pallet</label>
+            <label><input type="radio" name="colocacion" value="dentro" onchange="onColocacionChange()"> Dentro de otro embalaje</label>
           </div>
         </div>
       </div>
 
       <div id="p2-pallet">
-        <div class="section-label" id="lbl-sec-pallet">Embalaje secundario — Pallet</div>
+        <div class="section-label">Embalaje secundario — Pallet</div>
         <div class="cond-box">
           <div class="g3">
             <div class="fld"><label>Tipo</label><select id="f-p2-tipo-pallet" disabled><option>Pallet</option></select></div>
@@ -430,7 +338,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
       </div>
 
       <div id="p2-dentro" style="display:none">
-        <div class="section-label" id="lbl-sec-dentro">Embalaje secundario — Contenedor</div>
+        <div class="section-label">Embalaje secundario — Contenedor</div>
         <div class="cond-box">
           <div class="g3">
             <div class="fld"><label>Tipo</label><select id="f-p2-tipo-dentro"><option>Jaula</option><option>Cajón</option><option>Caja palletizada</option><option>Contenedor estándar</option></select></div>
@@ -449,7 +357,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
     </div>
 
     <div id="pkg-same" style="display:none">
-      <div class="section-label" id="lbl-unico">Embalaje</div>
+      <div class="section-label">Embalaje</div>
       <div class="cond-box">
         <div class="g3">
           <div class="fld"><label>Tipo</label><select id="f-ps-tipo"><option>Jaula</option><option>Cajón</option><option>Pallet</option><option>Caja palletizada</option><option>Contenedor personalizado</option><option>Contenedor estándar</option></select></div>
@@ -468,28 +376,28 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
   </div>
 
   <div class="card">
-    <div class="card-header" id="lbl-acc">Accesorios de embalaje</div>
-    <div class="fld"><label id="lbl-acc-desc">Descripción de protecciones y materiales de cierre</label>
+    <div class="card-header">Accesorios de embalaje</div>
+    <div class="fld"><label>Descripción de protecciones y materiales de cierre</label>
       <textarea id="f-accesorios" rows="3" placeholder="Film stretch, esquineros de cartón, bolsas de sílica gel..."></textarea>
     </div>
   </div>
 
   <div class="card">
-    <div class="card-header" id="lbl-imgs">Imágenes</div>
+    <div class="card-header">Imágenes</div>
     <div class="img-grid">
       <div class="img-slot">
-        <div class="img-slot-label" id="lbl-img1">Caja cerrada</div>
-        <button class="img-remove" id="rm-caja" onclick="removeImg('caja')">&#215;</button>
+        <div class="img-slot-label">Caja cerrada</div>
+        <button type="button" class="img-remove" id="rm-caja" onclick="removeImg('caja')">&#215;</button>
         <div class="img-upload" onclick="document.getElementById('up-caja').click()">
           <div class="img-upload-icon">&#9679;</div>
-          <div class="img-upload-text" id="lbl-imgclick">Seleccionar imagen</div>
+          <div class="img-upload-text">Seleccionar imagen</div>
           <img id="prev-caja" class="img-preview">
         </div>
         <input type="file" id="up-caja" accept="image/*" style="display:none" onchange="previewImg(this,'caja')">
       </div>
       <div class="img-slot">
-        <div class="img-slot-label" id="lbl-img2">Caja abierta</div>
-        <button class="img-remove" id="rm-abierta" onclick="removeImg('abierta')">&#215;</button>
+        <div class="img-slot-label">Caja abierta</div>
+        <button type="button" class="img-remove" id="rm-abierta" onclick="removeImg('abierta')">&#215;</button>
         <div class="img-upload" onclick="document.getElementById('up-abierta').click()">
           <div class="img-upload-icon">&#9679;</div>
           <div class="img-upload-text">Seleccionar imagen</div>
@@ -498,8 +406,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
         <input type="file" id="up-abierta" accept="image/*" style="display:none" onchange="previewImg(this,'abierta')">
       </div>
       <div class="img-slot">
-        <div class="img-slot-label" id="lbl-img3">Pieza embalada</div>
-        <button class="img-remove" id="rm-embalada" onclick="removeImg('embalada')">&#215;</button>
+        <div class="img-slot-label">Pieza embalada</div>
+        <button type="button" class="img-remove" id="rm-embalada" onclick="removeImg('embalada')">&#215;</button>
         <div class="img-upload" onclick="document.getElementById('up-embalada').click()">
           <div class="img-upload-icon">&#9679;</div>
           <div class="img-upload-text">Seleccionar imagen</div>
@@ -511,21 +419,21 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
   </div>
 
   <div class="card">
-    <div class="card-header" id="lbl-appr">Aprobaciones</div>
+    <div class="card-header">Aprobaciones</div>
     <div style="display:grid;grid-template-columns:180px 1fr 160px;gap:12px;padding-bottom:8px;border-bottom:2px solid var(--borde)">
-      <span style="font-size:11px;font-weight:700;color:#aaa;text-transform:uppercase" id="lbl-rol">Rol</span>
-      <span style="font-size:11px;font-weight:700;color:#aaa;text-transform:uppercase" id="lbl-nombre">Nombre</span>
-      <span style="font-size:11px;font-weight:700;color:#aaa;text-transform:uppercase" id="lbl-fecha">Fecha</span>
+      <span style="font-size:11px;font-weight:700;color:#aaa;text-transform:uppercase">Rol</span>
+      <span style="font-size:11px;font-weight:700;color:#aaa;text-transform:uppercase">Nombre</span>
+      <span style="font-size:11px;font-weight:700;color:#aaa;text-transform:uppercase">Fecha</span>
     </div>
-    <div class="approval-grid"><div class="approval-role" id="lbl-elaborado">Elaborado por</div><div class="fld"><input type="text" id="ap-elab-nombre"></div><div class="fld"><input type="date" id="ap-elab-fecha"></div></div>
-    <div class="approval-grid"><div class="approval-role" id="lbl-revisado">Revisado por</div><div class="fld"><input type="text" id="ap-rev-nombre"></div><div class="fld"><input type="date" id="ap-rev-fecha"></div></div>
-    <div class="approval-grid"><div class="approval-role" id="lbl-aprobado">Aprobado por</div><div class="fld"><input type="text" id="ap-apr-nombre"></div><div class="fld"><input type="date" id="ap-apr-fecha"></div></div>
+    <div class="approval-grid"><div class="approval-role">Elaborado por</div><div class="fld"><input type="text" id="ap-elab-nombre"></div><div class="fld"><input type="date" id="ap-elab-fecha"></div></div>
+    <div class="approval-grid"><div class="approval-role">Revisado por</div><div class="fld"><input type="text" id="ap-rev-nombre"></div><div class="fld"><input type="date" id="ap-rev-fecha"></div></div>
+    <div class="approval-grid"><div class="approval-role">Aprobado por</div><div class="fld"><input type="text" id="ap-apr-nombre"></div><div class="fld"><input type="date" id="ap-apr-fecha"></div></div>
   </div>
 
   <div style="display:flex;justify-content:flex-end;gap:10px;margin-bottom:30px;flex-wrap:wrap">
-    <button class="btn btn-secondary" onclick="clearForm()">Limpiar</button>
-    <button class="btn btn-outline" onclick="previewRIAI()">Vista previa</button>
-    <button class="btn btn-success" onclick="saveRIAI()">Guardar RIAI</button>
+    <button type="button" class="btn btn-secondary" onclick="clearForm()">Limpiar</button>
+    <button type="button" class="btn btn-outline" onclick="previewRIAI()">Vista previa</button>
+    <button type="button" class="btn btn-success" onclick="saveRIAI()">Guardar RIAI</button>
   </div>
 </div>
 
@@ -534,7 +442,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
   <input type="hidden" id="ctrl-id">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
     <h2 style="font-size:16px;font-weight:700">Control de Embalaje</h2>
-    <button class="btn btn-primary" onclick="toggleCtrlForm(true)">Nuevo registro</button>
+    <button type="button" class="btn btn-primary" onclick="toggleCtrlForm(true)">Nuevo registro</button>
   </div>
 
   <div class="card" id="ctrl-form" style="display:none">
@@ -542,9 +450,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
 
     <div class="g2">
       <div class="fld"><label>Fecha</label><input type="date" id="ctrl-fecha"></div>
-      <div class="fld"><label>Proveedor</label>
-        <input type="text" id="ctrl-proveedor" readonly placeholder="Automático (según primer PN)">
-      </div>
+      <div class="fld"><label>Proveedor</label><input type="text" id="ctrl-proveedor" readonly placeholder="Automático (según primer PN)"></div>
     </div>
 
     <div class="fld" style="margin-top:12px">
@@ -555,7 +461,6 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
       </div>
     </div>
 
-    <!-- ═══ CASO: SON IDÉNTICOS ═══ -->
     <div id="ctrl-same-block">
       <div class="section-label">Embalaje</div>
       <div class="cond-box">
@@ -591,7 +496,6 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
       <button type="button" class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="addLinea('same')">+ Agregar pieza</button>
     </div>
 
-    <!-- ═══ CASO: NO SON IDÉNTICOS ═══ -->
     <div id="ctrl-diff-block" style="display:none">
       <div class="section-label">Embalaje secundario</div>
       <div class="cond-box">
@@ -651,8 +555,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
     <div class="fld" style="margin-top:16px"><label>Notas</label><input type="text" id="ctrl-notas" placeholder="Observaciones..."></div>
 
     <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:16px">
-      <button class="btn btn-secondary" onclick="toggleCtrlForm(false)">Cancelar</button>
-      <button class="btn btn-success" onclick="saveControl()">Guardar registro</button>
+      <button type="button" class="btn btn-secondary" onclick="toggleCtrlForm(false)">Cancelar</button>
+      <button type="button" class="btn btn-success" onclick="saveControl()">Guardar registro</button>
     </div>
   </div>
 
@@ -660,12 +564,10 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
     <div class="card-header">Registros de control</div>
     <div class="search-row">
       <input type="text" id="ctrl-search" placeholder="Buscar por PN o proveedor...">
-      <button class="btn btn-primary" onclick="loadControl(document.getElementById('ctrl-search').value)">Buscar</button>
+      <button type="button" class="btn btn-primary" onclick="loadControl(document.getElementById('ctrl-search').value)">Buscar</button>
     </div>
     <table class="data-table">
-      <thead>
-        <tr><th>Fecha</th><th>Proveedor</th><th>Tipo embalaje</th><th>PNs incluidos</th><th>Saturación</th><th>Acciones</th></tr>
-      </thead>
+      <thead><tr><th>Fecha</th><th>Proveedor</th><th>Tipo embalaje</th><th>PNs incluidos</th><th>Saturación</th><th>Acciones</th></tr></thead>
       <tbody id="ctrl-body"><tr><td colspan="6" style="text-align:center;color:#aaa;padding:24px">Cargando...</td></tr></tbody>
     </table>
   </div>
@@ -676,17 +578,17 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
   <div class="card">
     <div class="card-header">Exportar datos</div>
     <div class="btn-group">
-      <button class="btn btn-outline" onclick="window.location.href=API+'/export/riai'">Exportar RIAIs (Excel)</button>
-      <button class="btn btn-outline" onclick="window.location.href=API+'/export/proveedores'">Exportar Proveedores (Excel)</button>
-      <button class="btn btn-outline" onclick="window.location.href=API+'/export/imagenes'">Descargar todas las imágenes (ZIP)</button>
+      <button type="button" class="btn btn-outline" onclick="window.location.href=API+'/export/riai'">Exportar RIAIs (Excel)</button>
+      <button type="button" class="btn btn-outline" onclick="window.location.href=API+'/export/proveedores'">Exportar Proveedores (Excel)</button>
+      <button type="button" class="btn btn-outline" onclick="window.location.href=API+'/export/imagenes'">Exportar URLs de imágenes (CSV)</button>
     </div>
   </div>
   <div class="card">
     <div class="card-header">Importar datos</div>
-    <p style="font-size:13px;color:var(--texto-suave);margin-bottom:16px">Las imágenes se agregan luego editando cada registro individualmente.</p>
+    <div class="info-box">Las imágenes se agregan luego editando cada registro individualmente.</div>
     <div class="btn-group">
-      <button class="btn btn-primary" onclick="document.getElementById('import-riai-file').click()">Importar RIAIs (Excel)</button>
-      <button class="btn btn-primary" onclick="document.getElementById('import-prov-file').click()">Importar Proveedores (Excel)</button>
+      <button type="button" class="btn btn-primary" onclick="document.getElementById('import-riai-file').click()">Importar RIAIs (Excel)</button>
+      <button type="button" class="btn btn-primary" onclick="document.getElementById('import-prov-file').click()">Importar Proveedores (Excel)</button>
     </div>
     <input type="file" id="import-riai-file" accept=".xlsx" style="display:none" onchange="importExcel(this,'riai')">
     <input type="file" id="import-prov-file" accept=".xlsx" style="display:none" onchange="importExcel(this,'proveedores')">
@@ -709,7 +611,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
       </div>
     </div>
     <div style="display:flex;justify-content:flex-end;margin-top:12px">
-      <button class="btn btn-success" onclick="crearUsuario()">Crear usuario</button>
+      <button type="button" class="btn btn-success" onclick="crearUsuario()">Crear usuario</button>
     </div>
   </div>
   <div class="card">
@@ -730,25 +632,24 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
       <div class="fld"><label>Confirmar contraseña</label><input type="password" id="my-confirm-password"></div>
     </div>
     <div style="display:flex;justify-content:flex-end;margin-top:12px">
-      <button class="btn btn-primary" onclick="cambiarMiPassword()">Cambiar contraseña</button>
+      <button type="button" class="btn btn-primary" onclick="cambiarMiPassword()">Cambiar contraseña</button>
     </div>
   </div>
 </div>
 
 </div>
 
-<!-- MODAL PREVIEW -->
 <div class="modal-overlay" id="modal-preview">
   <div class="modal-box">
     <div class="modal-header">
-      <h3>Vista previa — RIAI</h3>
-      <button class="btn btn-xs btn-secondary" onclick="closeModal('modal-preview')">&#215; Cerrar</button>
+      <h3>Vista previa</h3>
+      <button type="button" class="btn btn-xs btn-secondary" onclick="closeModal('modal-preview')">&#215; Cerrar</button>
     </div>
     <div class="modal-body" id="riai-preview-content"></div>
     <div class="modal-footer">
-      <button class="btn btn-success btn-sm" onclick="downloadPdf()">Descargar PDF</button>
-      <button class="btn btn-primary btn-sm" onclick="window.print()">Imprimir</button>
-      <button class="btn btn-secondary btn-sm" onclick="closeModal('modal-preview')">Cerrar</button>
+      <button type="button" class="btn btn-success btn-sm" onclick="downloadPdf()">Descargar PDF</button>
+      <button type="button" class="btn btn-primary btn-sm" onclick="window.print()">Imprimir</button>
+      <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal('modal-preview')">Cerrar</button>
     </div>
   </div>
 </div>
@@ -762,33 +663,6 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
 const API = window.location.origin + "/api";
 let currentUser = null;
 let suppCache = [];
-let ctrlSuppCache = [];
-
-// ── LANG LABELS ───────────────────────────────────────────────────────────
-const FORM_LABELS = {
-  es:{supplier:'Información del proveedor',suppname:'Nombre del proveedor',suppcod:'Código del proveedor',suppaddr:'Dirección de envío',suppcontact:'Persona de contacto',suppemail:'Email',suppphone:'Teléfono',piece:'Datos de la pieza',pn:'PN',desc:'Descripción',largo:'Largo',ancho:'Ancho',alto:'Alto',peso:'Peso pieza',proyecto:'Proyecto',pkg:'Información principal de embalaje',same:'El embalaje primario y secundario son idénticos',no:'No (son diferentes)',si:'Sí (son idénticos)',prim:'Embalaje primario',unico:'Embalaje',coloc:'Colocación del embalaje primario',colocq:'Los paquetes se colocan',sobre:'Sobre un pallet',dentro:'Dentro de otro embalaje',secpallet:'Embalaje secundario — Pallet',secdentro:'Embalaje secundario — Contenedor',tipo:'Tipo',ret:'Retornable',mat:'Material',desc2:'Descripción',pv:'Peso embalaje',cap:'Capacidad (pcs)',pb:'Peso bruto',cajascapa:'Cajas por capa',capas:'Capas',acc:'Accesorios de embalaje',accdesc:'Descripción de protecciones y materiales de cierre',imgs:'Imágenes',img1:'Caja cerrada',img2:'Caja abierta',img3:'Pieza embalada',imgclick:'Seleccionar imagen',appr:'Aprobaciones',rol:'Rol',nombre:'Nombre',fecha:'Fecha',elaborado:'Elaborado por',revisado:'Revisado por',aprobado:'Aprobado por',autosupp:'Se completa automáticamente',autopn:'Automático por PN',autobruto:'(Cap × Peso) + Peso embalaje'},
-  pt:{supplier:'Informações do Fornecedor',suppname:'Nome do Fornecedor',suppcod:'Código do Fornecedor',suppaddr:'Endereço de Envio',suppcontact:'Pessoa de Contato',suppemail:'E-mail',suppphone:'Telefone',piece:'Dados da Peça',pn:'PN',desc:'Descrição',largo:'Comprimento',ancho:'Largura',alto:'Altura',peso:'Peso da Peça',projeto:'Projeto',pkg:'Informações Principais da Embalagem',same:'A embalagem primária e secundária são idênticas',no:'Não (são diferentes)',si:'Sim (são idênticas)',prim:'Embalagem Primária',unico:'Embalagem',coloc:'Posicionamento da embalagem primária',colocq:'Os pacotes são colocados',sobre:'Sobre um palete',dentro:'Dentro de outro tipo de embalagem',secpallet:'Embalagem Secundária — Palete',secdentro:'Embalagem Secundária — Contentor',tipo:'Tipo',ret:'Retornável',mat:'Material',desc2:'Descrição',pv:'Peso embalagem',cap:'Capacidade (pcs)',pb:'Peso bruto',cajascapa:'Caixas por camada',capas:'Camadas',acc:'Acessórios de Embalagem',accdesc:'Descrição de proteções e materiais de fechamento',imgs:'Imagens',img1:'Caixa fechada',img2:'Caixa aberta',img3:'Peça embalada',imgclick:'Selecionar imagem',appr:'Aprovação',rol:'Departamento',nombre:'Nome',fecha:'Data',elaborado:'Elaborado por',revisado:'Revisado por',aprobado:'Aprovado por',autosupp:'Preenchido automaticamente',autopn:'Automático pelo PN',autobruto:'(Cap × Peso) + Peso embalagem'},
-  en:{supplier:'Supplier Information',suppname:'Supplier name',suppcod:'Supplier code',suppaddr:'Shipping address',suppcontact:'Contact person',suppemail:'Email',suppphone:'Phone',piece:'Part Data',pn:'PN',desc:'Description',largo:'Length',ancho:'Width',alto:'Height',peso:'Part weight',proyecto:'Project',pkg:'Main Packaging Information',same:'Primary and secondary packaging are identical',no:'No (they are different)',si:'Yes (they are identical)',prim:'Primary Packaging',unico:'Packaging',coloc:'Primary packaging placement',colocq:'Packages are placed',sobre:'On a pallet',dentro:'Inside another type of packaging',secpallet:'Secondary Packaging — Pallet',secdentro:'Secondary Packaging — Container',tipo:'Type',ret:'Returnable',mat:'Material',desc2:'Description',pv:'Packaging weight',cap:'Capacity (pcs)',pb:'Gross weight',cajascapa:'Boxes per layer',capas:'Layers',acc:'Packaging Accessories',accdesc:'Description of protections and closing materials',imgs:'Images',img1:'Closed box',img2:'Open box',img3:'Packed part',imgclick:'Select image',appr:'Approval',rol:'Department',nombre:'Name',fecha:'Date',elaborado:'Prepared by',revisado:'Reviewed by',aprobado:'Approved by',autosupp:'Filled automatically',autopn:'Automatic by PN',autobruto:'(Cap × Weight) + Pkg weight'},
-};
-
-function applyLang(){
-  const lang=document.getElementById('f-lang').value;
-  const L=FORM_LABELS[lang]||FORM_LABELS.es;
-  const set=(id,val)=>{const el=document.getElementById(id);if(el) el.textContent=val;};
-  Object.keys(L).forEach(k=>set('lbl-'+k,L[k]));
-  applyUnits();
-}
-function applyUnits(){
-  const ul=document.getElementById('f-unit-len').value||'mm';
-  const uw=document.getElementById('f-unit-wt').value||'kg';
-  const lang=document.getElementById('f-lang').value||'es';
-  const L=FORM_LABELS[lang]||FORM_LABELS.es;
-  const set=(id,val)=>{const el=document.getElementById(id);if(el) el.textContent=val;};
-  set('lbl-largo',`${L.largo} (${ul})`);set('lbl-ancho',`${L.ancho} (${ul})`);set('lbl-alto',`${L.alto} (${ul})`);
-  set('lbl-peso',`${L.peso} (${uw})`);
-  set('lbl-e1l',`${L.largo} (${ul})`);set('lbl-e1w',`${L.ancho} (${ul})`);set('lbl-e1h',`${L.alto} (${ul})`);
-  set('lbl-e1pv',`${L.pv} (${uw})`);set('lbl-e1pb',`${L.pb} (${uw})`);
-}
 
 // ── AUTH ──────────────────────────────────────────────────────────────────
 async function checkAuth(){
@@ -813,8 +687,8 @@ async function doLogout(){
 // ── SIDEBAR ───────────────────────────────────────────────────────────────
 function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');}
 document.addEventListener('click',e=>{
-  const sb=document.getElementById('sidebar'),hb=document.getElementById('hamburger');
-  if(window.innerWidth<=900&&!sb.contains(e.target)&&!hb.contains(e.target)) sb.classList.remove('open');
+  const sb=document.getElementById('sidebar'), hb=document.getElementById('hamburger');
+  if(window.innerWidth<=900 && sb && hb && !sb.contains(e.target) && !hb.contains(e.target)) sb.classList.remove('open');
 });
 
 // ── NAV ───────────────────────────────────────────────────────────────────
@@ -824,96 +698,12 @@ function navTo(p,el){
   document.getElementById('page-'+p).classList.add('active');
   if(el) el.classList.add('active');
   if(window.innerWidth<=900) document.getElementById('sidebar').classList.remove('open');
-  if(p==='dashboard') loadDashboard();
   if(p==='search') loadList();
   if(p==='usuarios') loadUsuarios();
   if(p==='control') loadControl();
 }
 
-// ── DASHBOARD ─────────────────────────────────────────────────────────────
-function satBarHtml(sat){
-  if(sat===null||sat===undefined) return '<span style="color:#aaa;font-size:11px">—</span>';
-  const color=sat>=80?'var(--verde)':sat>=50?'var(--naranja)':'var(--rojo)';
-  return `<div class="sat-bar-wrap"><div class="sat-bar-bg"><div class="sat-bar-fill" style="width:${sat}%;background:${color}"></div></div><span class="sat-pct" style="color:${color}">${sat}%</span></div>`;
-}
-
-async function loadDashboard(){
-  const [riaiRows, ctrlRows] = await Promise.all([
-    fetch(`${API}/riai`,{credentials:'include'}).then(r=>r.json()).catch(()=>[]),
-    fetch(`${API}/control`,{credentials:'include'}).then(r=>r.json()).catch(()=>[]),
-  ]);
-
-  // Stats
-  const pnUnicos = new Set(riaiRows.map(r=>r.numero_pieza).filter(Boolean)).size;
-  document.getElementById('stat-total').textContent = riaiRows.length;
-  document.getElementById('stat-pn-unicos').textContent = pnUnicos;
-  document.getElementById('stat-controles').textContent = ctrlRows.length;
-
-  // Divergencia: PNs en control que difieren en dimensiones respecto al RIAI
-  const riaiMap = {};
-  riaiRows.forEach(r=>{ if(r.numero_pieza) riaiMap[r.numero_pieza]=r; });
-  const divergentes = new Set();
-  ctrlRows.forEach(c=>{
-    const r=riaiMap[c.numero_pieza];
-    if(!r) return;
-    const capacidadRiai = parseInt(r.p1_capacidad) || parseInt(r.p2_capacidad) || null;
-    const qtyControl = parseInt(c.qty_por_caja) || null;
-    if(qtyControl!==null && capacidadRiai!==null && qtyControl !== capacidadRiai) divergentes.add(c.numero_pieza);
-  });
-  document.getElementById('stat-divergencia').textContent = divergentes.size;
-
-  // Gráfico barras — PNs relevados por día (últimos 14 días), basado en Control
-  const days = 14;
-  const counts = {};
-  const today = new Date();
-  for(let i=days-1;i>=0;i--){
-    const d=new Date(today); d.setDate(d.getDate()-i);
-    counts[d.toISOString().split('T')[0]] = 0;
-  }
-  ctrlRows.forEach(r=>{
-    const d=(r.fecha||r.creado_en||'').split(' ')[0];
-    if(d && counts[d]!==undefined) counts[d]++;
-  });
-  const labels=Object.keys(counts);
-  const vals=Object.values(counts);
-  const maxVal=Math.max(...vals,1);
-  const barsEl=document.getElementById('chart-bars');
-  const labelsEl=document.getElementById('chart-labels');
-  barsEl.innerHTML=vals.map((v,i)=>`
-    <div class="bar" style="height:${Math.max(4,(v/maxVal)*140)}px">
-      <div style="position:absolute;top:-18px;left:0;right:0;text-align:center;font-size:10px;font-weight:700;color:#555">${v>0?v:''}</div>
-      <div class="bar-tooltip">${labels[i]}: ${v}</div>
-    </div>`).join('');
-  labelsEl.innerHTML=labels.map(l=>`<div class="bar-label" style="flex:1">${l.slice(5)}</div>`).join('');
-
-  // Divergencia list
-  const divEl=document.getElementById('diverg-list');
-  if(divergentes.size===0){
-    divEl.innerHTML='<div style="color:var(--verde);font-size:13px;padding:20px 0;text-align:center">Sin divergencias detectadas</div>';
-  } else {
-    divEl.innerHTML=[...divergentes].map(pn=>`
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f0f0f0">
-        <span style="font-weight:600">${pn}</span>
-        <span class="diverg-badge diverg-warn">Divergencia</span>
-      </div>`).join('');
-  }
-
-  // Últimos controles
-  const tbody=document.getElementById('dash-ctrl-body');
-  const latest=ctrlRows.slice(0,8);
-  if(!latest.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:#aaa;padding:16px">Sin registros</td></tr>';return;}
-  tbody.innerHTML=latest.map(r=>`
-    <tr>
-      <td>${r.fecha||'—'}</td>
-      <td><strong>${r.numero_pieza||'—'}</strong></td>
-      <td>${r.proveedor_nombre||'—'}</td>
-      <td>${r.largo||'—'} × ${r.ancho||'—'} × ${r.alto||'—'}</td>
-      <td>${r.qty_por_caja||'—'}</td>
-      <td>${satBarHtml(r.saturacion)}</td>
-    </tr>`).join('');
-}
-
-// ── SEARCH ────────────────────────────────────────────────────────────────
+// ── SEARCH RIAI ───────────────────────────────────────────────────────────
 async function loadList(q=''){
   const rows=await fetch(`${API}/riai?q=${encodeURIComponent(q)}`,{credentials:'include'}).then(r=>r.json()).catch(()=>[]);
   const tbody=document.getElementById('results-body');
@@ -928,9 +718,9 @@ async function loadList(q=''){
       <td>${r.fecha||'—'}</td>
       <td><span class="badge ${r.estado==='Aprobado'?'badge-ok':'badge-draft'}">${r.estado}</span></td>
       <td class="actions">
-        <button class="btn btn-outline btn-xs" onclick="viewRIAI(${r.id})">Ver</button>
-        ${canEdit?`<button class="btn btn-secondary btn-xs" onclick="editRIAI(${r.id})">Editar</button>`:''}
-        ${canDelete?`<button class="btn btn-danger btn-xs" onclick="deleteRIAI(${r.id})">Eliminar</button>`:''}
+        <button type="button" class="btn btn-outline btn-xs" onclick="viewRIAI(${r.id})">Ver</button>
+        ${canEdit?`<button type="button" class="btn btn-secondary btn-xs" onclick="editRIAI(${r.id})">Editar</button>`:''}
+        ${canDelete?`<button type="button" class="btn btn-danger btn-xs" onclick="deleteRIAI(${r.id})">Eliminar</button>`:''}
       </td>
     </tr>`).join('');
 }
@@ -958,7 +748,6 @@ function selectSupplier(codigo){
   document.getElementById('supplier-ac').style.display='none';
 }
 
-// ── PN LOOKUP ─────────────────────────────────────────────────────────────
 let pnTimer;
 function onPNChange(){
   clearTimeout(pnTimer);
@@ -969,7 +758,6 @@ function onPNChange(){
   },400);
 }
 
-// ── EMBALAJE TOGGLE ───────────────────────────────────────────────────────
 function onSamePkgChange(){
   const same=document.querySelector('input[name="same-pkg"]:checked').value==='si';
   document.getElementById('pkg-different').style.display=same?'none':'block';
@@ -981,7 +769,6 @@ function onColocacionChange(){
   document.getElementById('p2-dentro').style.display=val==='dentro'?'block':'none';
 }
 
-// ── PESO BRUTO ────────────────────────────────────────────────────────────
 function recalcAll(){
   const p=parseFloat(document.getElementById('f-peso').value)||0;
   [['f-p1-cap','f-p1-pesoemb','f-p1-bruto'],['f-p2-cap-pallet','f-p2-pesoemb-pallet','f-p2-bruto-pallet'],['f-p2-cap-dentro','f-p2-pesoemb-dentro','f-p2-bruto-dentro'],['f-ps-cap','f-ps-pesoemb','f-ps-bruto']].forEach(([c,e,b])=>{
@@ -991,7 +778,6 @@ function recalcAll(){
   });
 }
 
-// ── IMAGES ────────────────────────────────────────────────────────────────
 function previewImg(input,key){
   const f=input.files[0];if(!f) return;
   const r=new FileReader();
@@ -1012,7 +798,6 @@ function openLightbox(src){
   document.getElementById('lightbox').classList.add('open');
 }
 
-// ── COLLECT FORM ──────────────────────────────────────────────────────────
 function collectForm(){
   const same=document.querySelector('input[name="same-pkg"]:checked').value==='si';
   const coloc=document.querySelector('input[name="colocacion"]:checked')?.value||'pallet';
@@ -1056,7 +841,6 @@ function collectForm(){
   };
 }
 
-// ── SAVE RIAI ─────────────────────────────────────────────────────────────
 async function saveRIAI(){
   const d=collectForm();
   if(!d.numero_pieza){toast('Ingresá el PN.',false);return;}
@@ -1075,7 +859,6 @@ async function saveRIAI(){
   }catch(e){toast('Error de conexión.',false);}
 }
 
-// ── EDIT RIAI ─────────────────────────────────────────────────────────────
 async function editRIAI(id){
   const d=await fetch(`${API}/riai/${id}`,{credentials:'include'}).then(r=>r.json()).catch(()=>null);
   if(!d){toast('Error al cargar',false);return;}
@@ -1152,7 +935,6 @@ async function editRIAI(id){
       if(src){const img=document.getElementById(`prev-${k}`);img.src=src;img.style.display='block';document.getElementById(`rm-${k}`).classList.add('visible');}
     });
     window.__currentPreviewId=d.id;
-    applyLang();
   },100);
 }
 
@@ -1163,7 +945,6 @@ async function deleteRIAI(id){
   else toast('Error al eliminar',false);
 }
 
-// ── VIEW RIAI ─────────────────────────────────────────────────────────────
 async function viewRIAI(id){
   const d=await fetch(`${API}/riai/${id}`,{credentials:'include'}).then(r=>r.json()).catch(()=>null);
   if(!d){toast('Error al cargar',false);return;}
@@ -1201,11 +982,8 @@ function downloadPdf(){
   window.location.href=`${API}/riai/${id}/pdf`;
 }
 
-// ── RENDER RIAI ───────────────────────────────────────────────────────────
 const RLABELS={
   es:{title:'RIAI — INSTRUCCIÓN DE EMBALAJE',supplier:'Información del proveedor',piece:'Datos de la pieza',prim:'Embalaje Primario',sec:'Embalaje Secundario',unico:'Embalaje',acc:'Accesorios',imgs:'Imágenes',appr:'Aprobaciones',elaborado:'Elaborado por',revisado:'Revisado por',aprobado:'Aprobado por',fecha:'Fecha',pn:'PN',desc:'Descripción',largo:'Largo',ancho:'Ancho',alto:'Alto',peso:'Peso',moq:'MOQ',proyecto:'Proyecto',tipo:'Tipo',ret:'Retornable',mat:'Material',cap:'Capacidad',pesoemb:'Peso embalaje',bruto:'Peso bruto',cajascapa:'Cajas/capa',capas:'Capas',cod:'Código',addr:'Dirección',contact:'Contacto',email:'Email',phone:'Teléfono',img1:'Caja cerrada',img2:'Caja abierta',img3:'Pieza embalada'},
-  pt:{title:'RIAI — INSTRUÇÃO DE EMBALAGEM',supplier:'Informações do Fornecedor',piece:'Dados da Peça',prim:'Embalagem Primária',sec:'Embalagem Secundária',unico:'Embalagem',acc:'Acessórios',imgs:'Imagens',appr:'Aprovações',elaborado:'Elaborado por',revisado:'Revisado por',aprobado:'Aprovado por',fecha:'Data',pn:'PN',desc:'Descrição',largo:'Comprimento',ancho:'Largura',alto:'Altura',peso:'Peso',moq:'MOQ',projeto:'Projeto',tipo:'Tipo',ret:'Retornável',mat:'Material',cap:'Capacidade',pesoemb:'Peso embalagem',bruto:'Peso bruto',cajascapa:'Caixas/camada',capas:'Camadas',cod:'Código',addr:'Endereço',contact:'Contato',email:'Email',phone:'Telefone',img1:'Caixa fechada',img2:'Caixa aberta',img3:'Peça embalada'},
-  en:{title:'RIAI — PACKAGING INSTRUCTION',supplier:'Supplier Information',piece:'Part Data',prim:'Primary Packaging',sec:'Secondary Packaging',unico:'Packaging',acc:'Accessories',imgs:'Images',appr:'Approvals',elaborado:'Prepared by',revisado:'Reviewed by',aprobado:'Approved by',fecha:'Date',pn:'PN',desc:'Description',largo:'Length',ancho:'Width',alto:'Height',peso:'Weight',moq:'MOQ',proyecto:'Project',tipo:'Type',ret:'Returnable',mat:'Material',cap:'Capacity',pesoemb:'Pkg weight',bruto:'Gross weight',cajascapa:'Boxes/layer',capas:'Layers',cod:'Code',addr:'Address',contact:'Contact',email:'Email',phone:'Phone',img1:'Closed box',img2:'Open box',img3:'Packed part'},
 };
 function renderRIAI(d){
   const L=RLABELS[d.lang]||RLABELS.es;
@@ -1265,95 +1043,285 @@ function renderRIAI(d){
   </table></div>`;
 }
 
-// ── CONTROL ───────────────────────────────────────────────────────────────
+// ══════════════ CONTROL ══════════════
+let lineasSame = [];
+let lineasDiff = [];
+let lineaCounter = 0;
+const TIPOS_SATURABLES = ["Caja de cartón","Caja de madera","Caja paletizada"];
+
 function toggleCtrlForm(show){
   document.getElementById('ctrl-form').style.display=show?'block':'none';
   if(show){clearCtrlForm();document.getElementById('ctrl-form-title').textContent='Nuevo registro de control';}
 }
+
+function setEmbTipoBtns(modo, val){
+  const containerId = modo==='same' ? 'ctrl-emb-tipo-btns' : 'ctrl-sec-tipo-btns';
+  const hiddenId = modo==='same' ? 'ctrl-emb-tipo' : 'ctrl-sec-tipo';
+  const container = document.getElementById(containerId);
+  if(container){
+    container.querySelectorAll('.emb-tipo-btn').forEach(b=>{
+      b.classList.toggle('active', b.dataset.val===val);
+    });
+  }
+  const hidden = document.getElementById(hiddenId);
+  if(hidden) hidden.value = val;
+}
+
 function clearCtrlForm(){
-  document.getElementById('ctrl-id').value='';
-  document.getElementById('ctrl-fecha').value=new Date().toISOString().split('T')[0];
-  ['ctrl-pn','ctrl-supplier-name','ctrl-largo','ctrl-ancho','ctrl-alto','ctrl-qty','ctrl-notas'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('ctrl-pn-desc').textContent='';
-  setSatUI(null);
-  ['cerrada','abierta','etiqueta'].forEach(k=>{
-    const img=document.getElementById(`prev-ctrl-${k}`);if(img){img.src='';img.style.display='none';}
-    const rm=document.getElementById(`rm-ctrl-${k}`);if(rm) rm.classList.remove('visible');
-    const up=document.getElementById(`up-ctrl-${k}`);if(up) up.value='';
-  });
+  const setVal = (id, val) => { const el = document.getElementById(id); if(el) el.value = val; };
+  setVal('ctrl-id', '');
+  setVal('ctrl-fecha', new Date().toISOString().split('T')[0]);
+  setVal('ctrl-proveedor', '');
+  const radioSi = document.querySelector('input[name="ctrl-same"][value="si"]');
+  if(radioSi) radioSi.checked = true;
+  setEmbTipoBtns('same','Caja de cartón');
+  setEmbTipoBtns('sec','Caja de cartón');
+  ['ctrl-emb-largo','ctrl-emb-ancho','ctrl-emb-alto','ctrl-sec-largo','ctrl-sec-ancho','ctrl-sec-alto','ctrl-notas'].forEach(id=>setVal(id,''));
+  removeSecImg();
+  setSecSatUI(null);
+  lineasSame=[]; lineasDiff=[];
+  renderLineas('same'); renderLineas('diff');
+  onCtrlSameChange();
+  onCtrlEmbTipoChange('same');
+  onCtrlEmbTipoChange('sec');
 }
 
-async function onCtrlSupplierInput(){
-  const q=document.getElementById('ctrl-supplier-name').value;
-  if(q.length<2){document.getElementById('ctrl-supplier-ac').style.display='none';return;}
-  const data=await fetch(`${API}/proveedores?q=${encodeURIComponent(q)}`,{credentials:'include'}).then(r=>r.json()).catch(()=>[]);
-  ctrlSuppCache=data;
-  const ac=document.getElementById('ctrl-supplier-ac');
-  if(!data.length){ac.style.display='none';return;}
-  ac.innerHTML=data.map(s=>`<div onclick="selectCtrlSupplier('${s.codigo}')">${s.nombre} <small style="color:#aaa">${s.codigo}</small></div>`).join('');
-  ac.style.display='block';
-}
-function selectCtrlSupplier(codigo){
-  const s=ctrlSuppCache.find(x=>x.codigo===codigo);if(!s) return;
-  document.getElementById('ctrl-supplier-name').value=s.nombre;
-  document.getElementById('ctrl-supplier-ac').style.display='none';
+function onCtrlSameChange(){
+  const checked = document.querySelector('input[name="ctrl-same"]:checked');
+  const same = checked ? checked.value==='si' : true;
+  document.getElementById('ctrl-same-block').style.display=same?'block':'none';
+  document.getElementById('ctrl-diff-block').style.display=same?'none':'block';
 }
 
-let ctrlPNTimer;
-function onCtrlPNChange(){
-  clearTimeout(ctrlPNTimer);
-  ctrlPNTimer=setTimeout(async()=>{
-    const pn=document.getElementById('ctrl-pn').value.trim();if(!pn) return;
-    const data=await fetch(`${API}/piezas/${encodeURIComponent(pn)}`,{credentials:'include'}).then(r=>r.json()).catch(()=>({}));
-    document.getElementById('ctrl-pn-desc').textContent=data.descripcion||'';
-  },400);
+function selectEmbTipo(modo, btn){
+  const containerId = modo==='same' ? 'ctrl-emb-tipo-btns' : 'ctrl-sec-tipo-btns';
+  const container = document.getElementById(containerId);
+  container.querySelectorAll('.emb-tipo-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const hiddenInput = document.getElementById(modo==='same' ? 'ctrl-emb-tipo' : 'ctrl-sec-tipo');
+  hiddenInput.value = btn.dataset.val;
+  onCtrlEmbTipoChange(modo);
 }
 
-function setSatUI(val){
-  const bar=document.getElementById('ctrl-sat-bar');
-  const pct=document.getElementById('ctrl-sat-pct');
-  const status=document.getElementById('ctrl-sat-status');
-  if(val===null||val===undefined){
-    bar.style.width='0%';pct.textContent='—';pct.style.color='var(--texto-suave)';
-    status.textContent='Se calculará automáticamente después de guardar';
+function onCtrlEmbTipoChange(modo){
+  const tipoVal = modo==='same' ? document.getElementById('ctrl-emb-tipo').value : document.getElementById('ctrl-sec-tipo').value;
+  const otroWrap = modo==='same' ? document.getElementById('ctrl-emb-tipo-otro-wrap') : document.getElementById('ctrl-sec-tipo-otro-wrap');
+  if(otroWrap) otroWrap.style.display = tipoVal==='Otro' ? 'block' : 'none';
+  if(modo==='sec'){
+    const satWrap=document.getElementById('ctrl-sec-sat-wrap');
+    if(satWrap) satWrap.style.display = TIPOS_SATURABLES.includes(tipoVal) ? 'block' : 'none';
+  }
+}
+
+function addLinea(modo){
+  const id = 'ln'+(lineaCounter++);
+  const linea = modo==='same'
+    ? {id, numero_pieza:'', cantidad:'', img_pieza:null, saturacion:null}
+    : {id, numero_pieza:'', cantidad:'', tipo:'A granel', largo:'', ancho:'', alto:'', img_pieza:null, saturacion:null};
+  if(modo==='same') lineasSame.push(linea); else lineasDiff.push(linea);
+  renderLineas(modo);
+}
+
+function removeLinea(modo, id){
+  if(modo==='same') lineasSame=lineasSame.filter(l=>l.id!==id);
+  else lineasDiff=lineasDiff.filter(l=>l.id!==id);
+  renderLineas(modo);
+}
+
+function renderLineas(modo){
+  const arr = modo==='same' ? lineasSame : lineasDiff;
+  const container = document.getElementById(modo==='same' ? 'ctrl-lineas-same' : 'ctrl-lineas-diff');
+  if(!container) return;
+  if(!arr.length){
+    container.innerHTML = '<div style="color:#aaa;font-size:13px;padding:10px 0">Sin piezas agregadas</div>';
     return;
   }
-  const color=val>=80?'var(--verde)':val>=50?'var(--naranja)':'var(--rojo)';
-  bar.style.width=val+'%';bar.style.background=color;
-  pct.textContent=val+'%';pct.style.color=color;
-  status.textContent=val>=80?'Saturación óptima':val>=50?'Saturación media':'Saturación baja — revisar cantidad';
+  container.innerHTML = arr.map(l => {
+    if(modo==='same'){
+      return `
+      <div class="cond-box" style="margin-top:10px">
+        <div class="g4" style="align-items:end">
+          <div class="fld"><label>PN</label><input type="text" value="${l.numero_pieza}" oninput="updateLinea('same','${l.id}','numero_pieza',this.value)" onblur="onLineaPNBlur('same','${l.id}')"></div>
+          <div class="fld"><label>Cantidad</label><input type="number" value="${l.cantidad}" oninput="updateLinea('same','${l.id}','cantidad',this.value)"></div>
+          <div class="fld">
+            <label>Foto</label>
+            <div class="img-upload" style="height:70px" onclick="document.getElementById('up-${l.id}').click()">
+              ${l.img_pieza?`<img src="${l.img_pieza}" style="max-height:60px;object-fit:contain">`:'<div class="img-upload-text" style="font-size:10px">Foto</div>'}
+            </div>
+            <input type="file" id="up-${l.id}" accept="image/*" capture="environment" style="display:none" onchange="previewLineaImg(this,'same','${l.id}')">
+          </div>
+          <div>
+            <button type="button" class="btn btn-danger btn-xs" onclick="removeLinea('same','${l.id}')">Quitar</button>
+          </div>
+        </div>
+        ${satBadgeLinea(l)}
+      </div>`;
+    } else {
+      const showMedidas = l.tipo === 'Caja de cartón';
+      return `
+      <div class="cond-box" style="margin-top:10px">
+        <div class="g3" style="align-items:end">
+          <div class="fld"><label>PN</label><input type="text" value="${l.numero_pieza}" oninput="updateLinea('diff','${l.id}','numero_pieza',this.value)" onblur="onLineaPNBlur('diff','${l.id}')"></div>
+          <div class="fld"><label>Cantidad</label><input type="number" value="${l.cantidad}" oninput="updateLinea('diff','${l.id}','cantidad',this.value)"></div>
+          <div class="fld"><label>Tipo</label>
+            <select onchange="updateLinea('diff','${l.id}','tipo',this.value); renderLineas('diff')">
+              <option ${l.tipo==='A granel'?'selected':''}>A granel</option>
+              <option ${l.tipo==='Saco o bolsa'?'selected':''}>Saco o bolsa</option>
+              <option ${l.tipo==='Caja de cartón'?'selected':''}>Caja de cartón</option>
+            </select>
+          </div>
+        </div>
+        ${showMedidas?`
+        <div class="g3" style="margin-top:8px">
+          <div class="fld"><label>Largo (mm)</label><input type="number" value="${l.largo}" oninput="updateLinea('diff','${l.id}','largo',this.value)"></div>
+          <div class="fld"><label>Ancho (mm)</label><input type="number" value="${l.ancho}" oninput="updateLinea('diff','${l.id}','ancho',this.value)"></div>
+          <div class="fld"><label>Alto (mm)</label><input type="number" value="${l.alto}" oninput="updateLinea('diff','${l.id}','alto',this.value)"></div>
+        </div>`:''}
+        <div class="g3" style="margin-top:8px;align-items:end">
+          <div class="fld">
+            <label>Foto</label>
+            <div class="img-upload" style="height:70px" onclick="document.getElementById('up-${l.id}').click()">
+              ${l.img_pieza?`<img src="${l.img_pieza}" style="max-height:60px;object-fit:contain">`:'<div class="img-upload-text" style="font-size:10px">Foto</div>'}
+            </div>
+            <input type="file" id="up-${l.id}" accept="image/*" capture="environment" style="display:none" onchange="previewLineaImg(this,'diff','${l.id}')">
+          </div>
+          <div></div>
+          <div><button type="button" class="btn btn-danger btn-xs" onclick="removeLinea('diff','${l.id}')">Quitar</button></div>
+        </div>
+        ${showMedidas?satBadgeLinea(l):''}
+      </div>`;
+    }
+  }).join('');
 }
 
-function previewCtrlImg(input,key){
-  const f=input.files[0];if(!f) return;
+function satBadgeLinea(l){
+  if(l.saturacion===null||l.saturacion===undefined) return '';
+  const color=l.saturacion>=80?'var(--verde)':l.saturacion>=50?'var(--naranja)':'var(--rojo)';
+  return `<div style="margin-top:8px;font-size:11px;color:${color};font-weight:700">Saturación: ${l.saturacion}%</div>`;
+}
+
+function updateLinea(modo, id, campo, valor){
+  const arr = modo==='same' ? lineasSame : lineasDiff;
+  const linea = arr.find(l=>l.id===id);
+  if(linea) linea[campo]=valor;
+}
+
+async function onLineaPNBlur(modo, id){
+  const arr = modo==='same' ? lineasSame : lineasDiff;
+  const linea = arr.find(l=>l.id===id);
+  if(!linea || !linea.numero_pieza) return;
+  if(!document.getElementById('ctrl-proveedor').value){
+    const riaiMatch = await fetch(`${API}/riai?q=${encodeURIComponent(linea.numero_pieza)}`,{credentials:'include'}).then(r=>r.json()).catch(()=>[]);
+    const exact = riaiMatch.find(r=>r.numero_pieza===linea.numero_pieza);
+    if(exact) document.getElementById('ctrl-proveedor').value = exact.proveedor_nombre || '';
+  }
+}
+
+function previewLineaImg(input, modo, id){
+  const f=input.files[0]; if(!f) return;
   const r=new FileReader();
   r.onload=e=>{
-    const img=document.getElementById(`prev-ctrl-${key}`);
-    img.src=e.target.result;img.style.display='block';
-    document.getElementById(`rm-ctrl-${key}`).classList.add('visible');
+    updateLinea(modo, id, 'img_pieza', e.target.result);
+    renderLineas(modo);
   };
   r.readAsDataURL(f);
 }
-function removeCtrlImg(key){
-  const img=document.getElementById(`prev-ctrl-${key}`);img.src='';img.style.display='none';
-  document.getElementById(`rm-ctrl-${key}`).classList.remove('visible');
-  document.getElementById(`up-ctrl-${key}`).value='';
-  if(key==='abierta') setSatUI(null);
+
+function previewSecImg(input){
+  const f=input.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=e=>{
+    const img=document.getElementById('prev-ctrl-sec');
+    img.src=e.target.result; img.style.display='block';
+    document.getElementById('rm-ctrl-sec').classList.add('visible');
+  };
+  r.readAsDataURL(f);
+}
+function removeSecImg(){
+  const img=document.getElementById('prev-ctrl-sec');
+  if(img){ img.src=''; img.style.display='none'; }
+  const rm=document.getElementById('rm-ctrl-sec');
+  if(rm) rm.classList.remove('visible');
+  const up=document.getElementById('up-ctrl-sec');
+  if(up) up.value='';
+}
+function setSecSatUI(val){
+  const bar=document.getElementById('ctrl-sec-sat-bar');
+  const pct=document.getElementById('ctrl-sec-sat-pct');
+  if(!bar||!pct) return;
+  if(val===null||val===undefined){ bar.style.width='0%'; bar.style.background='#ccc'; pct.textContent='—'; pct.style.color='var(--texto-suave)'; return; }
+  const color=val>=80?'var(--verde)':val>=50?'var(--naranja)':'var(--rojo)';
+  bar.style.width=val+'%'; bar.style.background=color;
+  pct.textContent=val+'%'; pct.style.color=color;
 }
 
-async function analizarSaturacion(imgSrc){
-  const status=document.getElementById('ctrl-sat-status');
-  status.textContent='Analizando imagen con IA...';
-  document.getElementById('ctrl-sat-pct').textContent='...';
+function satBarHtml(sat){
+  if(sat===null||sat===undefined) return '<span style="color:#aaa;font-size:11px">—</span>';
+  const color=sat>=80?'var(--verde)':sat>=50?'var(--naranja)':'var(--rojo)';
+  return `<div class="sat-bar-wrap"><div class="sat-bar-bg"><div class="sat-bar-fill" style="width:${sat}%;background:${color}"></div></div><span class="sat-pct" style="color:${color}">${sat}%</span></div>`;
+}
+
+async function saveControl(){
+  const checked = document.querySelector('input[name="ctrl-same"]:checked');
+  const same = checked ? checked.value==='si' : true;
+  const g=id=>document.getElementById(id)?.value||'';
+  const gi=id=>{const el=document.getElementById(id);return el?.src&&el.src.length>10?el.src:null;};
+
+  const arr = same ? lineasSame : lineasDiff;
+  if(!arr.length){toast('Agregá al menos una pieza.',false);return;}
+  if(arr.some(l=>!l.numero_pieza)){toast('Todas las piezas necesitan un PN.',false);return;}
+
+  const proveedorNombre = g('ctrl-proveedor');
+
+  const payload = {
+    fecha: g('ctrl-fecha'),
+    proveedor_nombre: proveedorNombre,
+    proveedor_codigo: '',
+    emb_identico: same ? 1 : 0,
+    notas: g('ctrl-notas'),
+    lineas: [],
+  };
+
+  if(same){
+    payload.emb_tipo = g('ctrl-emb-tipo');
+    payload.emb_tipo_otro = g('ctrl-emb-tipo') === 'Otro' ? g('ctrl-emb-tipo-otro') : null;
+    payload.emb_largo = g('ctrl-emb-largo') || null;
+    payload.emb_ancho = g('ctrl-emb-ancho') || null;
+    payload.emb_alto = g('ctrl-emb-alto') || null;
+    payload.img_embalaje = null;
+    payload.saturacion = null;
+    payload.lineas = lineasSame.map(l => ({
+      numero_pieza: l.numero_pieza, cantidad: l.cantidad || null,
+      tipo: null, largo: null, ancho: null, alto: null,
+      img_pieza: l.img_pieza, saturacion: l.saturacion,
+    }));
+  } else {
+    payload.emb_tipo = g('ctrl-sec-tipo');
+    payload.emb_tipo_otro = g('ctrl-sec-tipo') === 'Otro' ? g('ctrl-sec-tipo-otro') : null;
+    payload.emb_largo = g('ctrl-sec-largo') || null;
+    payload.emb_ancho = g('ctrl-sec-ancho') || null;
+    payload.emb_alto = g('ctrl-sec-alto') || null;
+    payload.img_embalaje = gi('prev-ctrl-sec');
+    payload.saturacion = null;
+    payload.lineas = lineasDiff.map(l => ({
+      numero_pieza: l.numero_pieza, cantidad: l.cantidad || null,
+      tipo: l.tipo, largo: l.largo || null, ancho: l.ancho || null, alto: l.alto || null,
+      img_pieza: l.img_pieza, saturacion: l.saturacion,
+    }));
+  }
+
+  const id = document.getElementById('ctrl-id').value;
+  const url = id ? `${API}/control/${id}` : `${API}/control`;
+  const method = id ? 'PUT' : 'POST';
+
   try{
-    const res=await fetch(`${API}/analizar-saturacion`,{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      credentials:'include',body:JSON.stringify({imagen:imgSrc})
-    });
-    const data=await res.json();
-    if(data.saturacion!==undefined) setSatUI(data.saturacion);
-    else{setSatUI(null);status.textContent='No se pudo analizar: '+(data.error||'error');}
-  }catch(e){setSatUI(null);status.textContent='Error de conexión';}
+    const res = await fetch(url, {method, headers:{'Content-Type':'application/json'}, credentials:'include', body:JSON.stringify(payload)});
+    if(res.ok || res.status===201){
+      toast(id?'Registro actualizado':'Registro guardado');
+      toggleCtrlForm(false);
+      loadControl();
+    } else toast('Error al guardar.',false);
+  }catch(e){ toast('Error de conexión.',false); }
 }
 
 async function loadControl(q=''){
@@ -1361,91 +1329,23 @@ async function loadControl(q=''){
   const tbody=document.getElementById('ctrl-body');
   const canEdit=currentUser?.rol!=='lectura';
   const canDelete=currentUser?.rol==='admin';
-  if(!rows.length){tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:#aaa;padding:24px">Sin registros</td></tr>';return;}
-  tbody.innerHTML=rows.map(r=>`
+  if(!rows.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:#aaa;padding:24px">Sin registros</td></tr>';return;}
+  tbody.innerHTML=rows.map(r=>{
+    const pns = (r.lineas||[]).map(l=>l.numero_pieza).filter(Boolean).join(', ') || '—';
+    return `
     <tr>
       <td>${r.fecha||'—'}</td>
-      <td><strong>${r.numero_pieza||'—'}</strong></td>
       <td>${r.proveedor_nombre||'—'}</td>
-      <td>${r.largo||'—'} × ${r.ancho||'—'} × ${r.alto||'—'}</td>
-      <td>${r.qty_por_caja||'—'}</td>
+      <td>${r.emb_tipo||'—'}</td>
+      <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${pns}">${pns}</td>
       <td>${satBarHtml(r.saturacion)}</td>
       <td class="actions">
-        <button class="btn btn-outline btn-xs" onclick="viewControl(${r.id})">Ver</button>
-        ${canEdit?`<button class="btn btn-secondary btn-xs" onclick="editControl(${r.id})">Editar</button>`:''}
-        ${r.img_abierta?`<button class="btn btn-info btn-xs" onclick="reAnalizarControl(${r.id})">Analizar</button>`:''}
-        ${canDelete?`<button class="btn btn-danger btn-xs" onclick="deleteControl(${r.id})">Eliminar</button>`:''}
+        <button type="button" class="btn btn-outline btn-xs" onclick="viewControl(${r.id})">Ver</button>
+        ${canEdit?`<button type="button" class="btn btn-secondary btn-xs" onclick="editControl(${r.id})">Editar</button>`:''}
+        ${canDelete?`<button type="button" class="btn btn-danger btn-xs" onclick="deleteControl(${r.id})">Eliminar</button>`:''}
       </td>
-    </tr>`).join('');
-}
-
-async function reAnalizarControl(id){
-  toast('Analizando imagen...');
-  const d=await fetch(`${API}/control/${id}`,{credentials:'include'}).then(r=>r.json()).catch(()=>null);
-  if(!d?.img_abierta){toast('Sin imagen de caja abierta',false);return;}
-  try{
-    const res=await fetch(`${API}/analizar-saturacion`,{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({imagen:d.img_abierta})});
-    const data=await res.json();
-    if(data.saturacion!==undefined){
-      await fetch(`${API}/control/${id}`,{method:'PUT',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({...d,saturacion:data.saturacion})});
-      toast(`Saturación: ${data.saturacion}%`);
-      loadControl(document.getElementById('ctrl-search').value);
-    }else toast('No se pudo analizar: '+(data.error||'error'),false);
-  }catch(e){toast('Error de conexión',false);}
-}
-
-async function saveControl(){
-  const g=id=>document.getElementById(id)?.value||'';
-  const gi=id=>{const el=document.getElementById(id);return el?.src&&el.src.length>10?el.src:null;};
-  const suppName=g('ctrl-supplier-name');
-  const suppCod=ctrlSuppCache.find(x=>x.nombre===suppName)?.codigo||'';
-  const imgAbierta=gi('prev-ctrl-abierta');
-  const d={
-    fecha:g('ctrl-fecha'),numero_pieza:g('ctrl-pn'),
-    proveedor_nombre:suppName,proveedor_codigo:suppCod,
-    largo:g('ctrl-largo')||null,ancho:g('ctrl-ancho')||null,alto:g('ctrl-alto')||null,
-    qty_por_caja:g('ctrl-qty')||null,saturacion:null,notas:g('ctrl-notas'),
-    img_cerrada:gi('prev-ctrl-cerrada'),img_abierta:imgAbierta,img_etiqueta:gi('prev-ctrl-etiqueta'),
-  };
-  if(!d.numero_pieza){toast('Ingresá el PN.',false);return;}
-  const id=document.getElementById('ctrl-id').value;
-  const url=id?`${API}/control/${id}`:`${API}/control`;
-  const method=id?'PUT':'POST';
-  try{
-    const res=await fetch(url,{method,headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify(d)});
-    if(res.ok||res.status===201){
-      const result=await res.json();
-      const savedId=result.id||id;
-      toast(id?'Registro actualizado':'Registro guardado');
-      toggleCtrlForm(false);
-      loadControl();
-      // Análisis automático en segundo plano, después de guardar
-      if(imgAbierta && savedId) analizarEnSegundoPlano(savedId, imgAbierta, {...d, id:savedId});
-    }else toast('Error al guardar.',false);
-  }catch(e){toast('Error de conexión.',false);}
-}
-
-async function analizarEnSegundoPlano(id, imgSrc, registroCompleto){
-  try{
-    const res=await fetch(`${API}/analizar-saturacion`,{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      credentials:'include',body:JSON.stringify({imagen:imgSrc})
-    });
-    const data=await res.json();
-    if(data.saturacion!==undefined){
-      await fetch(`${API}/control/${id}`,{
-        method:'PUT',headers:{'Content-Type':'application/json'},
-        credentials:'include',body:JSON.stringify({...registroCompleto, saturacion:data.saturacion})
-      });
-      toast(`Saturación calculada: ${data.saturacion}%`);
-      loadControl(document.getElementById('ctrl-search')?.value||'');
-      if(document.getElementById('page-dashboard').classList.contains('active')) loadDashboard();
-    }else{
-      toast('No se pudo calcular la saturación: '+(data.error||'error'),false);
-    }
-  }catch(e){
-    toast('Error al analizar saturación',false);
-  }
+    </tr>`;
+  }).join('');
 }
 
 async function editControl(id){
@@ -1455,46 +1355,75 @@ async function editControl(id){
   document.getElementById('ctrl-form-title').textContent='Editar registro de control';
   document.getElementById('ctrl-id').value=d.id;
   document.getElementById('ctrl-fecha').value=d.fecha||'';
-  document.getElementById('ctrl-pn').value=d.numero_pieza||'';
-  document.getElementById('ctrl-supplier-name').value=d.proveedor_nombre||'';
-  document.getElementById('ctrl-largo').value=d.largo||'';
-  document.getElementById('ctrl-ancho').value=d.ancho||'';
-  document.getElementById('ctrl-alto').value=d.alto||'';
-  document.getElementById('ctrl-qty').value=d.qty_por_caja||'';
-  document.getElementById('ctrl-notas').value=d.notas||'';
-  setSatUI(d.saturacion);
-  ['cerrada','abierta','etiqueta'].forEach(k=>{
-    const src=d[`img_${k}`];
-    if(src){const img=document.getElementById(`prev-ctrl-${k}`);img.src=src;img.style.display='block';document.getElementById(`rm-ctrl-${k}`).classList.add('visible');}
-  });
+  document.getElementById('ctrl-proveedor').value=d.proveedor_nombre||'';
+  const same = d.emb_identico===1;
+  document.querySelector(`input[name="ctrl-same"][value="${same?'si':'no'}"]`).checked=true;
+  onCtrlSameChange();
+
+  if(same){
+    setEmbTipoBtns('same', d.emb_tipo || 'Caja de cartón');
+    if(d.emb_tipo_otro) document.getElementById('ctrl-emb-tipo-otro').value = d.emb_tipo_otro;
+    document.getElementById('ctrl-emb-largo').value = d.emb_largo || '';
+    document.getElementById('ctrl-emb-ancho').value = d.emb_ancho || '';
+    document.getElementById('ctrl-emb-alto').value = d.emb_alto || '';
+    lineasSame = (d.lineas||[]).map(l => ({id:'ln'+(lineaCounter++), numero_pieza:l.numero_pieza, cantidad:l.cantidad, img_pieza:l.img_pieza, saturacion:l.saturacion}));
+    renderLineas('same');
+  } else {
+    setEmbTipoBtns('sec', d.emb_tipo || 'Caja de cartón');
+    if(d.emb_tipo_otro) document.getElementById('ctrl-sec-tipo-otro').value = d.emb_tipo_otro;
+    document.getElementById('ctrl-sec-largo').value = d.emb_largo || '';
+    document.getElementById('ctrl-sec-ancho').value = d.emb_ancho || '';
+    document.getElementById('ctrl-sec-alto').value = d.emb_alto || '';
+    if(d.img_embalaje){
+      const img=document.getElementById('prev-ctrl-sec'); img.src=d.img_embalaje; img.style.display='block';
+      document.getElementById('rm-ctrl-sec').classList.add('visible');
+    }
+    setSecSatUI(d.saturacion);
+    lineasDiff = (d.lineas||[]).map(l => ({id:'ln'+(lineaCounter++), numero_pieza:l.numero_pieza, cantidad:l.cantidad, tipo:l.tipo||'A granel', largo:l.largo, ancho:l.ancho, alto:l.alto, img_pieza:l.img_pieza, saturacion:l.saturacion}));
+    renderLineas('diff');
+  }
+  onCtrlEmbTipoChange('same');
+  onCtrlEmbTipoChange('sec');
+  document.getElementById('ctrl-notas').value = d.notas || '';
 }
 
 async function viewControl(id){
   const d=await fetch(`${API}/control/${id}`,{credentials:'include'}).then(r=>r.json()).catch(()=>null);
   if(!d){toast('Error al cargar',false);return;}
+  const same = d.emb_identico===1;
   const imgBox=(src,lbl)=>src&&src.length>10?`<div class="riai-imgbox" style="cursor:zoom-in" onclick="openLightbox('${src}')"><img src="${src}" alt="${lbl}"></div>`:`<div class="riai-imgbox">${lbl}</div>`;
-  const html=`<div class="riai-doc"><table>
-    <tr><td colspan="4" class="riai-sec">CONTROL DE EMBALAJE</td></tr>
+
+  let lineasHtml = (d.lineas||[]).map(l=>`
     <tr>
-      <td><span class="riai-lbl">Fecha</span><span class="riai-val">${d.fecha||'—'}</span></td>
-      <td><span class="riai-lbl">PN</span><span class="riai-val">${d.numero_pieza||'—'}</span></td>
-      <td colspan="2"><span class="riai-lbl">Proveedor</span><span class="riai-val">${d.proveedor_nombre||'—'}</span></td>
-    </tr>
-    <tr>
-      <td><span class="riai-lbl">Largo (mm)</span><span class="riai-val">${d.largo||'—'}</span></td>
-      <td><span class="riai-lbl">Ancho (mm)</span><span class="riai-val">${d.ancho||'—'}</span></td>
-      <td><span class="riai-lbl">Alto (mm)</span><span class="riai-val">${d.alto||'—'}</span></td>
-      <td><span class="riai-lbl">Qty/caja</span><span class="riai-val">${d.qty_por_caja||'—'}</span></td>
-    </tr>
-    <tr><td colspan="4"><span class="riai-lbl">Saturación</span>${satBarHtml(d.saturacion)}</td></tr>
-    ${d.notas?`<tr><td colspan="4"><span class="riai-lbl">Notas</span><span class="riai-val">${d.notas}</span></td></tr>`:''}
-    <tr><td colspan="4" class="riai-sec">IMÁGENES</td></tr>
-    <tr>
-      <td colspan="2">${imgBox(d.img_cerrada,'Caja cerrada')}</td>
-      <td colspan="2">${imgBox(d.img_abierta,'Caja abierta')}</td>
-    </tr>
-    <tr><td colspan="4">${imgBox(d.img_etiqueta,'Etiqueta proveedor')}</td></tr>
-  </table></div>`;
+      <td>${l.numero_pieza||'—'}</td>
+      <td>${l.cantidad||'—'}</td>
+      <td>${l.tipo||'—'}</td>
+      <td>${l.largo&&l.ancho&&l.alto ? `${l.largo}×${l.ancho}×${l.alto}` : '—'}</td>
+      <td>${l.saturacion!==null&&l.saturacion!==undefined?l.saturacion+'%':'—'}</td>
+      <td>${l.img_pieza?`<span style="cursor:zoom-in;color:var(--rojo)" onclick="openLightbox('${l.img_pieza}')">Ver foto</span>`:'—'}</td>
+    </tr>`).join('');
+
+  const html = `<div class="riai-doc">
+    <table>
+      <tr><td colspan="4" class="riai-sec">CONTROL DE EMBALAJE — ${d.emb_tipo||''}</td></tr>
+      <tr>
+        <td><span class="riai-lbl">Fecha</span><span class="riai-val">${d.fecha||'—'}</span></td>
+        <td colspan="2"><span class="riai-lbl">Proveedor</span><span class="riai-val">${d.proveedor_nombre||'—'}</span></td>
+        <td><span class="riai-lbl">Tipo</span><span class="riai-val">${d.emb_tipo_otro||d.emb_tipo||'—'}</span></td>
+      </tr>
+      <tr>
+        <td colspan="4"><span class="riai-lbl">Medidas (mm)</span><span class="riai-val">${d.emb_largo||'—'} × ${d.emb_ancho||'—'} × ${d.emb_alto||'—'}</span></td>
+      </tr>
+      ${!same?`<tr><td colspan="4"><span class="riai-lbl">Saturación embalaje secundario</span>${satBarHtml(d.saturacion)}</td></tr>`:''}
+      ${!same&&d.img_embalaje?`<tr><td colspan="4">${imgBox(d.img_embalaje,'Embalaje secundario')}</td></tr>`:''}
+      ${d.notas?`<tr><td colspan="4"><span class="riai-lbl">Notas</span><span class="riai-val">${d.notas}</span></td></tr>`:''}
+    </table>
+    <table>
+      <tr><td colspan="6" class="riai-sec">PIEZAS</td></tr>
+      <tr><td class="riai-subsec">PN</td><td class="riai-subsec">Cantidad</td><td class="riai-subsec">Tipo</td><td class="riai-subsec">Medidas</td><td class="riai-subsec">Saturación</td><td class="riai-subsec">Foto</td></tr>
+      ${lineasHtml || '<tr><td colspan="6" style="text-align:center;color:#aaa">Sin piezas</td></tr>'}
+    </table>
+  </div>`;
   document.getElementById('riai-preview-content').innerHTML=html;
   document.getElementById('modal-preview').classList.add('open');
 }
@@ -1529,7 +1458,7 @@ async function loadUsuarios(){
       <td><strong>${u.username}</strong></td>
       <td><span class="badge badge-${u.rol}">${u.rol}</span></td>
       <td style="font-size:11px;color:#888">${u.creado_en||'—'}</td>
-      <td><button class="btn btn-danger btn-xs" onclick="eliminarUsuario(${u.id},'${u.username}')" ${u.username===currentUser?.username?'disabled':''}>Eliminar</button></td>
+      <td><button type="button" class="btn btn-danger btn-xs" onclick="eliminarUsuario(${u.id},'${u.username}')" ${u.username===currentUser?.username?'disabled':''}>Eliminar</button></td>
     </tr>`).join('');
 }
 async function crearUsuario(){
@@ -1558,7 +1487,6 @@ async function cambiarMiPassword(){
   else toast('Error al cambiar contraseña',false);
 }
 
-// ── UTILS ─────────────────────────────────────────────────────────────────
 function toast(msg,ok=true){
   const t=document.getElementById('toast');
   t.textContent=msg;t.className=`toast ${ok?'toast-ok':'toast-err'} show`;
@@ -1570,7 +1498,6 @@ function clearForm(){
   document.querySelectorAll('#page-create input:not([type=radio]):not([type=file]),#page-create select,#page-create textarea')
     .forEach(el=>{if(!el.readOnly&&!el.disabled) el.value='';});
   document.querySelectorAll('#page-create input[type=radio]')[0].checked=true;
-  document.querySelector('input[name="colocacion"][value="pallet"]').checked=true;
   onSamePkgChange();onColocacionChange();
   ['caja','abierta','embalada'].forEach(k=>{
     const img=document.getElementById(`prev-${k}`);if(img){img.src='';img.style.display='none';}
@@ -1581,16 +1508,14 @@ function clearForm(){
   document.getElementById('f-date').value=today;
   document.getElementById('ap-elab-fecha').value=today;
   window.__currentPreviewId=null;
-  applyLang();
 }
 
 window.onload=async()=>{
   const ok=await checkAuth();if(!ok) return;
-  loadDashboard();
+  loadList();
   const today=new Date().toISOString().split('T')[0];
   document.getElementById('f-date').value=today;
   document.getElementById('ap-elab-fecha').value=today;
-  applyLang();
   document.getElementById('search-input').addEventListener('keydown',e=>{if(e.key==='Enter') filterRIAIs();});
 };
 </script>
