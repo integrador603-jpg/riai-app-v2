@@ -142,7 +142,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
 .foto-view-btn.has-photo:hover{background:#d7f2df;border-color:var(--verde)}
 .foto-view-btn:disabled{cursor:not-allowed;opacity:.5}
 .foto-view-btn:disabled:hover{border-color:var(--borde-strong);color:var(--texto-suave);background:var(--surface)}
-.foto-view-btn .dot{font-size:9px;line-height:0}
+.foto-view-btn .dot{font-size:12px;line-height:0;font-weight:700}
 
 /* ── TOAST ──────────────────────────────────────────────────────────── */
 .toast{position:fixed;bottom:28px;right:28px;padding:13px 22px;border-radius:var(--r-md);color:#fff;font-size:13px;font-weight:600;z-index:9999;opacity:0;transform:translateY(8px);transition:all .25s var(--ease);pointer-events:none;box-shadow:var(--shadow-lg)}
@@ -174,7 +174,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
 .emb-tipo-btn[aria-pressed="true"]{background:var(--rojo);border-color:var(--rojo);color:#fff}
 .foto-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 15px;border:1px solid var(--borde-strong);border-radius:var(--r-pill);background:var(--surface);cursor:pointer;font-size:12px;font-weight:600;color:var(--texto-suave);transition:all .15s var(--ease)}
 .foto-btn:hover{border-color:var(--rojo);color:var(--rojo)}
-.foto-btn .dot{color:var(--texto-faint);font-size:14px;line-height:0}
+.foto-btn .dot{color:var(--texto-faint);font-size:12px;line-height:0;font-weight:700}
 .foto-btn[aria-pressed="true"]{background:var(--verde-tint);border-color:var(--verde);color:#1b7a37}
 .foto-btn[aria-pressed="true"] .dot{color:var(--verde)}
 .foto-btn.done{background:var(--verde-tint);border-color:var(--verde);color:#1b7a37}
@@ -565,9 +565,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
         <div class="fld" style="margin-top:14px">
           <label>Fotos</label>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
-            <button type="button" class="foto-btn" id="fb-same-cerrada" aria-pressed="false" onclick="document.getElementById('up-same-cerrada').click()"><span class="dot">•</span> Caja cerrada</button>
-            <button type="button" class="foto-btn" id="fb-same-abierta" aria-pressed="false" onclick="document.getElementById('up-same-abierta').click()"><span class="dot">•</span> Caja abierta</button>
-            <button type="button" class="foto-btn" id="fb-same-etiqueta" aria-pressed="false" onclick="document.getElementById('up-same-etiqueta').click()"><span class="dot">•</span> Etiqueta proveedor</button>
+            <button type="button" class="foto-btn" id="fb-same-cerrada" aria-pressed="false" onclick="document.getElementById('up-same-cerrada').click()"><span class="dot">✓</span> Caja cerrada</button>
+            <button type="button" class="foto-btn" id="fb-same-abierta" aria-pressed="false" onclick="document.getElementById('up-same-abierta').click()"><span class="dot">✓</span> Caja abierta</button>
+            <button type="button" class="foto-btn" id="fb-same-etiqueta" aria-pressed="false" onclick="document.getElementById('up-same-etiqueta').click()"><span class="dot">✓</span> Etiqueta proveedor</button>
           </div>
           <input type="file" id="up-same-cerrada" accept="image/*" capture="environment" style="display:none" onchange="previewEmbImg(this,'same','cerrada')">
           <input type="file" id="up-same-abierta" accept="image/*" capture="environment" style="display:none" onchange="previewEmbImg(this,'same','abierta')">
@@ -612,9 +612,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
         <div class="fld" style="margin-top:14px">
           <label>Fotos</label>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
-            <button type="button" class="foto-btn" id="fb-sec-cerrada" aria-pressed="false" onclick="document.getElementById('up-sec-cerrada').click()"><span class="dot">•</span> Caja cerrada</button>
-            <button type="button" class="foto-btn" id="fb-sec-abierta" aria-pressed="false" onclick="document.getElementById('up-sec-abierta').click()"><span class="dot">•</span> Caja abierta</button>
-            <button type="button" class="foto-btn" id="fb-sec-etiqueta" aria-pressed="false" onclick="document.getElementById('up-sec-etiqueta').click()"><span class="dot">•</span> Etiqueta proveedor</button>
+            <button type="button" class="foto-btn" id="fb-sec-cerrada" aria-pressed="false" onclick="document.getElementById('up-sec-cerrada').click()"><span class="dot">✓</span> Caja cerrada</button>
+            <button type="button" class="foto-btn" id="fb-sec-abierta" aria-pressed="false" onclick="document.getElementById('up-sec-abierta').click()"><span class="dot">✓</span> Caja abierta</button>
+            <button type="button" class="foto-btn" id="fb-sec-etiqueta" aria-pressed="false" onclick="document.getElementById('up-sec-etiqueta').click()"><span class="dot">✓</span> Etiqueta proveedor</button>
           </div>
           <input type="file" id="up-sec-cerrada" accept="image/*" capture="environment" style="display:none" onchange="previewEmbImg(this,'sec','cerrada')">
           <input type="file" id="up-sec-abierta" accept="image/*" capture="environment" style="display:none" onchange="previewEmbImg(this,'sec','abierta')">
@@ -650,8 +650,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
       <button type="button" class="btn btn-primary" onclick="loadControl(document.getElementById('ctrl-search').value)">Buscar</button>
     </div>
     <table class="data-table">
-      <thead><tr><th>Fecha</th><th>Proveedor</th><th>Tipo embalaje</th><th>PN</th><th>Saturación</th><th>Acciones</th></tr></thead>
-      <tbody id="ctrl-body"><tr><td colspan="6" style="text-align:center;color:#aaa;padding:24px">Cargando...</td></tr></tbody>
+      <thead><tr><th>Fecha</th><th>Proveedor</th><th>Tipo embalaje</th><th>PN</th><th>Cantidad</th><th>Saturación</th><th>Acciones</th></tr></thead>
+      <tbody id="ctrl-body"><tr><td colspan="7" style="text-align:center;color:#aaa;padding:24px">Cargando...</td></tr></tbody>
     </table>
   </div>
 </div>
@@ -1072,7 +1072,7 @@ function renderRIAI(d){
   const L=RLABELS[d.lang]||RLABELS.es;
   const ul=d.ul||'mm',uw=d.uw||'kg';
   const fv=(lbl,val)=>`<span class="riai-lbl">${lbl}</span><span class="riai-val">${val||'—'}</span>`;
-  const imgBox=(src,lbl)=>src&&src.length>10?`<button type="button" class="foto-view-btn has-photo" onclick="openLightbox('${src}')"><span class="dot">●</span> ${lbl}</button>`:`<button type="button" class="foto-view-btn" disabled><span class="dot">○</span> ${lbl}</button>`;
+  const imgBox=(src,lbl)=>src&&src.length>10?`<button type="button" class="foto-view-btn has-photo" onclick="openLightbox('${src}')"><span class="dot">✓</span> ${lbl}</button>`:`<button type="button" class="foto-view-btn" disabled><span class="dot">○</span> ${lbl}</button>`;
   const pkgRow=(pkg,title)=>`
     <tr><td colspan="10" class="riai-subsec">${title}</td></tr>
     <tr>
@@ -1298,8 +1298,8 @@ function renderLineas(modo){
         <div class="fld" style="margin-top:12px">
           <label>Fotos</label>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
-            <button type="button" class="foto-btn" aria-pressed="${l.img_foto1?'true':'false'}" onclick="document.getElementById('up-${l.id}-1').click()"><span class="dot">•</span> Foto 1</button>
-            <button type="button" class="foto-btn" aria-pressed="${l.img_foto2?'true':'false'}" onclick="document.getElementById('up-${l.id}-2').click()"><span class="dot">•</span> Foto 2</button>
+            <button type="button" class="foto-btn" aria-pressed="${l.img_foto1?'true':'false'}" onclick="document.getElementById('up-${l.id}-1').click()"><span class="dot">✓</span> Foto 1</button>
+            <button type="button" class="foto-btn" aria-pressed="${l.img_foto2?'true':'false'}" onclick="document.getElementById('up-${l.id}-2').click()"><span class="dot">✓</span> Foto 2</button>
           </div>
           <input type="file" id="up-${l.id}-1" accept="image/*" capture="environment" style="display:none" onchange="previewLineaImg(this,'${modo}','${l.id}','img_foto1')">
           <input type="file" id="up-${l.id}-2" accept="image/*" capture="environment" style="display:none" onchange="previewLineaImg(this,'${modo}','${l.id}','img_foto2')">
@@ -1421,7 +1421,7 @@ async function loadControl(q=''){
   const tbody=document.getElementById('ctrl-body');
   const canEdit=currentUser?.rol!=='lectura';
   const canDelete=currentUser?.rol==='admin';
-  if(!rows.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:#aaa;padding:24px">Sin registros</td></tr>';return;}
+  if(!rows.length){tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:#aaa;padding:24px">Sin registros</td></tr>';return;}
   tbody.innerHTML=rows.map(r=>{
     const lineas = (r.lineas&&r.lineas.length) ? r.lineas : [{numero_pieza:null,cantidad:null,saturacion:null}];
     const perLineSat = lineas.some(l=>l.saturacion!==null&&l.saturacion!==undefined);
@@ -1430,7 +1430,8 @@ async function loadControl(q=''){
       <td>${r.fecha||'—'}</td>
       <td>${r.proveedor_nombre||'—'}</td>
       <td>${r.emb_tipo||'—'}</td>
-      <td><strong>${l.numero_pieza||'—'}</strong>${l.cantidad?`<span style="color:var(--texto-suave);font-weight:400"> · ${l.cantidad} u.</span>`:''}</td>
+      <td><strong>${l.numero_pieza||'—'}</strong></td>
+      <td>${l.cantidad?`${l.cantidad} u.`:'—'}</td>
       <td>${satBarHtml(perLineSat?l.saturacion:r.saturacion)}</td>
       <td class="actions">
         <button type="button" class="btn btn-outline btn-xs" onclick="viewControl(${r.id})">Ver</button>
@@ -1487,7 +1488,7 @@ async function viewControl(id){
   const d=await fetch(`${API}/control/${id}`,{credentials:'include'}).then(r=>r.json()).catch(()=>null);
   if(!d){toast('Error al cargar',false);return;}
   const same = d.emb_identico===1;
-  const imgBox=(src,lbl)=>src&&src.length>10?`<button type="button" class="foto-view-btn has-photo" onclick="openLightbox('${src}')"><span class="dot">●</span> ${lbl}</button>`:`<button type="button" class="foto-view-btn" disabled><span class="dot">○</span> ${lbl}</button>`;
+  const imgBox=(src,lbl)=>src&&src.length>10?`<button type="button" class="foto-view-btn has-photo" onclick="openLightbox('${src}')"><span class="dot">✓</span> ${lbl}</button>`:`<button type="button" class="foto-view-btn" disabled><span class="dot">○</span> ${lbl}</button>`;
 
   let lineasHtml = (d.lineas||[]).map(l=>`
     <tr>
@@ -1497,8 +1498,8 @@ async function viewControl(id){
       <td>${l.largo&&l.ancho&&l.alto ? `${l.largo}×${l.ancho}×${l.alto}` : '—'}</td>
       <td>${l.saturacion!==null&&l.saturacion!==undefined?l.saturacion+'%':'—'}</td>
       <td><div style="display:flex;gap:6px;flex-wrap:wrap">${[
-        l.img_foto1?`<button type="button" class="foto-btn" aria-pressed="true" onclick="openLightbox('${l.img_foto1}')"><span class="dot">•</span> Foto 1</button>`:'',
-        l.img_foto2?`<button type="button" class="foto-btn" aria-pressed="true" onclick="openLightbox('${l.img_foto2}')"><span class="dot">•</span> Foto 2</button>`:''
+        l.img_foto1?`<button type="button" class="foto-btn" aria-pressed="true" onclick="openLightbox('${l.img_foto1}')"><span class="dot">✓</span> Foto 1</button>`:'',
+        l.img_foto2?`<button type="button" class="foto-btn" aria-pressed="true" onclick="openLightbox('${l.img_foto2}')"><span class="dot">✓</span> Foto 2</button>`:''
       ].filter(Boolean).join('') || '<span style="color:var(--texto-faint);font-size:11px">—</span>'}</div></td>
     </tr>`).join('');
 
