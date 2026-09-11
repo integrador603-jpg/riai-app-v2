@@ -123,7 +123,21 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
 .emb-tipo-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
 .emb-tipo-btn{padding:8px 16px;border:1px solid #ccc;border-radius:20px;background:#fff;cursor:pointer;font-size:12px;font-weight:600;color:var(--texto-suave);transition:all .15s}
 .emb-tipo-btn:hover{border-color:var(--rojo)}
-.emb-tipo-btn.active{background:var(--rojo);color:#fff;border-color:var(--rojo)}
+.foto-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid #ccc;border-radius:6px;background:#fff;cursor:pointer;font-size:12px;font-weight:600;color:var(--texto-suave);transition:all .15s}
+.foto-btn:hover{border-color:var(--rojo)}
+.foto-btn.done{background:#e8f8ee;border-color:var(--verde);color:var(--verde)}
+.foto-btn .check{display:none}
+.foto-btn.done .check{display:inline}
+.linea-row{background:#fff;border:1px solid var(--borde);border-radius:6px;margin-top:8px;overflow:hidden}
+.linea-row-head{display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer}
+.linea-row-head:hover{background:#fafafa}
+.linea-row-pn{font-weight:700;font-size:13px;min-width:100px}
+.linea-row-cant{font-size:12px;color:var(--texto-suave)}
+.linea-row-fotos{font-size:11px;color:#aaa;margin-left:auto}
+.linea-row-fotos.ok{color:var(--verde);font-weight:600}
+.linea-row-body{display:none;padding:14px 16px;border-top:1px solid var(--borde);background:#fafafa}
+.linea-row-body.open{display:block}
+.linea-row-chevron{color:#ccc;font-size:12px}
 .lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:2000;align-items:center;justify-content:center;cursor:zoom-out}
 .lightbox.open{display:flex}
 .lightbox img{max-width:90vw;max-height:90vh;object-fit:contain;border-radius:4px;box-shadow:0 0 40px rgba(0,0,0,.5)}
@@ -489,6 +503,17 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
           <div class="fld"><label>Ancho (mm)</label><input type="number" id="ctrl-emb-ancho" placeholder="0"></div>
           <div class="fld"><label>Alto (mm)</label><input type="number" id="ctrl-emb-alto" placeholder="0"></div>
         </div>
+        <div class="fld" style="margin-top:14px">
+          <label>Fotos</label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+            <button type="button" class="foto-btn" id="fb-same-cerrada" onclick="document.getElementById('up-same-cerrada').click()"><span class="check">✓</span> Caja cerrada</button>
+            <button type="button" class="foto-btn" id="fb-same-abierta" onclick="document.getElementById('up-same-abierta').click()"><span class="check">✓</span> Caja abierta</button>
+            <button type="button" class="foto-btn" id="fb-same-etiqueta" onclick="document.getElementById('up-same-etiqueta').click()"><span class="check">✓</span> Etiqueta proveedor</button>
+          </div>
+          <input type="file" id="up-same-cerrada" accept="image/*" capture="environment" style="display:none" onchange="previewEmbImg(this,'same','cerrada')">
+          <input type="file" id="up-same-abierta" accept="image/*" capture="environment" style="display:none" onchange="previewEmbImg(this,'same','abierta')">
+          <input type="file" id="up-same-etiqueta" accept="image/*" capture="environment" style="display:none" onchange="previewEmbImg(this,'same','etiqueta')">
+        </div>
       </div>
 
       <div class="section-label">Piezas en el embalaje</div>
@@ -525,17 +550,16 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
           <div class="fld"><label>Alto (mm)</label><input type="number" id="ctrl-sec-alto" placeholder="0"></div>
         </div>
 
-        <div class="section-label" style="margin-top:16px;font-size:10px">Foto y saturación del embalaje secundario</div>
-        <div class="img-grid" style="grid-template-columns:1fr">
-          <div class="img-slot">
-            <button type="button" class="img-remove" id="rm-ctrl-sec" onclick="removeSecImg()">&#215;</button>
-            <div class="img-upload" style="height:120px" onclick="document.getElementById('up-ctrl-sec').click()">
-              <div class="img-upload-icon">&#9679;</div>
-              <div class="img-upload-text">Foto del embalaje secundario</div>
-              <img id="prev-ctrl-sec" class="img-preview">
-            </div>
-            <input type="file" id="up-ctrl-sec" accept="image/*" capture="environment" style="display:none" onchange="previewSecImg(this)">
+        <div class="fld" style="margin-top:14px">
+          <label>Fotos</label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+            <button type="button" class="foto-btn" id="fb-sec-cerrada" onclick="document.getElementById('up-sec-cerrada').click()"><span class="check">✓</span> Caja cerrada</button>
+            <button type="button" class="foto-btn" id="fb-sec-abierta" onclick="document.getElementById('up-sec-abierta').click()"><span class="check">✓</span> Caja abierta</button>
+            <button type="button" class="foto-btn" id="fb-sec-etiqueta" onclick="document.getElementById('up-sec-etiqueta').click()"><span class="check">✓</span> Etiqueta proveedor</button>
           </div>
+          <input type="file" id="up-sec-cerrada" accept="image/*" capture="environment" style="display:none" onchange="previewEmbImg(this,'sec','cerrada')">
+          <input type="file" id="up-sec-abierta" accept="image/*" capture="environment" style="display:none" onchange="previewEmbImg(this,'sec','abierta')">
+          <input type="file" id="up-sec-etiqueta" accept="image/*" capture="environment" style="display:none" onchange="previewEmbImg(this,'sec','etiqueta')">
         </div>
         <div class="fld" id="ctrl-sec-sat-wrap" style="margin-top:10px">
           <label>Nivel de saturación (embalaje secundario)</label>
@@ -1047,6 +1071,8 @@ function renderRIAI(d){
 let lineasSame = [];
 let lineasDiff = [];
 let lineaCounter = 0;
+let embFotos = { same:{cerrada:null,abierta:null,etiqueta:null}, sec:{cerrada:null,abierta:null,etiqueta:null} };
+let openLineaId = null;
 const TIPOS_SATURABLES = ["Caja de cartón","Caja de madera","Caja paletizada"];
 
 function toggleCtrlForm(show){
@@ -1077,9 +1103,12 @@ function clearCtrlForm(){
   setEmbTipoBtns('same','Caja de cartón');
   setEmbTipoBtns('sec','Caja de cartón');
   ['ctrl-emb-largo','ctrl-emb-ancho','ctrl-emb-alto','ctrl-sec-largo','ctrl-sec-ancho','ctrl-sec-alto','ctrl-notas'].forEach(id=>setVal(id,''));
-  removeSecImg();
+  embFotos = { same:{cerrada:null,abierta:null,etiqueta:null}, sec:{cerrada:null,abierta:null,etiqueta:null} };
+  ['same-cerrada','same-abierta','same-etiqueta','sec-cerrada','sec-abierta','sec-etiqueta'].forEach(k=>{
+    const btn=document.getElementById('fb-'+k); if(btn) btn.classList.remove('done');
+  });
   setSecSatUI(null);
-  lineasSame=[]; lineasDiff=[];
+  lineasSame=[]; lineasDiff=[]; openLineaId=null;
   renderLineas('same'); renderLineas('diff');
   onCtrlSameChange();
   onCtrlEmbTipoChange('same');
@@ -1113,138 +1142,18 @@ function onCtrlEmbTipoChange(modo){
   }
 }
 
-function addLinea(modo){
-  const id = 'ln'+(lineaCounter++);
-  const linea = modo==='same'
-    ? {id, numero_pieza:'', cantidad:'', img_pieza:null, saturacion:null}
-    : {id, numero_pieza:'', cantidad:'', tipo:'A granel', largo:'', ancho:'', alto:'', img_pieza:null, saturacion:null};
-  if(modo==='same') lineasSame.push(linea); else lineasDiff.push(linea);
-  renderLineas(modo);
-}
-
-function removeLinea(modo, id){
-  if(modo==='same') lineasSame=lineasSame.filter(l=>l.id!==id);
-  else lineasDiff=lineasDiff.filter(l=>l.id!==id);
-  renderLineas(modo);
-}
-
-function renderLineas(modo){
-  const arr = modo==='same' ? lineasSame : lineasDiff;
-  const container = document.getElementById(modo==='same' ? 'ctrl-lineas-same' : 'ctrl-lineas-diff');
-  if(!container) return;
-  if(!arr.length){
-    container.innerHTML = '<div style="color:#aaa;font-size:13px;padding:10px 0">Sin piezas agregadas</div>';
-    return;
-  }
-  container.innerHTML = arr.map(l => {
-    if(modo==='same'){
-      return `
-      <div class="cond-box" style="margin-top:10px">
-        <div class="g4" style="align-items:end">
-          <div class="fld"><label>PN</label><input type="text" value="${l.numero_pieza}" oninput="updateLinea('same','${l.id}','numero_pieza',this.value)" onblur="onLineaPNBlur('same','${l.id}')"></div>
-          <div class="fld"><label>Cantidad</label><input type="number" value="${l.cantidad}" oninput="updateLinea('same','${l.id}','cantidad',this.value)"></div>
-          <div class="fld">
-            <label>Foto</label>
-            <div class="img-upload" style="height:70px" onclick="document.getElementById('up-${l.id}').click()">
-              ${l.img_pieza?`<img src="${l.img_pieza}" style="max-height:60px;object-fit:contain">`:'<div class="img-upload-text" style="font-size:10px">Foto</div>'}
-            </div>
-            <input type="file" id="up-${l.id}" accept="image/*" capture="environment" style="display:none" onchange="previewLineaImg(this,'same','${l.id}')">
-          </div>
-          <div>
-            <button type="button" class="btn btn-danger btn-xs" onclick="removeLinea('same','${l.id}')">Quitar</button>
-          </div>
-        </div>
-        ${satBadgeLinea(l)}
-      </div>`;
-    } else {
-      const showMedidas = l.tipo === 'Caja de cartón';
-      return `
-      <div class="cond-box" style="margin-top:10px">
-        <div class="g3" style="align-items:end">
-          <div class="fld"><label>PN</label><input type="text" value="${l.numero_pieza}" oninput="updateLinea('diff','${l.id}','numero_pieza',this.value)" onblur="onLineaPNBlur('diff','${l.id}')"></div>
-          <div class="fld"><label>Cantidad</label><input type="number" value="${l.cantidad}" oninput="updateLinea('diff','${l.id}','cantidad',this.value)"></div>
-          <div class="fld"><label>Tipo</label>
-            <select onchange="updateLinea('diff','${l.id}','tipo',this.value); renderLineas('diff')">
-              <option ${l.tipo==='A granel'?'selected':''}>A granel</option>
-              <option ${l.tipo==='Saco o bolsa'?'selected':''}>Saco o bolsa</option>
-              <option ${l.tipo==='Caja de cartón'?'selected':''}>Caja de cartón</option>
-            </select>
-          </div>
-        </div>
-        ${showMedidas?`
-        <div class="g3" style="margin-top:8px">
-          <div class="fld"><label>Largo (mm)</label><input type="number" value="${l.largo}" oninput="updateLinea('diff','${l.id}','largo',this.value)"></div>
-          <div class="fld"><label>Ancho (mm)</label><input type="number" value="${l.ancho}" oninput="updateLinea('diff','${l.id}','ancho',this.value)"></div>
-          <div class="fld"><label>Alto (mm)</label><input type="number" value="${l.alto}" oninput="updateLinea('diff','${l.id}','alto',this.value)"></div>
-        </div>`:''}
-        <div class="g3" style="margin-top:8px;align-items:end">
-          <div class="fld">
-            <label>Foto</label>
-            <div class="img-upload" style="height:70px" onclick="document.getElementById('up-${l.id}').click()">
-              ${l.img_pieza?`<img src="${l.img_pieza}" style="max-height:60px;object-fit:contain">`:'<div class="img-upload-text" style="font-size:10px">Foto</div>'}
-            </div>
-            <input type="file" id="up-${l.id}" accept="image/*" capture="environment" style="display:none" onchange="previewLineaImg(this,'diff','${l.id}')">
-          </div>
-          <div></div>
-          <div><button type="button" class="btn btn-danger btn-xs" onclick="removeLinea('diff','${l.id}')">Quitar</button></div>
-        </div>
-        ${showMedidas?satBadgeLinea(l):''}
-      </div>`;
-    }
-  }).join('');
-}
-
-function satBadgeLinea(l){
-  if(l.saturacion===null||l.saturacion===undefined) return '';
-  const color=l.saturacion>=80?'var(--verde)':l.saturacion>=50?'var(--naranja)':'var(--rojo)';
-  return `<div style="margin-top:8px;font-size:11px;color:${color};font-weight:700">Saturación: ${l.saturacion}%</div>`;
-}
-
-function updateLinea(modo, id, campo, valor){
-  const arr = modo==='same' ? lineasSame : lineasDiff;
-  const linea = arr.find(l=>l.id===id);
-  if(linea) linea[campo]=valor;
-}
-
-async function onLineaPNBlur(modo, id){
-  const arr = modo==='same' ? lineasSame : lineasDiff;
-  const linea = arr.find(l=>l.id===id);
-  if(!linea || !linea.numero_pieza) return;
-  if(!document.getElementById('ctrl-proveedor').value){
-    const riaiMatch = await fetch(`${API}/riai?q=${encodeURIComponent(linea.numero_pieza)}`,{credentials:'include'}).then(r=>r.json()).catch(()=>[]);
-    const exact = riaiMatch.find(r=>r.numero_pieza===linea.numero_pieza);
-    if(exact) document.getElementById('ctrl-proveedor').value = exact.proveedor_nombre || '';
-  }
-}
-
-function previewLineaImg(input, modo, id){
+// ── FOTOS DEL EMBALAJE (único / secundario) ───────────────────────────────
+function previewEmbImg(input, modo, tipo){
   const f=input.files[0]; if(!f) return;
   const r=new FileReader();
   r.onload=e=>{
-    updateLinea(modo, id, 'img_pieza', e.target.result);
-    renderLineas(modo);
+    embFotos[modo][tipo] = e.target.result;
+    const btn = document.getElementById(`fb-${modo}-${tipo}`);
+    if(btn) btn.classList.add('done');
   };
   r.readAsDataURL(f);
 }
 
-function previewSecImg(input){
-  const f=input.files[0]; if(!f) return;
-  const r=new FileReader();
-  r.onload=e=>{
-    const img=document.getElementById('prev-ctrl-sec');
-    img.src=e.target.result; img.style.display='block';
-    document.getElementById('rm-ctrl-sec').classList.add('visible');
-  };
-  r.readAsDataURL(f);
-}
-function removeSecImg(){
-  const img=document.getElementById('prev-ctrl-sec');
-  if(img){ img.src=''; img.style.display='none'; }
-  const rm=document.getElementById('rm-ctrl-sec');
-  if(rm) rm.classList.remove('visible');
-  const up=document.getElementById('up-ctrl-sec');
-  if(up) up.value='';
-}
 function setSecSatUI(val){
   const bar=document.getElementById('ctrl-sec-sat-bar');
   const pct=document.getElementById('ctrl-sec-sat-pct');
@@ -1261,23 +1170,147 @@ function satBarHtml(sat){
   return `<div class="sat-bar-wrap"><div class="sat-bar-bg"><div class="sat-bar-fill" style="width:${sat}%;background:${color}"></div></div><span class="sat-pct" style="color:${color}">${sat}%</span></div>`;
 }
 
+// ── LÍNEAS (colapsables) ──────────────────────────────────────────────────
+function addLinea(modo){
+  const id = 'ln'+(lineaCounter++);
+  const linea = modo==='same'
+    ? {id, numero_pieza:'', cantidad:'', img_foto1:null, img_foto2:null, saturacion:null}
+    : {id, numero_pieza:'', cantidad:'', tipo:'A granel', largo:'', ancho:'', alto:'', img_foto1:null, img_foto2:null, saturacion:null};
+  if(modo==='same') lineasSame.push(linea); else lineasDiff.push(linea);
+  openLineaId = id;
+  renderLineas(modo);
+}
+
+function removeLinea(modo, id){
+  if(modo==='same') lineasSame=lineasSame.filter(l=>l.id!==id);
+  else lineasDiff=lineasDiff.filter(l=>l.id!==id);
+  if(openLineaId===id) openLineaId=null;
+  renderLineas(modo);
+}
+
+function toggleLineaOpen(id){
+  openLineaId = openLineaId===id ? null : id;
+  renderLineas('same'); renderLineas('diff');
+}
+
+function renderLineas(modo){
+  const arr = modo==='same' ? lineasSame : lineasDiff;
+  const container = document.getElementById(modo==='same' ? 'ctrl-lineas-same' : 'ctrl-lineas-diff');
+  if(!container) return;
+  if(!arr.length){
+    container.innerHTML = '<div style="color:#aaa;font-size:13px;padding:10px 0">Sin piezas agregadas</div>';
+    return;
+  }
+  container.innerHTML = arr.map(l => {
+    const isOpen = openLineaId === l.id;
+    const fotosOk = modo==='same' ? (l.img_foto1 && l.img_foto2) : (l.tipo==='Caja de cartón' ? (l.img_foto1 && l.img_foto2) : (l.img_foto1 || l.img_foto2));
+    const fotosLabel = (l.img_foto1?1:0) + (l.img_foto2?1:0);
+    const showMedidas = modo==='diff' ? l.tipo === 'Caja de cartón' : false;
+
+    return `
+    <div class="linea-row">
+      <div class="linea-row-head" onclick="toggleLineaOpen('${l.id}')">
+        <span class="linea-row-chevron">${isOpen?'▼':'▶'}</span>
+        <span class="linea-row-pn">${l.numero_pieza || 'Sin PN'}</span>
+        <span class="linea-row-cant">Cant: ${l.cantidad || '—'}</span>
+        ${modo==='diff' ? `<span class="linea-row-cant">${l.tipo||'—'}</span>` : ''}
+        <span class="linea-row-fotos ${fotosLabel>0?'ok':''}">${fotosLabel}/2 fotos</span>
+      </div>
+      <div class="linea-row-body ${isOpen?'open':''}">
+        <div class="g3">
+          <div class="fld"><label>PN</label><input type="text" value="${l.numero_pieza}" oninput="updateLinea('${modo}','${l.id}','numero_pieza',this.value)" onblur="onLineaPNBlur('${modo}','${l.id}')"></div>
+          <div class="fld"><label>Cantidad</label><input type="number" value="${l.cantidad}" oninput="updateLinea('${modo}','${l.id}','cantidad',this.value)"></div>
+          ${modo==='diff' ? `
+          <div class="fld"><label>Tipo</label>
+            <select onchange="updateLinea('diff','${l.id}','tipo',this.value); renderLineas('diff')">
+              <option ${l.tipo==='A granel'?'selected':''}>A granel</option>
+              <option ${l.tipo==='Saco o bolsa'?'selected':''}>Saco o bolsa</option>
+              <option ${l.tipo==='Caja de cartón'?'selected':''}>Caja de cartón</option>
+            </select>
+          </div>` : '<div></div>'}
+        </div>
+        ${showMedidas?`
+        <div class="g3" style="margin-top:10px">
+          <div class="fld"><label>Largo (mm)</label><input type="number" value="${l.largo}" oninput="updateLinea('diff','${l.id}','largo',this.value)"></div>
+          <div class="fld"><label>Ancho (mm)</label><input type="number" value="${l.ancho}" oninput="updateLinea('diff','${l.id}','ancho',this.value)"></div>
+          <div class="fld"><label>Alto (mm)</label><input type="number" value="${l.alto}" oninput="updateLinea('diff','${l.id}','alto',this.value)"></div>
+        </div>`:''}
+        <div class="fld" style="margin-top:10px">
+          <label>Fotos</label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+            <button type="button" class="foto-btn ${l.img_foto1?'done':''}" onclick="document.getElementById('up-${l.id}-1').click()"><span class="check">✓</span> Foto 1</button>
+            <button type="button" class="foto-btn ${l.img_foto2?'done':''}" onclick="document.getElementById('up-${l.id}-2').click()"><span class="check">✓</span> Foto 2</button>
+          </div>
+          <input type="file" id="up-${l.id}-1" accept="image/*" capture="environment" style="display:none" onchange="previewLineaImg(this,'${modo}','${l.id}','img_foto1')">
+          <input type="file" id="up-${l.id}-2" accept="image/*" capture="environment" style="display:none" onchange="previewLineaImg(this,'${modo}','${l.id}','img_foto2')">
+        </div>
+        ${satBadgeLinea(l)}
+        <div style="display:flex;justify-content:flex-end;margin-top:10px">
+          <button type="button" class="btn btn-danger btn-xs" onclick="removeLinea('${modo}','${l.id}')">Quitar pieza</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function satBadgeLinea(l){
+  if(l.saturacion===null||l.saturacion===undefined) return '';
+  const color=l.saturacion>=80?'var(--verde)':l.saturacion>=50?'var(--naranja)':'var(--rojo)';
+  return `<div style="margin-top:8px;font-size:11px;color:${color};font-weight:700">Saturación: ${l.saturacion}%</div>`;
+}
+
+function updateLinea(modo, id, campo, valor){
+  const arr = modo==='same' ? lineasSame : lineasDiff;
+  const linea = arr.find(l=>l.id===id);
+  if(linea) linea[campo]=valor;
+  if(campo==='numero_pieza' || campo==='cantidad' || campo==='tipo'){
+    // Solo re-renderizar el resumen de la cabecera sin perder el foco del input activo
+  }
+}
+
+async function onLineaPNBlur(modo, id){
+  const arr = modo==='same' ? lineasSame : lineasDiff;
+  const linea = arr.find(l=>l.id===id);
+  if(!linea || !linea.numero_pieza) return;
+  if(!document.getElementById('ctrl-proveedor').value){
+    const riaiMatch = await fetch(`${API}/riai?q=${encodeURIComponent(linea.numero_pieza)}`,{credentials:'include'}).then(r=>r.json()).catch(()=>[]);
+    const exact = riaiMatch.find(r=>r.numero_pieza===linea.numero_pieza);
+    if(exact) document.getElementById('ctrl-proveedor').value = exact.proveedor_nombre || '';
+  }
+  renderLineas(modo);
+}
+
+function previewLineaImg(input, modo, id, campo){
+  const f=input.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=e=>{
+    updateLinea(modo, id, campo, e.target.result);
+    renderLineas(modo);
+  };
+  r.readAsDataURL(f);
+}
+
+// ── SAVE ──────────────────────────────────────────────────────────────────
 async function saveControl(){
   const checked = document.querySelector('input[name="ctrl-same"]:checked');
   const same = checked ? checked.value==='si' : true;
   const g=id=>document.getElementById(id)?.value||'';
-  const gi=id=>{const el=document.getElementById(id);return el?.src&&el.src.length>10?el.src:null;};
 
   const arr = same ? lineasSame : lineasDiff;
   if(!arr.length){toast('Agregá al menos una pieza.',false);return;}
   if(arr.some(l=>!l.numero_pieza)){toast('Todas las piezas necesitan un PN.',false);return;}
 
   const proveedorNombre = g('ctrl-proveedor');
+  const fotos = same ? embFotos.same : embFotos.sec;
 
   const payload = {
     fecha: g('ctrl-fecha'),
     proveedor_nombre: proveedorNombre,
     proveedor_codigo: '',
     emb_identico: same ? 1 : 0,
+    img_cerrada: fotos.cerrada,
+    img_abierta: fotos.abierta,
+    img_etiqueta: fotos.etiqueta,
     notas: g('ctrl-notas'),
     lineas: [],
   };
@@ -1288,12 +1321,11 @@ async function saveControl(){
     payload.emb_largo = g('ctrl-emb-largo') || null;
     payload.emb_ancho = g('ctrl-emb-ancho') || null;
     payload.emb_alto = g('ctrl-emb-alto') || null;
-    payload.img_embalaje = null;
     payload.saturacion = null;
     payload.lineas = lineasSame.map(l => ({
       numero_pieza: l.numero_pieza, cantidad: l.cantidad || null,
       tipo: null, largo: null, ancho: null, alto: null,
-      img_pieza: l.img_pieza, saturacion: l.saturacion,
+      img_foto1: l.img_foto1, img_foto2: l.img_foto2, saturacion: l.saturacion,
     }));
   } else {
     payload.emb_tipo = g('ctrl-sec-tipo');
@@ -1301,12 +1333,11 @@ async function saveControl(){
     payload.emb_largo = g('ctrl-sec-largo') || null;
     payload.emb_ancho = g('ctrl-sec-ancho') || null;
     payload.emb_alto = g('ctrl-sec-alto') || null;
-    payload.img_embalaje = gi('prev-ctrl-sec');
     payload.saturacion = null;
     payload.lineas = lineasDiff.map(l => ({
       numero_pieza: l.numero_pieza, cantidad: l.cantidad || null,
       tipo: l.tipo, largo: l.largo || null, ancho: l.ancho || null, alto: l.alto || null,
-      img_pieza: l.img_pieza, saturacion: l.saturacion,
+      img_foto1: l.img_foto1, img_foto2: l.img_foto2, saturacion: l.saturacion,
     }));
   }
 
@@ -1360,13 +1391,20 @@ async function editControl(id){
   document.querySelector(`input[name="ctrl-same"][value="${same?'si':'no'}"]`).checked=true;
   onCtrlSameChange();
 
+  const modoKey = same ? 'same' : 'sec';
+  embFotos[modoKey] = { cerrada:d.img_cerrada||null, abierta:d.img_abierta||null, etiqueta:d.img_etiqueta||null };
+  ['cerrada','abierta','etiqueta'].forEach(k=>{
+    const btn=document.getElementById(`fb-${modoKey}-${k}`);
+    if(btn) btn.classList.toggle('done', !!embFotos[modoKey][k]);
+  });
+
   if(same){
     setEmbTipoBtns('same', d.emb_tipo || 'Caja de cartón');
     if(d.emb_tipo_otro) document.getElementById('ctrl-emb-tipo-otro').value = d.emb_tipo_otro;
     document.getElementById('ctrl-emb-largo').value = d.emb_largo || '';
     document.getElementById('ctrl-emb-ancho').value = d.emb_ancho || '';
     document.getElementById('ctrl-emb-alto').value = d.emb_alto || '';
-    lineasSame = (d.lineas||[]).map(l => ({id:'ln'+(lineaCounter++), numero_pieza:l.numero_pieza, cantidad:l.cantidad, img_pieza:l.img_pieza, saturacion:l.saturacion}));
+    lineasSame = (d.lineas||[]).map(l => ({id:'ln'+(lineaCounter++), numero_pieza:l.numero_pieza, cantidad:l.cantidad, img_foto1:l.img_foto1, img_foto2:l.img_foto2, saturacion:l.saturacion}));
     renderLineas('same');
   } else {
     setEmbTipoBtns('sec', d.emb_tipo || 'Caja de cartón');
@@ -1374,12 +1412,8 @@ async function editControl(id){
     document.getElementById('ctrl-sec-largo').value = d.emb_largo || '';
     document.getElementById('ctrl-sec-ancho').value = d.emb_ancho || '';
     document.getElementById('ctrl-sec-alto').value = d.emb_alto || '';
-    if(d.img_embalaje){
-      const img=document.getElementById('prev-ctrl-sec'); img.src=d.img_embalaje; img.style.display='block';
-      document.getElementById('rm-ctrl-sec').classList.add('visible');
-    }
     setSecSatUI(d.saturacion);
-    lineasDiff = (d.lineas||[]).map(l => ({id:'ln'+(lineaCounter++), numero_pieza:l.numero_pieza, cantidad:l.cantidad, tipo:l.tipo||'A granel', largo:l.largo, ancho:l.ancho, alto:l.alto, img_pieza:l.img_pieza, saturacion:l.saturacion}));
+    lineasDiff = (d.lineas||[]).map(l => ({id:'ln'+(lineaCounter++), numero_pieza:l.numero_pieza, cantidad:l.cantidad, tipo:l.tipo||'A granel', largo:l.largo, ancho:l.ancho, alto:l.alto, img_foto1:l.img_foto1, img_foto2:l.img_foto2, saturacion:l.saturacion}));
     renderLineas('diff');
   }
   onCtrlEmbTipoChange('same');
@@ -1400,7 +1434,7 @@ async function viewControl(id){
       <td>${l.tipo||'—'}</td>
       <td>${l.largo&&l.ancho&&l.alto ? `${l.largo}×${l.ancho}×${l.alto}` : '—'}</td>
       <td>${l.saturacion!==null&&l.saturacion!==undefined?l.saturacion+'%':'—'}</td>
-      <td>${l.img_pieza?`<span style="cursor:zoom-in;color:var(--rojo)" onclick="openLightbox('${l.img_pieza}')">Ver foto</span>`:'—'}</td>
+      <td>${l.img_foto1?`<span style="cursor:zoom-in;color:var(--rojo)" onclick="openLightbox('${l.img_foto1}')">F1</span>`:'—'} ${l.img_foto2?`<span style="cursor:zoom-in;color:var(--rojo)" onclick="openLightbox('${l.img_foto2}')">F2</span>`:''}</td>
     </tr>`).join('');
 
   const html = `<div class="riai-doc">
@@ -1415,12 +1449,17 @@ async function viewControl(id){
         <td colspan="4"><span class="riai-lbl">Medidas (mm)</span><span class="riai-val">${d.emb_largo||'—'} × ${d.emb_ancho||'—'} × ${d.emb_alto||'—'}</span></td>
       </tr>
       ${!same?`<tr><td colspan="4"><span class="riai-lbl">Saturación embalaje secundario</span>${satBarHtml(d.saturacion)}</td></tr>`:''}
-      ${!same&&d.img_embalaje?`<tr><td colspan="4">${imgBox(d.img_embalaje,'Embalaje secundario')}</td></tr>`:''}
       ${d.notas?`<tr><td colspan="4"><span class="riai-lbl">Notas</span><span class="riai-val">${d.notas}</span></td></tr>`:''}
+      <tr><td colspan="4" class="riai-sec">FOTOS DEL EMBALAJE</td></tr>
+      <tr>
+        <td colspan="1">${imgBox(d.img_cerrada,'Caja cerrada')}</td>
+        <td colspan="1">${imgBox(d.img_abierta,'Caja abierta')}</td>
+        <td colspan="2">${imgBox(d.img_etiqueta,'Etiqueta proveedor')}</td>
+      </tr>
     </table>
     <table>
       <tr><td colspan="6" class="riai-sec">PIEZAS</td></tr>
-      <tr><td class="riai-subsec">PN</td><td class="riai-subsec">Cantidad</td><td class="riai-subsec">Tipo</td><td class="riai-subsec">Medidas</td><td class="riai-subsec">Saturación</td><td class="riai-subsec">Foto</td></tr>
+      <tr><td class="riai-subsec">PN</td><td class="riai-subsec">Cantidad</td><td class="riai-subsec">Tipo</td><td class="riai-subsec">Medidas</td><td class="riai-subsec">Saturación</td><td class="riai-subsec">Fotos</td></tr>
       ${lineasHtml || '<tr><td colspan="6" style="text-align:center;color:#aaa">Sin piezas</td></tr>'}
     </table>
   </div>`;
