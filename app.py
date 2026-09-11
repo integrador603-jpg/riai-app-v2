@@ -305,9 +305,9 @@ def export_imagenes():
 CONTROL_FIELDS = [
     "fecha","proveedor_nombre","proveedor_codigo","emb_identico",
     "emb_tipo","emb_tipo_otro","emb_largo","emb_ancho","emb_alto",
-    "img_embalaje","saturacion","notas",
+    "img_cerrada","img_abierta","img_etiqueta","saturacion","notas",
 ]
-LINEA_FIELDS = ["numero_pieza","cantidad","tipo","largo","ancho","alto","img_pieza","saturacion","orden"]
+LINEA_FIELDS = ["numero_pieza","cantidad","tipo","largo","ancho","alto","img_foto1","img_foto2","saturacion","orden"]
 
 @app.route("/api/control")
 @login_required
@@ -348,15 +348,17 @@ def get_control(id):
     return jsonify(d)
 
 def _process_control_images(d):
-    val = d.get("img_embalaje")
-    if val and val.startswith("data:"):
-        d["img_embalaje"] = upload_base64_image(val, prefix="control/embalaje")
+    for campo, prefix in [("img_cerrada","control/cerrada"),("img_abierta","control/abierta"),("img_etiqueta","control/etiqueta")]:
+        val = d.get(campo)
+        if val and val.startswith("data:"):
+            d[campo] = upload_base64_image(val, prefix=prefix)
     return d
 
 def _process_linea_images(l):
-    val = l.get("img_pieza")
-    if val and val.startswith("data:"):
-        l["img_pieza"] = upload_base64_image(val, prefix="control/pieza")
+    for campo, prefix in [("img_foto1","control/pieza1"),("img_foto2","control/pieza2")]:
+        val = l.get(campo)
+        if val and val.startswith("data:"):
+            l[campo] = upload_base64_image(val, prefix=prefix)
     return l
 
 @app.route("/api/control", methods=["POST"])
