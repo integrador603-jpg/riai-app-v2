@@ -136,8 +136,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
 .riai-subsec{background:var(--surface-2);color:var(--texto-suave);padding:9px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
 .riai-lbl{font-size:10px;color:var(--texto-faint);display:block;text-transform:uppercase;letter-spacing:.3px;font-weight:600;margin-bottom:4px}
 .riai-val{font-size:13px;font-weight:600;display:block;color:var(--texto)}
-.riai-imgbox{border:1px solid var(--borde);background:var(--surface-2);min-height:90px;display:flex;align-items:center;justify-content:center;font-size:10.5px;color:var(--texto-faint);border-radius:var(--r-sm);font-weight:500}
-.riai-imgbox img{max-width:100%;max-height:90px;object-fit:contain;border-radius:var(--r-sm)}
+.foto-view-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px 10px;border:1px solid var(--borde-strong);border-radius:var(--r-md);background:var(--surface);cursor:pointer;font-size:12px;font-weight:600;color:var(--texto-suave);transition:all .15s var(--ease)}
+.foto-view-btn:hover{border-color:var(--rojo);color:var(--rojo);background:var(--rojo-tint)}
+.foto-view-btn.has-photo{border-color:var(--verde);color:#1b7a37;background:var(--verde-tint)}
+.foto-view-btn.has-photo:hover{background:#d7f2df;border-color:var(--verde)}
+.foto-view-btn:disabled{cursor:not-allowed;opacity:.5}
+.foto-view-btn:disabled:hover{border-color:var(--borde-strong);color:var(--texto-suave);background:var(--surface)}
+.foto-view-btn .dot{font-size:9px;line-height:0}
 
 /* ── TOAST ──────────────────────────────────────────────────────────── */
 .toast{position:fixed;bottom:28px;right:28px;padding:13px 22px;border-radius:var(--r-md);color:#fff;font-size:13px;font-weight:600;z-index:9999;opacity:0;transform:translateY(8px);transition:all .25s var(--ease);pointer-events:none;box-shadow:var(--shadow-lg)}
@@ -645,7 +650,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
       <button type="button" class="btn btn-primary" onclick="loadControl(document.getElementById('ctrl-search').value)">Buscar</button>
     </div>
     <table class="data-table">
-      <thead><tr><th>Fecha</th><th>Proveedor</th><th>Tipo embalaje</th><th>PNs incluidos</th><th>Saturación</th><th>Acciones</th></tr></thead>
+      <thead><tr><th>Fecha</th><th>Proveedor</th><th>Tipo embalaje</th><th>PN</th><th>Saturación</th><th>Acciones</th></tr></thead>
       <tbody id="ctrl-body"><tr><td colspan="6" style="text-align:center;color:#aaa;padding:24px">Cargando...</td></tr></tbody>
     </table>
   </div>
@@ -1067,7 +1072,7 @@ function renderRIAI(d){
   const L=RLABELS[d.lang]||RLABELS.es;
   const ul=d.ul||'mm',uw=d.uw||'kg';
   const fv=(lbl,val)=>`<span class="riai-lbl">${lbl}</span><span class="riai-val">${val||'—'}</span>`;
-  const imgBox=(src,lbl)=>src&&src.length>10?`<div class="riai-imgbox" style="cursor:zoom-in" onclick="openLightbox('${src}')"><img src="${src}" alt="${lbl}"></div>`:`<div class="riai-imgbox">${lbl}</div>`;
+  const imgBox=(src,lbl)=>src&&src.length>10?`<button type="button" class="foto-view-btn has-photo" onclick="openLightbox('${src}')"><span class="dot">●</span> ${lbl}</button>`:`<button type="button" class="foto-view-btn" disabled><span class="dot">○</span> ${lbl}</button>`;
   const pkgRow=(pkg,title)=>`
     <tr><td colspan="10" class="riai-subsec">${title}</td></tr>
     <tr>
@@ -1418,20 +1423,27 @@ async function loadControl(q=''){
   const canDelete=currentUser?.rol==='admin';
   if(!rows.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:#aaa;padding:24px">Sin registros</td></tr>';return;}
   tbody.innerHTML=rows.map(r=>{
-    const pns = (r.lineas||[]).map(l=>l.numero_pieza).filter(Boolean).join(', ') || '—';
-    return `
-    <tr>
-      <td>${r.fecha||'—'}</td>
-      <td>${r.proveedor_nombre||'—'}</td>
-      <td>${r.emb_tipo||'—'}</td>
-      <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${pns}">${pns}</td>
-      <td>${satBarHtml(r.saturacion)}</td>
-      <td class="actions">
+    const lineas = (r.lineas&&r.lineas.length) ? r.lineas : [{numero_pieza:null,cantidad:null,saturacion:null}];
+    const n = lineas.length;
+    const perLineSat = lineas.some(l=>l.saturacion!==null&&l.saturacion!==undefined);
+    const groupBorder = n>1 ? 'border-top:2px solid var(--borde-strong)' : '';
+    return lineas.map((l,i)=>{
+      const first = i===0;
+      const rowStyle = (first&&n>1) ? ` style="${groupBorder}"` : '';
+      return `
+    <tr${rowStyle}>
+      ${first?`<td rowspan="${n}">${r.fecha||'—'}</td>`:''}
+      ${first?`<td rowspan="${n}">${r.proveedor_nombre||'—'}</td>`:''}
+      ${first?`<td rowspan="${n}">${r.emb_tipo||'—'}</td>`:''}
+      <td><strong>${l.numero_pieza||'—'}</strong>${l.cantidad?`<span style="color:var(--texto-suave);font-weight:400"> · ${l.cantidad} u.</span>`:''}</td>
+      ${perLineSat?`<td>${satBarHtml(l.saturacion)}</td>`:(first?`<td rowspan="${n}">${satBarHtml(r.saturacion)}</td>`:'')}
+      ${first?`<td class="actions" rowspan="${n}">
         <button type="button" class="btn btn-outline btn-xs" onclick="viewControl(${r.id})">Ver</button>
         ${canEdit?`<button type="button" class="btn btn-secondary btn-xs" onclick="editControl(${r.id})">Editar</button>`:''}
         ${canDelete?`<button type="button" class="btn btn-danger btn-xs" onclick="deleteControl(${r.id})">Eliminar</button>`:''}
-      </td>
+      </td>`:''}
     </tr>`;
+    }).join('');
   }).join('');
 }
 
@@ -1481,7 +1493,7 @@ async function viewControl(id){
   const d=await fetch(`${API}/control/${id}`,{credentials:'include'}).then(r=>r.json()).catch(()=>null);
   if(!d){toast('Error al cargar',false);return;}
   const same = d.emb_identico===1;
-  const imgBox=(src,lbl)=>src&&src.length>10?`<div class="riai-imgbox" style="cursor:zoom-in" onclick="openLightbox('${src}')"><img src="${src}" alt="${lbl}"></div>`:`<div class="riai-imgbox">${lbl}</div>`;
+  const imgBox=(src,lbl)=>src&&src.length>10?`<button type="button" class="foto-view-btn has-photo" onclick="openLightbox('${src}')"><span class="dot">●</span> ${lbl}</button>`:`<button type="button" class="foto-view-btn" disabled><span class="dot">○</span> ${lbl}</button>`;
 
   let lineasHtml = (d.lineas||[]).map(l=>`
     <tr>
@@ -1490,7 +1502,10 @@ async function viewControl(id){
       <td>${l.tipo||'—'}</td>
       <td>${l.largo&&l.ancho&&l.alto ? `${l.largo}×${l.ancho}×${l.alto}` : '—'}</td>
       <td>${l.saturacion!==null&&l.saturacion!==undefined?l.saturacion+'%':'—'}</td>
-      <td>${l.img_foto1?`<span style="cursor:zoom-in;color:var(--rojo)" onclick="openLightbox('${l.img_foto1}')">F1</span>`:'—'} ${l.img_foto2?`<span style="cursor:zoom-in;color:var(--rojo)" onclick="openLightbox('${l.img_foto2}')">F2</span>`:''}</td>
+      <td><div style="display:flex;gap:6px;flex-wrap:wrap">${[
+        l.img_foto1?`<button type="button" class="foto-btn" aria-pressed="true" onclick="openLightbox('${l.img_foto1}')"><span class="dot">•</span> Foto 1</button>`:'',
+        l.img_foto2?`<button type="button" class="foto-btn" aria-pressed="true" onclick="openLightbox('${l.img_foto2}')"><span class="dot">•</span> Foto 2</button>`:''
+      ].filter(Boolean).join('') || '<span style="color:var(--texto-faint);font-size:11px">—</span>'}</div></td>
     </tr>`).join('');
 
   const html = `<div class="riai-doc">
