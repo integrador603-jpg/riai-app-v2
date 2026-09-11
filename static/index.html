@@ -1424,26 +1424,20 @@ async function loadControl(q=''){
   if(!rows.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:#aaa;padding:24px">Sin registros</td></tr>';return;}
   tbody.innerHTML=rows.map(r=>{
     const lineas = (r.lineas&&r.lineas.length) ? r.lineas : [{numero_pieza:null,cantidad:null,saturacion:null}];
-    const n = lineas.length;
     const perLineSat = lineas.some(l=>l.saturacion!==null&&l.saturacion!==undefined);
-    const groupBorder = n>1 ? 'border-top:2px solid var(--borde-strong)' : '';
-    return lineas.map((l,i)=>{
-      const first = i===0;
-      const rowStyle = (first&&n>1) ? ` style="${groupBorder}"` : '';
-      return `
-    <tr${rowStyle}>
-      ${first?`<td rowspan="${n}">${r.fecha||'—'}</td>`:''}
-      ${first?`<td rowspan="${n}">${r.proveedor_nombre||'—'}</td>`:''}
-      ${first?`<td rowspan="${n}">${r.emb_tipo||'—'}</td>`:''}
+    return lineas.map(l=>`
+    <tr>
+      <td>${r.fecha||'—'}</td>
+      <td>${r.proveedor_nombre||'—'}</td>
+      <td>${r.emb_tipo||'—'}</td>
       <td><strong>${l.numero_pieza||'—'}</strong>${l.cantidad?`<span style="color:var(--texto-suave);font-weight:400"> · ${l.cantidad} u.</span>`:''}</td>
-      ${perLineSat?`<td>${satBarHtml(l.saturacion)}</td>`:(first?`<td rowspan="${n}">${satBarHtml(r.saturacion)}</td>`:'')}
-      ${first?`<td class="actions" rowspan="${n}">
+      <td>${satBarHtml(perLineSat?l.saturacion:r.saturacion)}</td>
+      <td class="actions">
         <button type="button" class="btn btn-outline btn-xs" onclick="viewControl(${r.id})">Ver</button>
         ${canEdit?`<button type="button" class="btn btn-secondary btn-xs" onclick="editControl(${r.id})">Editar</button>`:''}
         ${canDelete?`<button type="button" class="btn btn-danger btn-xs" onclick="deleteControl(${r.id})">Eliminar</button>`:''}
-      </td>`:''}
-    </tr>`;
-    }).join('');
+      </td>
+    </tr>`).join('');
   }).join('');
 }
 
