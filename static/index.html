@@ -122,19 +122,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
 .modal-box{background:var(--surface);border-radius:var(--r-lg);width:100%;max-width:860px;margin:auto;box-shadow:var(--shadow-lg);overflow:hidden}
 .modal-header{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid var(--borde)}
 .modal-header h3{font-size:15px;font-weight:700;color:var(--texto)}
-.modal-body{padding:22px}
+.modal-body{padding:22px;background:var(--surface-2)}
 .modal-footer{padding:14px 22px;border-top:1px solid var(--borde);display:flex;justify-content:flex-end;gap:8px;background:var(--surface-2)}
 
-/* ── RIAI DOC (impreso) ─────────────────────────────────────────────── */
-.riai-doc{font-family:Arial,sans-serif;font-size:11px}
-.riai-doc table{width:100%;border-collapse:collapse;margin-bottom:6px}
-.riai-doc td{border:1px solid #999;padding:4px 7px;vertical-align:top}
-.riai-sec{background:var(--rojo);color:#fff;padding:5px 8px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
-.riai-subsec{background:#e8e8e8;padding:4px 8px;font-size:9px;font-weight:700;text-transform:uppercase}
-.riai-lbl{font-size:8px;color:#888;display:block}
-.riai-val{font-size:11px;font-weight:700;display:block}
-.riai-imgbox{border:1px solid #ccc;min-height:70px;display:flex;align-items:center;justify-content:center;font-size:9px;color:#aaa;border-radius:3px}
-.riai-imgbox img{max-width:100%;max-height:70px;object-fit:contain}
+/* ── RIAI DOC (vista previa en pantalla) ───────────────────────────── */
+.riai-doc{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Segoe UI",Helvetica,Arial,sans-serif;font-size:12.5px;color:var(--texto)}
+.riai-doc table{width:100%;border-collapse:separate;border-spacing:0;margin-bottom:16px;background:var(--surface);border:1px solid var(--borde);border-radius:var(--r-md);overflow:hidden;box-shadow:var(--shadow-sm)}
+.riai-doc table:last-child{margin-bottom:0}
+.riai-doc td{border:none;border-bottom:1px solid var(--borde);border-right:1px solid var(--borde);padding:12px 14px;vertical-align:top}
+.riai-doc tr:last-child td{border-bottom:none}
+.riai-doc td:last-child{border-right:none}
+.riai-sec{background:var(--rojo-tint);color:var(--rojo-dark);padding:11px 14px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;border-bottom:1px solid var(--borde)!important}
+.riai-subsec{background:var(--surface-2);color:var(--texto-suave);padding:9px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.riai-lbl{font-size:10px;color:var(--texto-faint);display:block;text-transform:uppercase;letter-spacing:.3px;font-weight:600;margin-bottom:4px}
+.riai-val{font-size:13px;font-weight:600;display:block;color:var(--texto)}
+.riai-imgbox{border:1px solid var(--borde);background:var(--surface-2);min-height:90px;display:flex;align-items:center;justify-content:center;font-size:10.5px;color:var(--texto-faint);border-radius:var(--r-sm);font-weight:500}
+.riai-imgbox img{max-width:100%;max-height:90px;object-fit:contain;border-radius:var(--r-sm)}
 
 /* ── TOAST ──────────────────────────────────────────────────────────── */
 .toast{position:fixed;bottom:28px;right:28px;padding:13px 22px;border-radius:var(--r-md);color:#fff;font-size:13px;font-weight:600;z-index:9999;opacity:0;transform:translateY(8px);transition:all .25s var(--ease);pointer-events:none;box-shadow:var(--shadow-lg)}
