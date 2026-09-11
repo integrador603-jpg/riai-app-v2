@@ -481,11 +481,11 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
         <div class="fld">
           <label>Tipo</label>
           <div class="emb-tipo-btns" id="ctrl-emb-tipo-btns">
-            <button type="button" class="emb-tipo-btn active" data-val="Caja de cartón" onclick="selectEmbTipo('same',this)">Caja de cartón</button>
-            <button type="button" class="emb-tipo-btn" data-val="Caja de madera" onclick="selectEmbTipo('same',this)">Caja de madera</button>
-            <button type="button" class="emb-tipo-btn" data-val="Caja paletizada" onclick="selectEmbTipo('same',this)">Caja paletizada</button>
-            <button type="button" class="emb-tipo-btn" data-val="Pallet" onclick="selectEmbTipo('same',this)">Pallet</button>
-            <button type="button" class="emb-tipo-btn" data-val="Otro" onclick="selectEmbTipo('same',this)">Otro</button>
+            <button type="button" class="emb-tipo-btn" aria-pressed="true" data-val="Caja de cartón" onclick="selectEmbTipo('same',this)">Caja de cartón</button>
+            <button type="button" class="emb-tipo-btn" aria-pressed="false" data-val="Caja de madera" onclick="selectEmbTipo('same',this)">Caja de madera</button>
+            <button type="button" class="emb-tipo-btn" aria-pressed="false" data-val="Caja paletizada" onclick="selectEmbTipo('same',this)">Caja paletizada</button>
+            <button type="button" class="emb-tipo-btn" aria-pressed="false" data-val="Pallet" onclick="selectEmbTipo('same',this)">Pallet</button>
+            <button type="button" class="emb-tipo-btn" aria-pressed="false" data-val="Otro" onclick="selectEmbTipo('same',this)">Otro</button>
           </div>
           <input type="hidden" id="ctrl-emb-tipo" value="Caja de cartón">
         </div>
@@ -505,10 +505,10 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
         </div>
         <div class="fld" style="margin-top:14px">
           <label>Fotos</label>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
-            <button type="button" class="foto-btn" id="fb-same-cerrada" onclick="document.getElementById('up-same-cerrada').click()"><span class="check">✓</span> Caja cerrada</button>
-            <button type="button" class="foto-btn" id="fb-same-abierta" onclick="document.getElementById('up-same-abierta').click()"><span class="check">✓</span> Caja abierta</button>
-            <button type="button" class="foto-btn" id="fb-same-etiqueta" onclick="document.getElementById('up-same-etiqueta').click()"><span class="check">✓</span> Etiqueta proveedor</button>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
+            <button type="button" class="foto-btn" id="fb-same-cerrada" aria-pressed="false" onclick="document.getElementById('up-same-cerrada').click()"><span class="dot">•</span> Caja cerrada</button>
+            <button type="button" class="foto-btn" id="fb-same-abierta" aria-pressed="false" onclick="document.getElementById('up-same-abierta').click()"><span class="dot">•</span> Caja abierta</button>
+            <button type="button" class="foto-btn" id="fb-same-etiqueta" aria-pressed="false" onclick="document.getElementById('up-same-etiqueta').click()"><span class="dot">•</span> Etiqueta proveedor</button>
           </div>
           <input type="file" id="up-same-cerrada" accept="image/*" capture="environment" style="display:none" onchange="previewEmbImg(this,'same','cerrada')">
           <input type="file" id="up-same-abierta" accept="image/*" capture="environment" style="display:none" onchange="previewEmbImg(this,'same','abierta')">
@@ -527,11 +527,11 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
         <div class="fld">
           <label>Tipo</label>
           <div class="emb-tipo-btns" id="ctrl-sec-tipo-btns">
-            <button type="button" class="emb-tipo-btn active" data-val="Caja de cartón" onclick="selectEmbTipo('sec',this)">Caja de cartón</button>
-            <button type="button" class="emb-tipo-btn" data-val="Caja de madera" onclick="selectEmbTipo('sec',this)">Caja de madera</button>
-            <button type="button" class="emb-tipo-btn" data-val="Caja paletizada" onclick="selectEmbTipo('sec',this)">Caja paletizada</button>
-            <button type="button" class="emb-tipo-btn" data-val="Pallet" onclick="selectEmbTipo('sec',this)">Pallet</button>
-            <button type="button" class="emb-tipo-btn" data-val="Otro" onclick="selectEmbTipo('sec',this)">Otro</button>
+            <button type="button" class="emb-tipo-btn" aria-pressed="true" data-val="Caja de cartón" onclick="selectEmbTipo('sec',this)">Caja de cartón</button>
+            <button type="button" class="emb-tipo-btn" aria-pressed="false" data-val="Caja de madera" onclick="selectEmbTipo('sec',this)">Caja de madera</button>
+            <button type="button" class="emb-tipo-btn" aria-pressed="false" data-val="Caja paletizada" onclick="selectEmbTipo('sec',this)">Caja paletizada</button>
+            <button type="button" class="emb-tipo-btn" aria-pressed="false" data-val="Pallet" onclick="selectEmbTipo('sec',this)">Pallet</button>
+            <button type="button" class="emb-tipo-btn" aria-pressed="false" data-val="Otro" onclick="selectEmbTipo('sec',this)">Otro</button>
           </div>
           <input type="hidden" id="ctrl-sec-tipo" value="Caja de cartón">
         </div>
@@ -552,10 +552,10 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gris);color:va
 
         <div class="fld" style="margin-top:14px">
           <label>Fotos</label>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
-            <button type="button" class="foto-btn" id="fb-sec-cerrada" onclick="document.getElementById('up-sec-cerrada').click()"><span class="check">✓</span> Caja cerrada</button>
-            <button type="button" class="foto-btn" id="fb-sec-abierta" onclick="document.getElementById('up-sec-abierta').click()"><span class="check">✓</span> Caja abierta</button>
-            <button type="button" class="foto-btn" id="fb-sec-etiqueta" onclick="document.getElementById('up-sec-etiqueta').click()"><span class="check">✓</span> Etiqueta proveedor</button>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
+            <button type="button" class="foto-btn" id="fb-sec-cerrada" aria-pressed="false" onclick="document.getElementById('up-sec-cerrada').click()"><span class="dot">•</span> Caja cerrada</button>
+            <button type="button" class="foto-btn" id="fb-sec-abierta" aria-pressed="false" onclick="document.getElementById('up-sec-abierta').click()"><span class="dot">•</span> Caja abierta</button>
+            <button type="button" class="foto-btn" id="fb-sec-etiqueta" aria-pressed="false" onclick="document.getElementById('up-sec-etiqueta').click()"><span class="dot">•</span> Etiqueta proveedor</button>
           </div>
           <input type="file" id="up-sec-cerrada" accept="image/*" capture="environment" style="display:none" onchange="previewEmbImg(this,'sec','cerrada')">
           <input type="file" id="up-sec-abierta" accept="image/*" capture="environment" style="display:none" onchange="previewEmbImg(this,'sec','abierta')">
@@ -1086,7 +1086,7 @@ function setEmbTipoBtns(modo, val){
   const container = document.getElementById(containerId);
   if(container){
     container.querySelectorAll('.emb-tipo-btn').forEach(b=>{
-      b.classList.toggle('active', b.dataset.val===val);
+      b.setAttribute('aria-pressed', b.dataset.val===val ? 'true' : 'false');
     });
   }
   const hidden = document.getElementById(hiddenId);
@@ -1105,7 +1105,7 @@ function clearCtrlForm(){
   ['ctrl-emb-largo','ctrl-emb-ancho','ctrl-emb-alto','ctrl-sec-largo','ctrl-sec-ancho','ctrl-sec-alto','ctrl-notas'].forEach(id=>setVal(id,''));
   embFotos = { same:{cerrada:null,abierta:null,etiqueta:null}, sec:{cerrada:null,abierta:null,etiqueta:null} };
   ['same-cerrada','same-abierta','same-etiqueta','sec-cerrada','sec-abierta','sec-etiqueta'].forEach(k=>{
-    const btn=document.getElementById('fb-'+k); if(btn) btn.classList.remove('done');
+    const btn=document.getElementById('fb-'+k); if(btn) btn.setAttribute('aria-pressed','false');
   });
   setSecSatUI(null);
   lineasSame=[]; lineasDiff=[]; openLineaId=null;
@@ -1125,8 +1125,8 @@ function onCtrlSameChange(){
 function selectEmbTipo(modo, btn){
   const containerId = modo==='same' ? 'ctrl-emb-tipo-btns' : 'ctrl-sec-tipo-btns';
   const container = document.getElementById(containerId);
-  container.querySelectorAll('.emb-tipo-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
+  container.querySelectorAll('.emb-tipo-btn').forEach(b=>b.setAttribute('aria-pressed','false'));
+  btn.setAttribute('aria-pressed','true');
   const hiddenInput = document.getElementById(modo==='same' ? 'ctrl-emb-tipo' : 'ctrl-sec-tipo');
   hiddenInput.value = btn.dataset.val;
   onCtrlEmbTipoChange(modo);
@@ -1149,9 +1149,10 @@ function previewEmbImg(input, modo, tipo){
   r.onload=e=>{
     embFotos[modo][tipo] = e.target.result;
     const btn = document.getElementById(`fb-${modo}-${tipo}`);
-    if(btn) btn.classList.add('done');
+    if(btn) btn.setAttribute('aria-pressed','true');
   };
   r.readAsDataURL(f);
+  input.value = '';
 }
 
 function setSecSatUI(val){
@@ -1235,11 +1236,11 @@ function renderLineas(modo){
           <div class="fld"><label>Ancho (mm)</label><input type="number" value="${l.ancho}" oninput="updateLinea('diff','${l.id}','ancho',this.value)"></div>
           <div class="fld"><label>Alto (mm)</label><input type="number" value="${l.alto}" oninput="updateLinea('diff','${l.id}','alto',this.value)"></div>
         </div>`:''}
-        <div class="fld" style="margin-top:10px">
+        <div class="fld" style="margin-top:12px">
           <label>Fotos</label>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
-            <button type="button" class="foto-btn ${l.img_foto1?'done':''}" onclick="document.getElementById('up-${l.id}-1').click()"><span class="check">✓</span> Foto 1</button>
-            <button type="button" class="foto-btn ${l.img_foto2?'done':''}" onclick="document.getElementById('up-${l.id}-2').click()"><span class="check">✓</span> Foto 2</button>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
+            <button type="button" class="foto-btn" aria-pressed="${l.img_foto1?'true':'false'}" onclick="document.getElementById('up-${l.id}-1').click()"><span class="dot">•</span> Foto 1</button>
+            <button type="button" class="foto-btn" aria-pressed="${l.img_foto2?'true':'false'}" onclick="document.getElementById('up-${l.id}-2').click()"><span class="dot">•</span> Foto 2</button>
           </div>
           <input type="file" id="up-${l.id}-1" accept="image/*" capture="environment" style="display:none" onchange="previewLineaImg(this,'${modo}','${l.id}','img_foto1')">
           <input type="file" id="up-${l.id}-2" accept="image/*" capture="environment" style="display:none" onchange="previewLineaImg(this,'${modo}','${l.id}','img_foto2')">
@@ -1288,6 +1289,7 @@ function previewLineaImg(input, modo, id, campo){
     renderLineas(modo);
   };
   r.readAsDataURL(f);
+  input.value = '';
 }
 
 // ── SAVE ──────────────────────────────────────────────────────────────────
@@ -1395,7 +1397,7 @@ async function editControl(id){
   embFotos[modoKey] = { cerrada:d.img_cerrada||null, abierta:d.img_abierta||null, etiqueta:d.img_etiqueta||null };
   ['cerrada','abierta','etiqueta'].forEach(k=>{
     const btn=document.getElementById(`fb-${modoKey}-${k}`);
-    if(btn) btn.classList.toggle('done', !!embFotos[modoKey][k]);
+    if(btn) btn.setAttribute('aria-pressed', embFotos[modoKey][k] ? 'true' : 'false');
   });
 
   if(same){
