@@ -119,7 +119,9 @@ def init_db():
         emb_largo       REAL,
         emb_ancho       REAL,
         emb_alto        REAL,
-        img_embalaje    TEXT,
+        img_cerrada     TEXT,
+        img_abierta     TEXT,
+        img_etiqueta    TEXT,
         saturacion      INTEGER,
 
         notas           TEXT,
@@ -135,7 +137,8 @@ def init_db():
         largo           REAL,
         ancho           REAL,
         alto            REAL,
-        img_pieza       TEXT,
+        img_foto1       TEXT,
+        img_foto2       TEXT,
         saturacion      INTEGER,
         orden           INTEGER DEFAULT 0
     );
