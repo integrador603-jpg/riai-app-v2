@@ -172,5 +172,22 @@ def init_db():
         )
         conn.commit()
 
+    # Migraciones: agregar columnas nuevas a tablas ya existentes, sin perder datos
+    def add_column_if_missing(table, column, coltype):
+        c.execute("""
+            SELECT column_name FROM information_schema.columns
+            WHERE table_name=%s AND column_name=%s
+        """, (table, column))
+        if not c.fetchone():
+            c.execute(f"ALTER TABLE {table} ADD COLUMN {column} {coltype}")
+            conn.commit()
+
+    add_column_if_missing("control", "img_cerrada", "TEXT")
+    add_column_if_missing("control", "img_abierta", "TEXT")
+    add_column_if_missing("control", "img_etiqueta", "TEXT")
+    add_column_if_missing("control_lineas", "img_foto1", "TEXT")
+    add_column_if_missing("control_lineas", "img_foto2", "TEXT")
+
     c.close()
     conn.close()
+    
