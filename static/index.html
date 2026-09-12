@@ -319,7 +319,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
     <div style="display:flex;align-items:center;gap:10px">
       <button type="button" class="btn btn-secondary btn-sm" onclick="closeRiaiForm()">← Volver a la lista</button>
-      <h2 style="font-size:16px;font-weight:700" id="form-title">Nuevo RIAI</h2>
+      <h2 style="font-size:16px;font-weight:700" id="form-title">Nueva RIAI</h2>
     </div>
     <div class="btn-group">
       <button type="button" class="btn btn-secondary" onclick="clearForm()">Limpiar</button>
@@ -830,7 +830,7 @@ function openRiaiForm(){
   document.getElementById('riai-list-block').style.display='none';
   document.getElementById('page-create').style.display='block';
   clearForm();
-  document.getElementById('form-title').textContent='Nuevo RIAI';
+  document.getElementById('form-title').textContent='Nueva RIAI';
 }
 
 function closeRiaiForm(){
@@ -1675,7 +1675,7 @@ function toast(msg,ok=true){
 }
 function clearForm(){
   document.getElementById('f-id').value='';
-  document.getElementById('form-title').textContent='Nuevo RIAI';
+  document.getElementById('form-title').textContent='Nueva RIAI';
   document.querySelectorAll('#page-create input:not([type=radio]):not([type=file]),#page-create select,#page-create textarea')
     .forEach(el=>{if(!el.readOnly&&!el.disabled) el.value='';});
   document.querySelectorAll('#page-create input[type=radio]')[0].checked=true;
