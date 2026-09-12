@@ -103,6 +103,9 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
 .badge-lectura{background:var(--surface-2);color:var(--texto-suave)}
 .search-row{display:flex;gap:10px;margin-bottom:18px}
 .search-row input{flex:1}
+.filter-row{display:grid;grid-template-columns:repeat(4,1fr) auto;gap:14px;align-items:end;margin-bottom:18px}
+@media(max-width:900px){.filter-row{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.filter-row{grid-template-columns:1fr}.filter-row .btn{width:100%}}
 
 /* ── IMAGES ─────────────────────────────────────────────────────────── */
 .img-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
@@ -294,7 +297,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
   <div id="riai-list-block">
     <div class="card">
       <div class="card-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
-        <span>Buscar RIAIs</span>
+        <span>Buscador</span>
         <div class="btn-group" id="riai-list-actions">
           <button type="button" class="btn btn-outline btn-sm" onclick="window.location.href=API+'/export/riai'">⬇ Exportar Excel</button>
           <button type="button" class="btn btn-secondary btn-sm" id="btn-riai-import" onclick="document.getElementById('import-riai-file-inline').click()">⬆ Importar Excel</button>
@@ -302,9 +305,18 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
         </div>
         <input type="file" id="import-riai-file-inline" accept=".xlsx" style="display:none" onchange="importExcel(this,'riai')">
       </div>
-      <div class="search-row">
-        <input type="text" id="search-input" placeholder="Buscar por PN, descripción o proveedor...">
-        <button class="btn btn-primary" onclick="filterRIAIs()">Buscar</button>
+      <div class="filter-row">
+        <div class="fld"><label>PN</label><input type="text" id="filter-pn" autocomplete="off" placeholder="Número de pieza" oninput="applyRiaiFilters()"></div>
+        <div class="fld"><label>Proveedor</label><input type="text" id="filter-proveedor" autocomplete="off" placeholder="Nombre del proveedor" oninput="applyRiaiFilters()"></div>
+        <div class="fld"><label>Fecha</label><input type="date" id="filter-fecha" autocomplete="off" onchange="applyRiaiFilters()"></div>
+        <div class="fld"><label>Estado</label>
+          <select id="filter-estado" onchange="applyRiaiFilters()">
+            <option value="">Todos</option>
+            <option value="Borrador">Borrador</option>
+            <option value="Aprobado">Aprobado</option>
+          </select>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm" style="align-self:flex-end" onclick="clearRiaiFilters()">Limpiar filtros</button>
       </div>
       <div class="table-scroll"><table class="data-table">
         <thead><tr><th>PN</th><th>Descripción</th><th>Proveedor</th><th>Fecha</th><th>Estado</th><th>Acciones</th></tr></thead>
@@ -319,7 +331,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
     <div style="display:flex;align-items:center;gap:10px">
       <button type="button" class="btn btn-secondary btn-sm" onclick="closeRiaiForm()">← Volver a la lista</button>
-      <h2 style="font-size:16px;font-weight:700" id="form-title">Nueva RIAI</h2>
+      <h2 style="font-size:16px;font-weight:700" id="form-title">Nuevo RIAI</h2>
     </div>
     <div class="btn-group">
       <button type="button" class="btn btn-secondary" onclick="clearForm()">Limpiar</button>
@@ -821,7 +833,7 @@ function navTo(p,el){
   document.getElementById('page-'+p).classList.add('active');
   if(el) el.classList.add('active');
   if(window.innerWidth<=900) document.getElementById('sidebar').classList.remove('open');
-  if(p==='search'){ closeRiaiForm(); loadList(); }
+  if(p==='search'){ closeRiaiForm(); }
   if(p==='usuarios') loadUsuarios();
   if(p==='control') loadControl();
 }
@@ -830,7 +842,7 @@ function openRiaiForm(){
   document.getElementById('riai-list-block').style.display='none';
   document.getElementById('page-create').style.display='block';
   clearForm();
-  document.getElementById('form-title').textContent='Nueva RIAI';
+  document.getElementById('form-title').textContent='Nuevo RIAI';
 }
 
 function closeRiaiForm(){
@@ -840,8 +852,35 @@ function closeRiaiForm(){
 }
 
 // ── SEARCH RIAI ───────────────────────────────────────────────────────────
-async function loadList(q=''){
-  const rows=await fetch(`${API}/riai?q=${encodeURIComponent(q)}`,{credentials:'include'}).then(r=>r.json()).catch(()=>[]);
+let riaiRows = [];
+async function loadList(){
+  riaiRows = await fetch(`${API}/riai?q=`,{credentials:'include'}).then(r=>r.json()).catch(()=>[]);
+  applyRiaiFilters();
+}
+
+function applyRiaiFilters(){
+  const pn = (document.getElementById('filter-pn')?.value||'').trim().toLowerCase();
+  const prov = (document.getElementById('filter-proveedor')?.value||'').trim().toLowerCase();
+  const fecha = document.getElementById('filter-fecha')?.value||'';
+  const estado = document.getElementById('filter-estado')?.value||'';
+  const filtered = riaiRows.filter(r=>{
+    if(pn && !(r.numero_pieza||'').toLowerCase().includes(pn)) return false;
+    if(prov && !(r.proveedor_nombre||'').toLowerCase().includes(prov)) return false;
+    if(fecha && r.fecha!==fecha) return false;
+    if(estado && r.estado!==estado) return false;
+    return true;
+  });
+  renderRiaiRows(filtered);
+}
+
+function clearRiaiFilters(){
+  ['filter-pn','filter-proveedor','filter-fecha','filter-estado'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+  applyRiaiFilters();
+}
+
+function renderRiaiRows(rows){
   const tbody=document.getElementById('results-body');
   const canEdit=currentUser?.rol!=='lectura';
   const canDelete=currentUser?.rol==='admin';
@@ -860,7 +899,6 @@ async function loadList(q=''){
       </td>
     </tr>`).join('');
 }
-function filterRIAIs(){loadList(document.getElementById('search-input').value);}
 
 // ── SUPPLIER AUTOCOMPLETE ─────────────────────────────────────────────────
 async function onSupplierInput(){
@@ -1675,7 +1713,7 @@ function toast(msg,ok=true){
 }
 function clearForm(){
   document.getElementById('f-id').value='';
-  document.getElementById('form-title').textContent='Nueva RIAI';
+  document.getElementById('form-title').textContent='Nuevo RIAI';
   document.querySelectorAll('#page-create input:not([type=radio]):not([type=file]),#page-create select,#page-create textarea')
     .forEach(el=>{if(!el.readOnly&&!el.disabled) el.value='';});
   document.querySelectorAll('#page-create input[type=radio]')[0].checked=true;
@@ -1697,7 +1735,6 @@ window.onload=async()=>{
   const today=new Date().toISOString().split('T')[0];
   document.getElementById('f-date').value=today;
   document.getElementById('ap-elab-fecha').value=today;
-  document.getElementById('search-input').addEventListener('keydown',e=>{if(e.key==='Enter') filterRIAIs();});
 };
 </script>
 </body>
