@@ -103,9 +103,20 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
 .badge-lectura{background:var(--surface-2);color:var(--texto-suave)}
 .search-row{display:flex;gap:10px;margin-bottom:18px}
 .search-row input{flex:1}
-.filter-row{display:grid;grid-template-columns:repeat(4,1fr) auto;gap:14px;align-items:end;margin-bottom:18px}
-@media(max-width:900px){.filter-row{grid-template-columns:1fr 1fr}}
-@media(max-width:600px){.filter-row{grid-template-columns:1fr}.filter-row .btn{width:100%}}
+
+/* ── FILTROS TIPO EXCEL EN EL ENCABEZADO ──────────────────────────────── */
+.th-filter{position:relative;display:flex;align-items:center;gap:6px}
+.th-filter-btn{background:none;border:none;padding:3px;cursor:pointer;color:var(--texto-faint);border-radius:4px;display:flex;line-height:0;transition:all .15s var(--ease)}
+.th-filter-btn:hover{color:var(--rojo);background:var(--rojo-tint)}
+.th-filter-btn svg{width:12px;height:12px;fill:currentColor}
+.th-filter-btn.active{color:var(--rojo)}
+.th-filter-btn.active::after{content:'';position:absolute;top:2px;width:5px;height:5px;border-radius:50%;background:var(--rojo);margin-left:9px}
+.th-filter-pop{display:none;position:absolute;top:calc(100% + 8px);left:0;background:var(--surface);border:1px solid var(--borde);border-radius:var(--r-md);box-shadow:var(--shadow-lg);padding:12px;min-width:200px;z-index:50;text-transform:none;font-weight:400;letter-spacing:0}
+.th-filter-pop.open{display:block}
+.th-filter-pop input[type="text"],.th-filter-pop input[type="date"]{width:100%;padding:8px 10px;border:1px solid var(--borde-strong);border-radius:var(--r-sm);font-size:13px;font-family:inherit;color:var(--texto)}
+.th-filter-check{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--texto);padding:6px 2px;cursor:pointer}
+.th-filter-check input{accent-color:var(--rojo)}
+.th-filter-actions{margin-top:8px;display:flex;justify-content:flex-end}
 
 /* ── IMAGES ─────────────────────────────────────────────────────────── */
 .img-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
@@ -305,21 +316,60 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
         </div>
         <input type="file" id="import-riai-file-inline" accept=".xlsx" style="display:none" onchange="importExcel(this,'riai')">
       </div>
-      <div class="filter-row">
-        <div class="fld"><label>PN</label><input type="text" id="filter-pn" autocomplete="off" placeholder="Número de pieza" oninput="applyRiaiFilters()"></div>
-        <div class="fld"><label>Proveedor</label><input type="text" id="filter-proveedor" autocomplete="off" placeholder="Nombre del proveedor" oninput="applyRiaiFilters()"></div>
-        <div class="fld"><label>Fecha</label><input type="date" id="filter-fecha" autocomplete="off" onchange="applyRiaiFilters()"></div>
-        <div class="fld"><label>Estado</label>
-          <select id="filter-estado" onchange="applyRiaiFilters()">
-            <option value="">Todos</option>
-            <option value="Borrador">Borrador</option>
-            <option value="Aprobado">Aprobado</option>
-          </select>
-        </div>
-        <button type="button" class="btn btn-secondary btn-sm" style="align-self:flex-end" onclick="clearRiaiFilters()">Limpiar filtros</button>
-      </div>
       <div class="table-scroll"><table class="data-table">
-        <thead><tr><th>PN</th><th>Descripción</th><th>Proveedor</th><th>Fecha</th><th>Estado</th><th>Acciones</th></tr></thead>
+        <thead><tr>
+          <th>
+            <div class="th-filter">
+              <span>PN</span>
+              <button type="button" class="th-filter-btn" id="th-filter-btn-pn" onclick="toggleColFilter('pn',event)" aria-label="Filtrar por PN">
+                <svg viewBox="0 0 24 24"><path d="M3 4h18l-7 8v6l-4 2v-8L3 4z"/></svg>
+              </button>
+              <div class="th-filter-pop" id="th-filter-pop-pn">
+                <input type="text" id="filter-pn" autocomplete="off" placeholder="Buscar PN..." oninput="applyRiaiFilters()">
+                <div class="th-filter-actions"><button type="button" class="btn btn-secondary btn-xs" onclick="clearColFilter('pn')">Limpiar</button></div>
+              </div>
+            </div>
+          </th>
+          <th>Descripción</th>
+          <th>
+            <div class="th-filter">
+              <span>Proveedor</span>
+              <button type="button" class="th-filter-btn" id="th-filter-btn-proveedor" onclick="toggleColFilter('proveedor',event)" aria-label="Filtrar por proveedor">
+                <svg viewBox="0 0 24 24"><path d="M3 4h18l-7 8v6l-4 2v-8L3 4z"/></svg>
+              </button>
+              <div class="th-filter-pop" id="th-filter-pop-proveedor">
+                <input type="text" id="filter-proveedor" autocomplete="off" placeholder="Buscar proveedor..." oninput="applyRiaiFilters()">
+                <div class="th-filter-actions"><button type="button" class="btn btn-secondary btn-xs" onclick="clearColFilter('proveedor')">Limpiar</button></div>
+              </div>
+            </div>
+          </th>
+          <th>
+            <div class="th-filter">
+              <span>Fecha</span>
+              <button type="button" class="th-filter-btn" id="th-filter-btn-fecha" onclick="toggleColFilter('fecha',event)" aria-label="Filtrar por fecha">
+                <svg viewBox="0 0 24 24"><path d="M3 4h18l-7 8v6l-4 2v-8L3 4z"/></svg>
+              </button>
+              <div class="th-filter-pop" id="th-filter-pop-fecha">
+                <input type="date" id="filter-fecha" autocomplete="off" onchange="applyRiaiFilters()">
+                <div class="th-filter-actions"><button type="button" class="btn btn-secondary btn-xs" onclick="clearColFilter('fecha')">Limpiar</button></div>
+              </div>
+            </div>
+          </th>
+          <th>
+            <div class="th-filter">
+              <span>Estado</span>
+              <button type="button" class="th-filter-btn" id="th-filter-btn-estado" onclick="toggleColFilter('estado',event)" aria-label="Filtrar por estado">
+                <svg viewBox="0 0 24 24"><path d="M3 4h18l-7 8v6l-4 2v-8L3 4z"/></svg>
+              </button>
+              <div class="th-filter-pop" id="th-filter-pop-estado">
+                <label class="th-filter-check"><input type="checkbox" value="Borrador" onchange="applyRiaiFilters()"> Borrador</label>
+                <label class="th-filter-check"><input type="checkbox" value="Aprobado" onchange="applyRiaiFilters()"> Aprobado</label>
+                <div class="th-filter-actions"><button type="button" class="btn btn-secondary btn-xs" onclick="clearColFilter('estado')">Limpiar</button></div>
+              </div>
+            </div>
+          </th>
+          <th>Acciones</th>
+        </tr></thead>
         <tbody id="results-body"><tr><td colspan="6" style="text-align:center;color:#aaa;padding:24px">Cargando...</td></tr></tbody>
       </table></div>
     </div>
@@ -862,23 +912,47 @@ function applyRiaiFilters(){
   const pn = (document.getElementById('filter-pn')?.value||'').trim().toLowerCase();
   const prov = (document.getElementById('filter-proveedor')?.value||'').trim().toLowerCase();
   const fecha = document.getElementById('filter-fecha')?.value||'';
-  const estado = document.getElementById('filter-estado')?.value||'';
+  const estadoChecks = Array.from(document.querySelectorAll('#th-filter-pop-estado input:checked')).map(c=>c.value);
   const filtered = riaiRows.filter(r=>{
     if(pn && !(r.numero_pieza||'').toLowerCase().includes(pn)) return false;
     if(prov && !(r.proveedor_nombre||'').toLowerCase().includes(prov)) return false;
     if(fecha && r.fecha!==fecha) return false;
-    if(estado && r.estado!==estado) return false;
+    if(estadoChecks.length && !estadoChecks.includes(r.estado)) return false;
     return true;
   });
   renderRiaiRows(filtered);
+  ['pn','proveedor','fecha','estado'].forEach(col=>{
+    const btn=document.getElementById('th-filter-btn-'+col); if(!btn) return;
+    const active = col==='estado' ? estadoChecks.length>0
+      : col==='pn' ? !!pn : col==='proveedor' ? !!prov : !!fecha;
+    btn.classList.toggle('active', active);
+  });
+}
+
+function toggleColFilter(col, ev){
+  ev.stopPropagation();
+  document.querySelectorAll('.th-filter-pop').forEach(p=>{
+    if(p.id!=='th-filter-pop-'+col) p.classList.remove('open');
+  });
+  document.getElementById('th-filter-pop-'+col)?.classList.toggle('open');
+}
+
+function clearColFilter(col){
+  if(col==='estado'){
+    document.querySelectorAll('#th-filter-pop-estado input[type=checkbox]').forEach(c=>c.checked=false);
+  } else {
+    const el=document.getElementById('filter-'+col); if(el) el.value='';
+  }
+  applyRiaiFilters();
 }
 
 function clearRiaiFilters(){
-  ['filter-pn','filter-proveedor','filter-fecha','filter-estado'].forEach(id=>{
-    const el=document.getElementById(id); if(el) el.value='';
-  });
-  applyRiaiFilters();
+  ['pn','proveedor','fecha','estado'].forEach(clearColFilter);
 }
+
+document.addEventListener('click', e=>{
+  if(!e.target.closest('.th-filter')) document.querySelectorAll('.th-filter-pop').forEach(p=>p.classList.remove('open'));
+});
 
 function renderRiaiRows(rows){
   const tbody=document.getElementById('results-body');
