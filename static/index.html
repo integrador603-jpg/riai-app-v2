@@ -48,6 +48,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
 .main{margin-left:var(--sidebar);margin-top:var(--topbar);padding:28px 32px;min-height:calc(100vh - var(--topbar))}
 .page{display:none}.page.active{display:block;animation:fadeIn .25s var(--ease)}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 .card{background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--shadow-sm);border:1px solid var(--borde);padding:26px;margin-bottom:20px}
 .card-header{font-size:12.5px;font-weight:700;color:var(--rojo);text-transform:uppercase;letter-spacing:.5px;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--borde)}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -252,8 +253,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
 <div class="sidebar" id="sidebar">
   <div class="sidebar-nav">
     <div class="nav-section">Principal</div>
-    <div class="nav-item active" id="nav-search" onclick="navTo('search',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M10 2a8 8 0 105.29 14.03l4.34 4.34a1 1 0 001.41-1.41l-4.34-4.34A8 8 0 0010 2zm0 2a6 6 0 110 12 6 6 0 010-12z"/></svg></span>Buscar / Listar</div>
-    <div class="nav-item" id="nav-create" onclick="navTo('create',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 4a1 1 0 011 1v6h6a1 1 0 110 2h-6v6a1 1 0 11-2 0v-6H5a1 1 0 110-2h6V5a1 1 0 011-1z"/></svg></span>Crear RIAI</div>
+    <div class="nav-item active" id="nav-search" onclick="navTo('search',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M10 2a8 8 0 105.29 14.03l4.34 4.34a1 1 0 001.41-1.41l-4.34-4.34A8 8 0 0010 2zm0 2a6 6 0 110 12 6 6 0 010-12z"/></svg></span>RIAI</div>
     <div class="nav-divider"></div>
     <div class="nav-section">Control</div>
     <div class="nav-item" id="nav-control" onclick="navTo('control',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M9 2a1 1 0 00-1 1v1H6a2 2 0 00-2 2v13a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2V3a1 1 0 10-2 0v1H10V3a1 1 0 00-1-1zM7 11h2v2H7v-2zm4 0h6v2h-6v-2zm-4 4h2v2H7v-2zm4 0h6v2h-6v-2z"/></svg></span>Control de Embalaje</div>
@@ -271,24 +271,36 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
 
 <!-- SEARCH -->
 <div id="page-search" class="page active">
-  <div class="card">
-    <div class="card-header">Buscar RIAIs</div>
-    <div class="search-row">
-      <input type="text" id="search-input" placeholder="Buscar por PN, descripción o proveedor...">
-      <button class="btn btn-primary" onclick="filterRIAIs()">Buscar</button>
+  <div id="riai-list-block">
+    <div class="card">
+      <div class="card-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+        <span>Buscar RIAIs</span>
+        <div class="btn-group" id="riai-list-actions">
+          <button type="button" class="btn btn-outline btn-sm" onclick="window.location.href=API+'/export/riai'">⬇ Exportar Excel</button>
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-riai-import" onclick="document.getElementById('import-riai-file-inline').click()">⬆ Importar Excel</button>
+          <button type="button" class="btn btn-primary btn-sm" id="btn-riai-new" onclick="openRiaiForm()">+ Nuevo RIAI</button>
+        </div>
+        <input type="file" id="import-riai-file-inline" accept=".xlsx" style="display:none" onchange="importExcel(this,'riai')">
+      </div>
+      <div class="search-row">
+        <input type="text" id="search-input" placeholder="Buscar por PN, descripción o proveedor...">
+        <button class="btn btn-primary" onclick="filterRIAIs()">Buscar</button>
+      </div>
+      <table class="data-table">
+        <thead><tr><th>PN</th><th>Descripción</th><th>Proveedor</th><th>Fecha</th><th>Estado</th><th>Acciones</th></tr></thead>
+        <tbody id="results-body"><tr><td colspan="6" style="text-align:center;color:#aaa;padding:24px">Cargando...</td></tr></tbody>
+      </table>
     </div>
-    <table class="data-table">
-      <thead><tr><th>PN</th><th>Descripción</th><th>Proveedor</th><th>Fecha</th><th>Estado</th><th>Acciones</th></tr></thead>
-      <tbody id="results-body"><tr><td colspan="6" style="text-align:center;color:#aaa;padding:24px">Cargando...</td></tr></tbody>
-    </table>
   </div>
-</div>
 
-<!-- CREATE/EDIT -->
-<div id="page-create" class="page">
+  <!-- CREATE/EDIT (dentro de la sección RIAI, oculto hasta que se abre) -->
+  <div id="page-create" style="display:none">
   <input type="hidden" id="f-id">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
-    <h2 style="font-size:16px;font-weight:700" id="form-title">Nuevo RIAI</h2>
+    <div style="display:flex;align-items:center;gap:10px">
+      <button type="button" class="btn btn-secondary btn-sm" onclick="closeRiaiForm()">← Volver a la lista</button>
+      <h2 style="font-size:16px;font-weight:700" id="form-title">Nuevo RIAI</h2>
+    </div>
     <div class="btn-group">
       <button type="button" class="btn btn-secondary" onclick="clearForm()">Limpiar</button>
       <button type="button" class="btn btn-outline" onclick="previewRIAI()">Vista previa</button>
@@ -508,7 +520,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
     <button type="button" class="btn btn-outline" onclick="previewRIAI()">Vista previa</button>
     <button type="button" class="btn btn-success" onclick="saveRIAI()">Guardar RIAI</button>
   </div>
-</div>
+  </div><!-- /page-create -->
+</div><!-- /page-search -->
 
 <!-- CONTROL -->
 <div id="page-control" class="page">
@@ -644,7 +657,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
   </div>
 
   <div class="card">
-    <div class="card-header">Registros de control</div>
+    <div class="card-header" style="display:flex;align-items:center;justify-content:space-between">
+      <span>Registros de control</span>
+      <span id="ctrl-pending-indicator" style="display:none;align-items:center;gap:7px;font-size:11px;font-weight:600;color:var(--texto-suave);text-transform:none;letter-spacing:0">
+        <span style="width:8px;height:8px;border-radius:50%;background:var(--naranja);animation:pulse 1.2s ease-in-out infinite"></span>
+        Guardando <span class="count">0</span> en segundo plano…
+      </span>
+    </div>
     <div class="search-row">
       <input type="text" id="ctrl-search" placeholder="Buscar por PN o proveedor...">
       <button type="button" class="btn btn-primary" onclick="loadControl(document.getElementById('ctrl-search').value)">Buscar</button>
@@ -756,7 +775,8 @@ async function checkAuth(){
     document.getElementById('user-badge').textContent=`${currentUser.username} · ${currentUser.rol}`;
     if(currentUser.rol==='admin') document.getElementById('nav-usuarios').style.display='flex';
     if(currentUser.rol==='lectura'){
-      document.getElementById('nav-create').style.display='none';
+      const btnNew=document.getElementById('btn-riai-new'); if(btnNew) btnNew.style.display='none';
+      const btnImp=document.getElementById('btn-riai-import'); if(btnImp) btnImp.style.display='none';
       document.getElementById('nav-importexport').style.display='none';
     }
     return true;
@@ -781,9 +801,22 @@ function navTo(p,el){
   document.getElementById('page-'+p).classList.add('active');
   if(el) el.classList.add('active');
   if(window.innerWidth<=900) document.getElementById('sidebar').classList.remove('open');
-  if(p==='search') loadList();
+  if(p==='search'){ closeRiaiForm(); loadList(); }
   if(p==='usuarios') loadUsuarios();
   if(p==='control') loadControl();
+}
+
+function openRiaiForm(){
+  document.getElementById('riai-list-block').style.display='none';
+  document.getElementById('page-create').style.display='block';
+  clearForm();
+  document.getElementById('form-title').textContent='Nuevo RIAI';
+}
+
+function closeRiaiForm(){
+  document.getElementById('page-create').style.display='none';
+  document.getElementById('riai-list-block').style.display='block';
+  loadList();
 }
 
 // ── SEARCH RIAI ───────────────────────────────────────────────────────────
@@ -945,7 +978,11 @@ async function saveRIAI(){
 async function editRIAI(id){
   const d=await fetch(`${API}/riai/${id}`,{credentials:'include'}).then(r=>r.json()).catch(()=>null);
   if(!d){toast('Error al cargar',false);return;}
-  navTo('create',document.getElementById('nav-create'));
+  document.getElementById('riai-list-block').style.display='none';
+  document.getElementById('page-create').style.display='block';
+  const navSearch=document.getElementById('nav-search');
+  document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
+  if(navSearch) navSearch.classList.add('active');
   setTimeout(()=>{
     const s=v=>v||'';
     document.getElementById('f-id').value=d.id;
@@ -1406,14 +1443,33 @@ async function saveControl(){
   const url = id ? `${API}/control/${id}` : `${API}/control`;
   const method = id ? 'PUT' : 'POST';
 
-  try{
-    const res = await fetch(url, {method, headers:{'Content-Type':'application/json'}, credentials:'include', body:JSON.stringify(payload)});
-    if(res.ok || res.status===201){
-      toast(id?'Registro actualizado':'Registro guardado');
-      toggleCtrlForm(false);
+  // Cerramos el formulario y liberamos la pantalla YA: el guardado (con fotos) sigue en segundo plano
+  toggleCtrlForm(false);
+  ctrlPendingSaves++; updateCtrlPendingIndicator();
+  toast(id?'Actualizando en segundo plano…':'Guardando en segundo plano…');
+
+  fetch(url, {method, headers:{'Content-Type':'application/json'}, credentials:'include', body:JSON.stringify(payload)})
+    .then(res=>{
+      if(res.ok || res.status===201){
+        toast(id?'Registro actualizado':'Registro guardado');
+      } else {
+        toast('Error al guardar el registro. Revisalo en la lista.',false);
+      }
+    })
+    .catch(()=>{ toast('Error de conexión al guardar el registro.',false); })
+    .finally(()=>{
+      ctrlPendingSaves=Math.max(0,ctrlPendingSaves-1); updateCtrlPendingIndicator();
       loadControl();
-    } else toast('Error al guardar.',false);
-  }catch(e){ toast('Error de conexión.',false); }
+    });
+}
+
+let ctrlPendingSaves = 0;
+function updateCtrlPendingIndicator(){
+  const el = document.getElementById('ctrl-pending-indicator');
+  if(!el) return;
+  el.style.display = ctrlPendingSaves>0 ? 'inline-flex' : 'none';
+  const countEl = el.querySelector('.count');
+  if(countEl) countEl.textContent = ctrlPendingSaves;
 }
 
 async function loadControl(q=''){
@@ -1431,7 +1487,7 @@ async function loadControl(q=''){
       <td>${r.proveedor_nombre||'—'}</td>
       <td>${r.emb_tipo||'—'}</td>
       <td><strong>${l.numero_pieza||'—'}</strong></td>
-      <td>${l.cantidad?`${l.cantidad} u.`:'—'}</td>
+      <td>${l.cantidad!==null&&l.cantidad!==undefined&&l.cantidad!==''?l.cantidad:'—'}</td>
       <td>${satBarHtml(perLineSat?l.saturacion:r.saturacion)}</td>
       <td class="actions">
         <button type="button" class="btn btn-outline btn-xs" onclick="viewControl(${r.id})">Ver</button>
