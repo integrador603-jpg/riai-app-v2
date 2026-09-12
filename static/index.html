@@ -19,7 +19,7 @@
   --ease:cubic-bezier(.25,.8,.25,1);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;scroll-behavior:smooth}
 body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Segoe UI",Helvetica,Arial,sans-serif;background:var(--bg);color:var(--texto);min-height:100vh;font-size:14px;line-height:1.45}
 
 /* ── TOPBAR ─────────────────────────────────────────────────────────── */
@@ -79,12 +79,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
 .btn-sm{padding:6px 14px;font-size:12px}.btn-xs{padding:4px 11px;font-size:11.5px}
 .btn-group{display:flex;gap:8px;flex-wrap:wrap}
 
+/* ── FOCO VISIBLE (accesibilidad / navegación por teclado) ───────────── */
+.btn:focus-visible,.nav-item:focus-visible,.foto-btn:focus-visible,.foto-view-btn:focus-visible,
+.emb-tipo-btn:focus-visible,.btn-logout:focus-visible,a:focus-visible,
+input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:2px solid var(--rojo);outline-offset:2px
+}
+.fld input:focus-visible,.fld select:focus-visible,.fld textarea:focus-visible{outline:none}
+.hamburger:focus-visible{outline:2px solid var(--rojo);outline-offset:2px;border-radius:4px}
+
 /* ── TABLE ──────────────────────────────────────────────────────────── */
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 .data-table{width:100%;border-collapse:collapse;font-size:13px}
 .data-table th{background:var(--surface-2);color:var(--texto-suave);padding:11px 14px;text-align:left;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--borde)}
 .data-table td{padding:12px 14px;border-bottom:1px solid var(--borde);vertical-align:middle}
 .data-table tr:hover td{background:var(--surface-2)}
-.data-table .actions{display:flex;gap:6px;flex-wrap:wrap}
+.data-table .actions{display:flex;gap:8px;flex-wrap:wrap}
 .badge{display:inline-block;padding:4px 11px;border-radius:var(--r-pill);font-size:11px;font-weight:700}
 .badge-ok{background:var(--verde-tint);color:#1b7a37}
 .badge-draft{background:#FEF3D6;color:#8a6d1a}
@@ -212,6 +222,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
   .g3,.g4{grid-template-columns:1fr 1fr}
   .s3,.s4{grid-column:span 2}
   .img-grid{grid-template-columns:1fr 1fr}
+  /* Objetivos táctiles más grandes (mínimo ~44px) para uso desde el celular */
+  .btn{min-height:40px;padding:10px 20px}
+  .btn-sm{min-height:38px;padding:9px 16px}
+  .btn-xs{min-height:36px;padding:8px 14px;font-size:12px}
+  .foto-btn,.emb-tipo-btn{min-height:40px;padding:10px 16px}
+  .data-table .actions{gap:10px}
+  .nav-item{padding:13px 14px}
 }
 @media(max-width:600px){
   .main{padding:18px}.card{padding:18px}
@@ -233,6 +250,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
   .modal-box{box-shadow:none;max-width:100%;border-radius:0}
   .riai-doc table{page-break-inside:avoid}
   @page{size:A4;margin:10mm}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
 }
 
 </style>
@@ -286,10 +306,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
         <input type="text" id="search-input" placeholder="Buscar por PN, descripción o proveedor...">
         <button class="btn btn-primary" onclick="filterRIAIs()">Buscar</button>
       </div>
-      <table class="data-table">
+      <div class="table-scroll"><table class="data-table">
         <thead><tr><th>PN</th><th>Descripción</th><th>Proveedor</th><th>Fecha</th><th>Estado</th><th>Acciones</th></tr></thead>
         <tbody id="results-body"><tr><td colspan="6" style="text-align:center;color:#aaa;padding:24px">Cargando...</td></tr></tbody>
-      </table>
+      </table></div>
     </div>
   </div>
 
@@ -668,10 +688,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
       <input type="text" id="ctrl-search" placeholder="Buscar por PN o proveedor...">
       <button type="button" class="btn btn-primary" onclick="loadControl(document.getElementById('ctrl-search').value)">Buscar</button>
     </div>
-    <table class="data-table">
+    <div class="table-scroll"><table class="data-table">
       <thead><tr><th>Fecha</th><th>Proveedor</th><th>Tipo embalaje</th><th>PN</th><th>Cantidad</th><th>Saturación</th><th>Acciones</th></tr></thead>
       <tbody id="ctrl-body"><tr><td colspan="7" style="text-align:center;color:#aaa;padding:24px">Cargando...</td></tr></tbody>
-    </table>
+    </table></div>
   </div>
 </div>
 
@@ -718,10 +738,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
   </div>
   <div class="card">
     <div class="card-header">Usuarios registrados</div>
-    <table class="data-table">
+    <div class="table-scroll"><table class="data-table">
       <thead><tr><th>Usuario</th><th>Rol</th><th>Creado</th><th>Acción</th></tr></thead>
       <tbody id="usuarios-body"></tbody>
-    </table>
+    </table></div>
   </div>
 </div>
 
