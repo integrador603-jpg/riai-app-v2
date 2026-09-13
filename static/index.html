@@ -1,21 +1,22 @@
 <!DOCTYPE html>
-<html lang="es"> 
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gestor RIAI — CNH Industrial</title>
 <style>
 :root{
-  --rojo:#D2122E;--rojo-dark:#A80E25;--rojo-tint:#FBE9EC;
-  --bg:#F5F5F7;--surface:#FFFFFF;--surface-2:#FAFAFA;
-  --borde:rgba(0,0,0,.08);--borde-strong:rgba(0,0,0,.12);
-  --texto:#1D1D1F;--texto-suave:#6E6E73;--texto-faint:#98989D;
+  --rojo:#A6192E;--rojo-dark:#7A1220;--rojo-tint:#F1E4E5;
+  --bg:#F2F2F3;--surface:#FFFFFF;--surface-2:#F7F7F8;
+  --borde:rgba(0,0,0,.10);--borde-strong:rgba(0,0,0,.16);
+  --carbon:#232326;--carbon-2:#3A3A3D;
+  --texto:#1A1A1C;--texto-suave:#5B5B60;--texto-faint:#8A8A8F;
   --verde:#2FA84F;--verde-tint:#E7F7EC;--naranja:#F5A623;--azul:#0071E3;--azul-tint:#EAF3FF;
   --sidebar:232px;--topbar:60px;
   --r-lg:18px;--r-md:12px;--r-sm:9px;--r-pill:999px;
-  --shadow-sm:0 1px 2px rgba(0,0,0,.04),0 1px 1px rgba(0,0,0,.03);
-  --shadow-md:0 4px 16px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.04);
-  --shadow-lg:0 12px 32px rgba(0,0,0,.10),0 2px 6px rgba(0,0,0,.05);
+  --shadow-sm:0 1px 2px rgba(0,0,0,.05),0 1px 1px rgba(0,0,0,.04);
+  --shadow-md:0 4px 16px rgba(0,0,0,.08),0 1px 3px rgba(0,0,0,.05);
+  --shadow-lg:0 12px 32px rgba(0,0,0,.13),0 2px 6px rgba(0,0,0,.06);
   --ease:cubic-bezier(.25,.8,.25,1);
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -36,9 +37,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
 /* ── SIDEBAR ────────────────────────────────────────────────────────── */
 .sidebar{position:fixed;top:var(--topbar);left:0;bottom:0;width:var(--sidebar);background:var(--surface);overflow-y:auto;z-index:150;transition:transform .3s var(--ease);border-right:1px solid var(--borde)}
 .sidebar-nav{padding:18px 12px}
-.nav-item{display:flex;align-items:center;gap:12px;padding:10px 14px;cursor:pointer;color:var(--texto-suave);font-size:13.5px;font-weight:500;border-radius:var(--r-sm);transition:all .15s var(--ease);margin-bottom:2px}
+.nav-item{display:flex;align-items:center;gap:12px;padding:10px 14px;cursor:pointer;color:var(--texto-suave);font-size:13.5px;font-weight:500;border-radius:var(--r-sm);transition:all .15s var(--ease);margin-bottom:2px;border-left:3px solid transparent}
 .nav-item:hover{background:var(--surface-2);color:var(--texto)}
-.nav-item.active{background:var(--rojo-tint);color:var(--rojo-dark);font-weight:600}
+.nav-item.active{background:var(--carbon);color:#fff;font-weight:600;border-left:3px solid var(--rojo)}
 .nav-icon{width:18px;height:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .nav-icon svg{width:16px;height:16px;fill:currentColor}
 .nav-divider{height:1px;background:var(--borde);margin:12px 14px}
@@ -50,7 +51,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 .card{background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--shadow-sm);border:1px solid var(--borde);padding:26px;margin-bottom:20px}
-.card-header{font-size:12.5px;font-weight:700;color:var(--rojo);text-transform:uppercase;letter-spacing:.5px;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--borde)}
+.card-header{font-size:12.5px;font-weight:700;color:var(--texto);text-transform:uppercase;letter-spacing:.5px;margin-bottom:18px;padding-bottom:12px;border-bottom:2px solid var(--rojo)}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
 .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
@@ -62,7 +63,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
 .fld input:focus,.fld select:focus,.fld textarea:focus{outline:none;border-color:var(--rojo);box-shadow:0 0 0 3px var(--rojo-tint)}
 .fld input[readonly]{background:var(--surface-2);color:var(--texto-faint)}
 .auto-tag{font-size:10.5px;color:var(--texto-faint);margin-top:4px}
-.section-label{font-size:11.5px;font-weight:700;color:var(--rojo);text-transform:uppercase;letter-spacing:.5px;margin:18px 0 10px;padding-bottom:5px;border-bottom:1px solid var(--borde)}
+.section-label{font-size:11.5px;font-weight:700;color:var(--texto);text-transform:uppercase;letter-spacing:.5px;margin:18px 0 10px;padding-bottom:5px;border-bottom:2px solid var(--rojo)}
 .cond-box{padding:18px;background:var(--surface-2);border-radius:var(--r-md);border:1px solid var(--borde);margin-top:8px}
 .radio-row{display:flex;gap:22px;margin:8px 0;flex-wrap:wrap}
 .radio-row label{display:flex;align-items:center;gap:7px;font-size:13.5px;cursor:pointer;color:var(--texto)}
@@ -288,9 +289,8 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
   <div class="sidebar-nav">
     <div class="nav-section">Principal</div>
     <div class="nav-item active" id="nav-search" onclick="navTo('search',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M10 2a8 8 0 105.29 14.03l4.34 4.34a1 1 0 001.41-1.41l-4.34-4.34A8 8 0 0010 2zm0 2a6 6 0 110 12 6 6 0 010-12z"/></svg></span>RIAI</div>
-    <div class="nav-divider"></div>
-    <div class="nav-section">Control</div>
     <div class="nav-item" id="nav-control" onclick="navTo('control',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M9 2a1 1 0 00-1 1v1H6a2 2 0 00-2 2v13a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2V3a1 1 0 10-2 0v1H10V3a1 1 0 00-1-1zM7 11h2v2H7v-2zm4 0h6v2h-6v-2zm-4 4h2v2H7v-2zm4 0h6v2h-6v-2z"/></svg></span>Control de Embalaje</div>
+    <div class="nav-item" id="nav-pfep" onclick="navTo('pfep',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 011 1v14a1 1 0 01-1 1H4a1 1 0 01-1-1V5a1 1 0 011-1zm1 2v12h14V6H5zm2 2h4v2H7V8zm0 4h10v2H7v-2zm0 4h7v2H7v-2z"/></svg></span>PFEP</div>
     <div class="nav-divider"></div>
     <div class="nav-section">Datos</div>
     <div class="nav-item" id="nav-importexport" onclick="navTo('importexport',this)"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 2a1 1 0 011 1v10.59l2.3-2.3a1 1 0 111.4 1.42l-4 4a1 1 0 01-1.4 0l-4-4a1 1 0 111.4-1.42l2.3 2.3V3a1 1 0 011-1zM5 18a1 1 0 011 1v1h12v-1a1 1 0 112 0v1a2 2 0 01-2 2H6a2 2 0 01-2-2v-1a1 1 0 011-1z"/></svg></span>Importar / Exportar</div>
@@ -746,14 +746,73 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
         Guardando <span class="count">0</span> en segundo plano…
       </span>
     </div>
-    <div class="search-row">
-      <input type="text" id="ctrl-search" placeholder="Buscar por PN o proveedor...">
-      <button type="button" class="btn btn-primary" onclick="loadControl(document.getElementById('ctrl-search').value)">Buscar</button>
-    </div>
     <div class="table-scroll"><table class="data-table">
-      <thead><tr><th>Fecha</th><th>Proveedor</th><th>Tipo embalaje</th><th>PN</th><th>Cantidad</th><th>Saturación</th><th>Acciones</th></tr></thead>
+      <thead><tr>
+        <th>
+          <div class="th-filter">
+            <span>Fecha</span>
+            <button type="button" class="th-filter-btn" id="th-filter-btn-cfecha" onclick="toggleColFilter('cfecha',event)" aria-label="Filtrar por fecha">
+              <svg viewBox="0 0 24 24"><path d="M3 4h18l-7 8v6l-4 2v-8L3 4z"/></svg>
+            </button>
+            <div class="th-filter-pop" id="th-filter-pop-cfecha">
+              <input type="date" id="cfilter-fecha" autocomplete="off" onchange="applyControlFilters()">
+              <div class="th-filter-actions"><button type="button" class="btn btn-secondary btn-xs" onclick="clearControlColFilter('cfecha')">Limpiar</button></div>
+            </div>
+          </div>
+        </th>
+        <th>
+          <div class="th-filter">
+            <span>Proveedor</span>
+            <button type="button" class="th-filter-btn" id="th-filter-btn-cproveedor" onclick="toggleColFilter('cproveedor',event)" aria-label="Filtrar por proveedor">
+              <svg viewBox="0 0 24 24"><path d="M3 4h18l-7 8v6l-4 2v-8L3 4z"/></svg>
+            </button>
+            <div class="th-filter-pop" id="th-filter-pop-cproveedor">
+              <input type="text" id="cfilter-proveedor" autocomplete="off" placeholder="Buscar proveedor..." oninput="applyControlFilters()">
+              <div class="th-filter-actions"><button type="button" class="btn btn-secondary btn-xs" onclick="clearControlColFilter('cproveedor')">Limpiar</button></div>
+            </div>
+          </div>
+        </th>
+        <th>
+          <div class="th-filter">
+            <span>Tipo embalaje</span>
+            <button type="button" class="th-filter-btn" id="th-filter-btn-ctipo" onclick="toggleColFilter('ctipo',event)" aria-label="Filtrar por tipo de embalaje">
+              <svg viewBox="0 0 24 24"><path d="M3 4h18l-7 8v6l-4 2v-8L3 4z"/></svg>
+            </button>
+            <div class="th-filter-pop" id="th-filter-pop-ctipo">
+              <label class="th-filter-check"><input type="checkbox" value="Caja de cartón" onchange="applyControlFilters()"> Caja de cartón</label>
+              <label class="th-filter-check"><input type="checkbox" value="Caja de madera" onchange="applyControlFilters()"> Caja de madera</label>
+              <label class="th-filter-check"><input type="checkbox" value="Caja paletizada" onchange="applyControlFilters()"> Caja paletizada</label>
+              <label class="th-filter-check"><input type="checkbox" value="Pallet" onchange="applyControlFilters()"> Pallet</label>
+              <label class="th-filter-check"><input type="checkbox" value="Otro" onchange="applyControlFilters()"> Otro</label>
+              <div class="th-filter-actions"><button type="button" class="btn btn-secondary btn-xs" onclick="clearControlColFilter('ctipo')">Limpiar</button></div>
+            </div>
+          </div>
+        </th>
+        <th>
+          <div class="th-filter">
+            <span>PN</span>
+            <button type="button" class="th-filter-btn" id="th-filter-btn-cpn" onclick="toggleColFilter('cpn',event)" aria-label="Filtrar por PN">
+              <svg viewBox="0 0 24 24"><path d="M3 4h18l-7 8v6l-4 2v-8L3 4z"/></svg>
+            </button>
+            <div class="th-filter-pop" id="th-filter-pop-cpn">
+              <input type="text" id="cfilter-pn" autocomplete="off" placeholder="Buscar PN..." oninput="applyControlFilters()">
+              <div class="th-filter-actions"><button type="button" class="btn btn-secondary btn-xs" onclick="clearControlColFilter('cpn')">Limpiar</button></div>
+            </div>
+          </div>
+        </th>
+        <th>Cantidad</th><th>Saturación</th><th>Acciones</th>
+      </tr></thead>
       <tbody id="ctrl-body"><tr><td colspan="7" style="text-align:center;color:#aaa;padding:24px">Cargando...</td></tr></tbody>
     </table></div>
+  </div>
+</div>
+
+<!-- PFEP (placeholder, aún no definido) -->
+<div id="page-pfep" class="page">
+  <div class="card" style="text-align:center;padding:60px 24px;color:var(--texto-suave)">
+    <div style="font-size:32px;margin-bottom:10px">🧩</div>
+    <div style="font-size:15px;font-weight:700;color:var(--texto);margin-bottom:6px">PFEP (Plan For Every Part)</div>
+    <div style="font-size:13px">Esta sección todavía no está definida.</div>
   </div>
 </div>
 
@@ -1604,16 +1663,54 @@ function updateCtrlPendingIndicator(){
   if(countEl) countEl.textContent = ctrlPendingSaves;
 }
 
-async function loadControl(q=''){
-  const rows=await fetch(`${API}/control?q=${encodeURIComponent(q)}`,{credentials:'include'}).then(r=>r.json()).catch(()=>[]);
+let controlRows = [];
+let controlDisplayRows = [];
+async function loadControl(){
+  controlRows=await fetch(`${API}/control?q=`,{credentials:'include'}).then(r=>r.json()).catch(()=>[]);
+  controlDisplayRows=[];
+  controlRows.forEach(r=>{
+    const lineas = (r.lineas&&r.lineas.length) ? r.lineas : [{numero_pieza:null,cantidad:null,saturacion:null}];
+    const perLineSat = lineas.some(l=>l.saturacion!==null&&l.saturacion!==undefined);
+    lineas.forEach(l=>controlDisplayRows.push({r,l,perLineSat}));
+  });
+  applyControlFilters();
+}
+
+function applyControlFilters(){
+  const fecha = document.getElementById('cfilter-fecha')?.value||'';
+  const prov = (document.getElementById('cfilter-proveedor')?.value||'').trim().toLowerCase();
+  const pn = (document.getElementById('cfilter-pn')?.value||'').trim().toLowerCase();
+  const tipoChecks = Array.from(document.querySelectorAll('#th-filter-pop-ctipo input:checked')).map(c=>c.value);
+  const filtered = controlDisplayRows.filter(({r,l})=>{
+    if(fecha && r.fecha!==fecha) return false;
+    if(prov && !(r.proveedor_nombre||'').toLowerCase().includes(prov)) return false;
+    if(pn && !(l.numero_pieza||'').toLowerCase().includes(pn)) return false;
+    if(tipoChecks.length && !tipoChecks.includes(r.emb_tipo)) return false;
+    return true;
+  });
+  renderControlRows(filtered);
+  document.getElementById('th-filter-btn-cfecha')?.classList.toggle('active', !!fecha);
+  document.getElementById('th-filter-btn-cproveedor')?.classList.toggle('active', !!prov);
+  document.getElementById('th-filter-btn-cpn')?.classList.toggle('active', !!pn);
+  document.getElementById('th-filter-btn-ctipo')?.classList.toggle('active', tipoChecks.length>0);
+}
+
+function clearControlColFilter(col){
+  if(col==='ctipo'){
+    document.querySelectorAll('#th-filter-pop-ctipo input[type=checkbox]').forEach(c=>c.checked=false);
+  } else {
+    const map={cfecha:'cfilter-fecha',cproveedor:'cfilter-proveedor',cpn:'cfilter-pn'};
+    const el=document.getElementById(map[col]); if(el) el.value='';
+  }
+  applyControlFilters();
+}
+
+function renderControlRows(rows){
   const tbody=document.getElementById('ctrl-body');
   const canEdit=currentUser?.rol!=='lectura';
   const canDelete=currentUser?.rol==='admin';
   if(!rows.length){tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:#aaa;padding:24px">Sin registros</td></tr>';return;}
-  tbody.innerHTML=rows.map(r=>{
-    const lineas = (r.lineas&&r.lineas.length) ? r.lineas : [{numero_pieza:null,cantidad:null,saturacion:null}];
-    const perLineSat = lineas.some(l=>l.saturacion!==null&&l.saturacion!==undefined);
-    return lineas.map(l=>`
+  tbody.innerHTML=rows.map(({r,l,perLineSat})=>`
     <tr>
       <td>${r.fecha||'—'}</td>
       <td>${r.proveedor_nombre||'—'}</td>
@@ -1627,7 +1724,6 @@ async function loadControl(q=''){
         ${canDelete?`<button type="button" class="btn btn-danger btn-xs" onclick="deleteControl(${r.id})">Eliminar</button>`:''}
       </td>
     </tr>`).join('');
-  }).join('');
 }
 
 async function editControl(id){
