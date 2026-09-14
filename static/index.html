@@ -11,7 +11,7 @@
   --borde:rgba(0,0,0,.10);--borde-strong:rgba(0,0,0,.16);
   --carbon:#232326;--carbon-2:#3A3A3D;
   --texto:#1A1A1C;--texto-suave:#5B5B60;--texto-faint:#8A8A8F;
-  --verde:#2FA84F;--verde-tint:#E7F7EC;--naranja:#F5A623;--azul:#0071E3;--azul-tint:#EAF3FF;
+  --verde:#2FA84F;--verde-tint:#E7F7EC;--naranja:#F5A623;--azul:#0071E3;--azul-tint:#EAF3FF;--purpura:#7C4DFF;
   --sidebar:232px;--topbar:60px;
   --r-lg:18px;--r-md:12px;--r-sm:9px;--r-pill:999px;
   --shadow-sm:0 1px 2px rgba(0,0,0,.05),0 1px 1px rgba(0,0,0,.04);
@@ -176,16 +176,43 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
 .toast-ok{background:#1D1D1F}.toast-err{background:#E5473C}
 
 /* ── DASHBOARD STATS (si se usan) ──────────────────────────────────── */
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
-.stat-card{background:var(--surface);border-radius:var(--r-lg);padding:20px;box-shadow:var(--shadow-sm);border:1px solid var(--borde);display:flex;align-items:center;gap:14px}
+.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:20px}
+.stat-card{background:var(--surface);border-radius:var(--r-lg);padding:20px;box-shadow:var(--shadow-sm);border:1px solid var(--borde);border-left:4px solid transparent;display:flex;align-items:center;gap:14px}
+.stat-accent-red{border-left-color:var(--rojo)}
+.stat-accent-green{border-left-color:var(--verde)}
+.stat-accent-blue{border-left-color:var(--azul)}
+.stat-accent-orange{border-left-color:var(--naranja)}
+.stat-accent-purple{border-left-color:var(--purpura)}
 .stat-icon{width:44px;height:44px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .stat-icon svg{width:22px;height:22px;fill:#fff}
 .stat-icon-red{background:var(--rojo)}
 .stat-icon-green{background:var(--verde)}
 .stat-icon-blue{background:var(--azul)}
 .stat-icon-orange{background:var(--naranja)}
+.stat-icon-purple{background:var(--purpura)}
 .stat-num{font-size:26px;font-weight:800;color:var(--texto);letter-spacing:-.02em}
 .stat-label{font-size:11px;color:var(--texto-suave);margin-top:2px;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+@media(max-width:1100px){.stats-row{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.stats-row{grid-template-columns:1fr 1fr}}
+
+/* ── TABS DE SUB-SECCIÓN ───────────────────────────────────────────── */
+.tab-switch{display:flex;background:var(--surface-2);border-radius:var(--r-pill);padding:3px;border:1px solid var(--borde)}
+.tab-switch-btn{border:none;background:none;padding:7px 16px;border-radius:var(--r-pill);font-size:12.5px;font-weight:600;color:var(--texto-suave);cursor:pointer;transition:all .15s var(--ease)}
+.tab-switch-btn.active{background:var(--surface);color:var(--texto);box-shadow:var(--shadow-sm)}
+.fld-inline-select{padding:8px 14px;border:1px solid var(--borde-strong);border-radius:var(--r-pill);font-size:12.5px;font-weight:600;color:var(--texto);background:var(--surface);font-family:inherit;cursor:pointer}
+
+/* ── MINI GRÁFICOS DE BARRAS (sin librerías externas) ─────────────────── */
+.bar-chart{display:flex;align-items:flex-end;gap:6px;height:190px;padding-top:20px;overflow-x:auto}
+.bar-chart-col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;flex:1;min-width:28px;height:100%}
+.bar-chart-val{font-size:10.5px;font-weight:700;color:var(--texto);margin-bottom:4px}
+.bar-chart-bar{width:70%;border-radius:4px 4px 0 0;min-height:2px}
+.bar-chart-lbl{font-size:9.5px;color:var(--texto-faint);margin-top:6px;white-space:nowrap}
+.rank-list{display:flex;flex-direction:column;gap:10px;max-height:230px;overflow-y:auto}
+.rank-row{display:grid;grid-template-columns:100px 1fr auto;align-items:center;gap:10px;font-size:12px}
+.rank-row-label{color:var(--texto-suave);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rank-row-bar-bg{background:var(--surface-2);border-radius:var(--r-pill);height:16px;overflow:hidden;border:1px solid var(--borde)}
+.rank-row-bar-fill{height:100%;border-radius:var(--r-pill);display:flex;align-items:center;justify-content:flex-end;padding-right:8px;transition:width .5s var(--ease)}
+.rank-row-val{font-size:11px;font-weight:700;color:#fff}
 
 /* ── SATURATION BAR ─────────────────────────────────────────────────── */
 .sat-bar-wrap{display:flex;align-items:center;gap:8px}
@@ -226,7 +253,6 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
 .info-box{background:var(--azul-tint);border:1px solid rgba(0,113,227,.18);border-radius:var(--r-md);padding:11px 15px;font-size:12px;color:#0059b3;margin-bottom:14px}
 
 /* ── RESPONSIVE ─────────────────────────────────────────────────────── */
-@media(max-width:1100px){.stats-row{grid-template-columns:1fr 1fr}}
 @media(max-width:900px){
   :root{--sidebar:0px}
   .sidebar{transform:translateX(-232px);width:232px}
@@ -610,8 +636,16 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
   <input type="hidden" id="ctrl-id">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
     <h2 style="font-size:16px;font-weight:700">Control de Embalaje</h2>
-    <button type="button" class="btn btn-primary" onclick="toggleCtrlForm(true)">Nuevo registro</button>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <div class="tab-switch">
+        <button type="button" class="tab-switch-btn active" id="ctrl-tab-registros" onclick="switchCtrlTab('registros')">Registros</button>
+        <button type="button" class="tab-switch-btn" id="ctrl-tab-dashboard" onclick="switchCtrlTab('dashboard')">Dashboard</button>
+      </div>
+      <button type="button" class="btn btn-primary" id="btn-ctrl-new" onclick="toggleCtrlForm(true)">Nuevo registro</button>
+    </div>
   </div>
+
+  <div id="ctrl-list-block">
 
   <div class="card" id="ctrl-form" style="display:none">
     <div class="card-header" id="ctrl-form-title">Nuevo registro de control</div>
@@ -804,6 +838,43 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
       </tr></thead>
       <tbody id="ctrl-body"><tr><td colspan="7" style="text-align:center;color:#aaa;padding:24px">Cargando...</td></tr></tbody>
     </table></div>
+  </div>
+  </div><!-- /ctrl-list-block -->
+
+  <div id="ctrl-dashboard-block" style="display:none">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
+      <select id="ctrl-dash-period" class="fld-inline-select" onchange="renderCtrlDashboard()">
+        <option value="30">Últimos 30 días</option>
+        <option value="90">Último trimestre</option>
+        <option value="365">Último año</option>
+        <option value="0">Todo</option>
+      </select>
+    </div>
+
+    <div class="stats-row" id="ctrl-dash-stats"></div>
+
+    <div class="g3" style="align-items:stretch">
+      <div class="card">
+        <div class="card-header">Saturación promedio por semana</div>
+        <div id="ctrl-dash-chart-saturacion" class="bar-chart"></div>
+      </div>
+      <div class="card">
+        <div class="card-header">Distribución por tipo de embalaje</div>
+        <div id="ctrl-dash-tipo-list" class="rank-list"></div>
+      </div>
+      <div class="card">
+        <div class="card-header">Proveedores por saturación (peor a mejor)</div>
+        <div id="ctrl-dash-prov-list" class="rank-list"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">Top PNs con menor saturación</div>
+      <div class="table-scroll"><table class="data-table">
+        <thead><tr><th>PN</th><th>Proveedor</th><th>Tipo embalaje</th><th>Saturación</th></tr></thead>
+        <tbody id="ctrl-dash-worst-pns"></tbody>
+      </table></div>
+    </div>
   </div>
 </div>
 
@@ -1724,6 +1795,135 @@ function renderControlRows(rows){
         ${canDelete?`<button type="button" class="btn btn-danger btn-xs" onclick="deleteControl(${r.id})">Eliminar</button>`:''}
       </td>
     </tr>`).join('');
+}
+
+// ── DASHBOARD DE CONTROL DE EMBALAJE ────────────────────────────────────
+function switchCtrlTab(tab){
+  document.getElementById('ctrl-tab-registros').classList.toggle('active', tab==='registros');
+  document.getElementById('ctrl-tab-dashboard').classList.toggle('active', tab==='dashboard');
+  document.getElementById('ctrl-list-block').style.display = tab==='registros' ? 'block' : 'none';
+  document.getElementById('ctrl-dashboard-block').style.display = tab==='dashboard' ? 'block' : 'none';
+  document.getElementById('btn-ctrl-new').style.display = tab==='registros' ? '' : 'none';
+  if(tab==='dashboard') renderCtrlDashboard();
+}
+
+function renderRankList(elId, entries, color){
+  const el = document.getElementById(elId);
+  if(!entries.length){ el.innerHTML = '<div style="color:var(--texto-faint);font-size:12px;text-align:center;padding:20px 0">Sin datos</div>'; return; }
+  const max = Math.max(...entries.map(e=>e[1]));
+  el.innerHTML = entries.map(([label,val])=>`
+    <div class="rank-row">
+      <div class="rank-row-label" title="${label}">${label}</div>
+      <div class="rank-row-bar-bg"><div class="rank-row-bar-fill" style="width:${Math.max(100*val/max,8)}%;background:${color}"><span class="rank-row-val">${val}</span></div></div>
+    </div>`).join('');
+}
+
+function renderCtrlDashboard(){
+  if(!controlDisplayRows.length && !controlRows.length){ return; }
+  const days = parseInt(document.getElementById('ctrl-dash-period').value, 10);
+  const cutoff = days>0 ? new Date(Date.now() - days*86400000) : null;
+  const rows = controlDisplayRows.filter(({r})=>{
+    if(!cutoff) return true;
+    const d = new Date(r.fecha);
+    return !isNaN(d) && d >= cutoff;
+  });
+
+  const seenIds = new Set();
+  let sinFotos = 0;
+  rows.forEach(({r})=>{
+    if(seenIds.has(r.id)) return;
+    seenIds.add(r.id);
+    if(!(r.img_cerrada || r.img_abierta || r.img_etiqueta)) sinFotos++;
+  });
+  const satValues = rows.map(({r,l,perLineSat})=> perLineSat ? l.saturacion : r.saturacion).filter(v=>v!==null&&v!==undefined);
+  const satProm = satValues.length ? Math.round(satValues.reduce((a,b)=>a+b,0)/satValues.length) : null;
+  const pctBaja = satValues.length ? Math.round(100*satValues.filter(v=>v<50).length/satValues.length) : 0;
+  const pnsDistintos = new Set(rows.map(({l})=>l.numero_pieza).filter(Boolean));
+
+  document.getElementById('ctrl-dash-stats').innerHTML = `
+    <div class="stat-card stat-accent-red">
+      <div class="stat-icon stat-icon-red"><svg viewBox="0 0 24 24"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2a3 3 0 006 0h6a3 3 0 006 0h2v-5l-3-4zM7 18.5A1.5 1.5 0 118.5 17 1.5 1.5 0 017 18.5zm12 0A1.5 1.5 0 1120.5 17 1.5 1.5 0 0119 18.5z"/></svg></div>
+      <div><div class="stat-num">${seenIds.size}</div><div class="stat-label">Registros de control</div></div>
+    </div>
+    <div class="stat-card stat-accent-purple">
+      <div class="stat-icon stat-icon-purple"><svg viewBox="0 0 24 24"><path d="M3 13h4v8H3v-8zm7-8h4v16h-4V5zm7 5h4v11h-4V10z"/></svg></div>
+      <div><div class="stat-num">${satProm!==null?satProm+'%':'—'}</div><div class="stat-label">Saturación promedio</div></div>
+    </div>
+    <div class="stat-card stat-accent-orange">
+      <div class="stat-icon stat-icon-orange"><svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm1 15h-2v-2h2v2zm0-4h-2V9h2v4z"/></svg></div>
+      <div><div class="stat-num">${pctBaja}%</div><div class="stat-label">PNs con saturación baja</div></div>
+    </div>
+    <div class="stat-card stat-accent-blue">
+      <div class="stat-icon stat-icon-blue"><svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 100-10 5 5 0 000 10zm0 2c-4.42 0-8 2.24-8 5v1a1 1 0 001 1h14a1 1 0 001-1v-1c0-2.76-3.58-5-8-5z"/></svg></div>
+      <div><div class="stat-num">${pnsDistintos.size}</div><div class="stat-label">PNs controlados</div></div>
+    </div>
+    <div class="stat-card stat-accent-green">
+      <div class="stat-icon stat-icon-green"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div>
+      <div><div class="stat-num">${seenIds.size-sinFotos}/${seenIds.size}</div><div class="stat-label">Registros con fotos</div></div>
+    </div>
+  `;
+
+  const weekMap = {};
+  rows.forEach(({r,l,perLineSat})=>{
+    const sat = perLineSat ? l.saturacion : r.saturacion;
+    if(sat===null||sat===undefined) return;
+    const d = new Date(r.fecha);
+    if(isNaN(d)) return;
+    const ws = new Date(d); ws.setDate(d.getDate()-d.getDay());
+    const key = ws.toISOString().split('T')[0];
+    (weekMap[key] = weekMap[key]||[]).push(sat);
+  });
+  const weekKeys = Object.keys(weekMap).sort().slice(-10);
+  const chartEl = document.getElementById('ctrl-dash-chart-saturacion');
+  chartEl.innerHTML = weekKeys.length ? weekKeys.map(k=>{
+    const vals = weekMap[k];
+    const avg = Math.round(vals.reduce((a,b)=>a+b,0)/vals.length);
+    const color = avg>=80?'var(--verde)':avg>=50?'var(--naranja)':'var(--rojo)';
+    const [,m,d] = k.split('-');
+    return `<div class="bar-chart-col">
+      <div class="bar-chart-val">${avg}%</div>
+      <div class="bar-chart-bar" style="height:${Math.max(avg,3)}%;background:${color}"></div>
+      <div class="bar-chart-lbl">${d}/${m}</div>
+    </div>`;
+  }).join('') : '<div style="color:var(--texto-faint);font-size:12px;text-align:center;padding:60px 0;width:100%">Sin datos de saturación en el período</div>';
+
+  const tipoCount = {}; const tipoSeen = new Set();
+  rows.forEach(({r})=>{
+    if(tipoSeen.has(r.id)) return; tipoSeen.add(r.id);
+    const tipo = r.emb_tipo || 'Sin definir';
+    tipoCount[tipo] = (tipoCount[tipo]||0)+1;
+  });
+  renderRankList('ctrl-dash-tipo-list', Object.entries(tipoCount).sort((a,b)=>b[1]-a[1]), 'var(--azul)');
+
+  const provSat = {};
+  rows.forEach(({r,l,perLineSat})=>{
+    const sat = perLineSat ? l.saturacion : r.saturacion;
+    if(sat===null||sat===undefined) return;
+    const prov = r.proveedor_nombre || 'Sin proveedor';
+    (provSat[prov] = provSat[prov]||[]).push(sat);
+  });
+  const provRanking = Object.entries(provSat)
+    .map(([prov,vals])=>[prov, Math.round(vals.reduce((a,b)=>a+b,0)/vals.length)])
+    .sort((a,b)=>a[1]-b[1]).slice(0,10);
+  document.getElementById('ctrl-dash-prov-list').innerHTML = provRanking.length
+    ? provRanking.map(([prov,avg])=>{
+        const color = avg>=80?'var(--verde)':avg>=50?'var(--naranja)':'var(--rojo)';
+        return `<div class="rank-row">
+          <div class="rank-row-label" title="${prov}">${prov}</div>
+          <div class="rank-row-bar-bg"><div class="rank-row-bar-fill" style="width:${Math.max(avg,8)}%;background:${color}"><span class="rank-row-val">${avg}%</span></div></div>
+        </div>`;
+      }).join('')
+    : '<div style="color:var(--texto-faint);font-size:12px;text-align:center;padding:20px 0">Sin datos</div>';
+
+  const pnRows = rows.filter(({l,r,perLineSat})=>{
+    const sat = perLineSat ? l.saturacion : r.saturacion;
+    return sat!==null && sat!==undefined && l.numero_pieza;
+  }).map(({r,l,perLineSat})=>({
+    pn:l.numero_pieza, prov:r.proveedor_nombre, tipo:r.emb_tipo, sat: perLineSat?l.saturacion:r.saturacion
+  })).sort((a,b)=>a.sat-b.sat).slice(0,10);
+  document.getElementById('ctrl-dash-worst-pns').innerHTML = pnRows.length
+    ? pnRows.map(x=>`<tr><td><strong>${x.pn}</strong></td><td>${x.prov||'—'}</td><td>${x.tipo||'—'}</td><td>${satBarHtml(x.sat)}</td></tr>`).join('')
+    : '<tr><td colspan="4" style="text-align:center;color:#aaa;padding:20px">Sin datos</td></tr>';
 }
 
 async function editControl(id){
