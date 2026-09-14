@@ -9,7 +9,7 @@
   --rojo:#A6192E;--rojo-dark:#7A1220;--rojo-tint:#F1E4E5;
   --bg:#F2F2F3;--surface:#FFFFFF;--surface-2:#F7F7F8;
   --borde:rgba(0,0,0,.10);--borde-strong:rgba(0,0,0,.16);
-  --carbon:#232326;--carbon-2:#3A3A3D;
+  --carbon:#232326;--carbon-2:#3A3A3D;--sidebar-bg:#E8E8EA;
   --texto:#1A1A1C;--texto-suave:#5B5B60;--texto-faint:#8A8A8F;
   --verde:#2FA84F;--verde-tint:#E7F7EC;--naranja:#F5A623;--azul:#0071E3;--azul-tint:#EAF3FF;--purpura:#7C4DFF;
   --sidebar:232px;--topbar:60px;
@@ -35,7 +35,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text"
 .hamburger span{display:block;width:20px;height:2px;background:var(--texto);border-radius:2px}
 
 /* ── SIDEBAR ────────────────────────────────────────────────────────── */
-.sidebar{position:fixed;top:var(--topbar);left:0;bottom:0;width:var(--sidebar);background:var(--surface);overflow-y:auto;z-index:150;transition:transform .3s var(--ease);border-right:1px solid var(--borde)}
+.sidebar{position:fixed;top:var(--topbar);left:0;bottom:0;width:var(--sidebar);background:var(--sidebar-bg);overflow-y:auto;z-index:150;transition:transform .3s var(--ease);border-right:1px solid var(--borde)}
 .sidebar-nav{padding:18px 12px}
 .nav-item{display:flex;align-items:center;gap:12px;padding:10px 14px;cursor:pointer;color:var(--texto-suave);font-size:13.5px;font-weight:500;border-radius:var(--r-sm);transition:all .15s var(--ease);margin-bottom:2px;border-left:3px solid transparent}
 .nav-item:hover{background:var(--surface-2);color:var(--texto)}
@@ -196,9 +196,10 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
 @media(max-width:600px){.stats-row{grid-template-columns:1fr 1fr}}
 
 /* ── TABS DE SUB-SECCIÓN ───────────────────────────────────────────── */
-.tab-switch{display:flex;background:var(--surface-2);border-radius:var(--r-pill);padding:3px;border:1px solid var(--borde)}
-.tab-switch-btn{border:none;background:none;padding:7px 16px;border-radius:var(--r-pill);font-size:12.5px;font-weight:600;color:var(--texto-suave);cursor:pointer;transition:all .15s var(--ease)}
-.tab-switch-btn.active{background:var(--surface);color:var(--texto);box-shadow:var(--shadow-sm)}
+.tab-switch{position:relative;display:flex;background:var(--surface-2);border-radius:var(--r-pill);padding:3px;border:1px solid var(--borde)}
+.tab-switch-thumb{position:absolute;top:3px;bottom:3px;left:3px;border-radius:var(--r-pill);background:var(--surface);box-shadow:var(--shadow-sm);transition:transform .25s var(--ease),width .25s var(--ease);z-index:0}
+.tab-switch-btn{position:relative;z-index:1;border:none;background:none;padding:7px 16px;border-radius:var(--r-pill);font-size:12.5px;font-weight:600;color:var(--texto-suave);cursor:pointer;transition:color .15s var(--ease)}
+.tab-switch-btn.active{color:var(--texto)}
 .fld-inline-select{padding:8px 14px;border:1px solid var(--borde-strong);border-radius:var(--r-pill);font-size:12.5px;font-weight:600;color:var(--texto);background:var(--surface);font-family:inherit;cursor:pointer}
 
 /* ── MINI GRÁFICOS DE BARRAS (sin librerías externas) ─────────────────── */
@@ -637,7 +638,8 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
     <h2 style="font-size:16px;font-weight:700">Control de Embalaje</h2>
     <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-      <div class="tab-switch">
+      <div class="tab-switch" id="ctrl-tab-switch">
+        <div class="tab-switch-thumb" id="ctrl-tab-thumb"></div>
         <button type="button" class="tab-switch-btn active" id="ctrl-tab-registros" onclick="switchCtrlTab('registros')">Registros</button>
         <button type="button" class="tab-switch-btn" id="ctrl-tab-dashboard" onclick="switchCtrlTab('dashboard')">Dashboard</button>
       </div>
@@ -869,7 +871,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
       </div>
       <div class="card">
         <div class="card-header" style="display:flex;align-items:center;justify-content:space-between">
-          <span>Proveedores por saturación (peor a mejor)</span>
+          <span>Proveedores por saturación</span>
           <span id="ctrl-dash-prov-avg" style="font-size:11px;font-weight:700;color:var(--texto-suave);text-transform:none;letter-spacing:0"></span>
         </div>
         <div id="ctrl-dash-prov-list" class="rank-list"></div>
@@ -1023,7 +1025,11 @@ function navTo(p,el){
   if(window.innerWidth<=900) document.getElementById('sidebar').classList.remove('open');
   if(p==='search'){ closeRiaiForm(); }
   if(p==='usuarios') loadUsuarios();
-  if(p==='control') loadControl();
+  if(p==='control'){ loadControl(); requestAnimationFrame(()=>{
+    const active = document.querySelector('#ctrl-tab-switch .tab-switch-btn.active');
+    const thumb = document.getElementById('ctrl-tab-thumb');
+    if(active && thumb){ thumb.style.width = active.offsetWidth+'px'; thumb.style.transform = `translateX(${active.offsetLeft-3}px)`; }
+  }); }
 }
 
 function openRiaiForm(){
@@ -1807,13 +1813,24 @@ function renderControlRows(rows){
 
 // ── DASHBOARD DE CONTROL DE EMBALAJE ────────────────────────────────────
 function switchCtrlTab(tab){
-  document.getElementById('ctrl-tab-registros').classList.toggle('active', tab==='registros');
-  document.getElementById('ctrl-tab-dashboard').classList.toggle('active', tab==='dashboard');
+  const btnReg=document.getElementById('ctrl-tab-registros');
+  const btnDash=document.getElementById('ctrl-tab-dashboard');
+  btnReg.classList.toggle('active', tab==='registros');
+  btnDash.classList.toggle('active', tab==='dashboard');
   document.getElementById('ctrl-list-block').style.display = tab==='registros' ? 'block' : 'none';
   document.getElementById('ctrl-dashboard-block').style.display = tab==='dashboard' ? 'block' : 'none';
-  document.getElementById('btn-ctrl-new').style.display = tab==='registros' ? '' : 'none';
+  document.getElementById('btn-ctrl-new').style.visibility = tab==='registros' ? 'visible' : 'hidden';
+  const activeBtn = tab==='registros' ? btnReg : btnDash;
+  const thumb = document.getElementById('ctrl-tab-thumb');
+  thumb.style.width = activeBtn.offsetWidth+'px';
+  thumb.style.transform = `translateX(${activeBtn.offsetLeft-3}px)`;
   if(tab==='dashboard') renderCtrlDashboard();
 }
+window.addEventListener('resize', ()=>{
+  const active = document.querySelector('#ctrl-tab-switch .tab-switch-btn.active');
+  const thumb = document.getElementById('ctrl-tab-thumb');
+  if(active && thumb){ thumb.style.width = active.offsetWidth+'px'; thumb.style.transform = `translateX(${active.offsetLeft-3}px)`; }
+});
 
 function renderRankList(elId, entries, color){
   const el = document.getElementById(elId);
