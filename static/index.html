@@ -853,6 +853,11 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
 
     <div class="stats-row" id="ctrl-dash-stats"></div>
 
+    <div class="card">
+      <div class="card-header">PNs contados por día</div>
+      <div id="ctrl-dash-chart-pns" class="bar-chart"></div>
+    </div>
+
     <div class="g3" style="align-items:stretch">
       <div class="card">
         <div class="card-header">Saturación promedio por semana</div>
@@ -863,7 +868,10 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
         <div id="ctrl-dash-tipo-list" class="rank-list"></div>
       </div>
       <div class="card">
-        <div class="card-header">Proveedores por saturación (peor a mejor)</div>
+        <div class="card-header" style="display:flex;align-items:center;justify-content:space-between">
+          <span>Proveedores por saturación (peor a mejor)</span>
+          <span id="ctrl-dash-prov-avg" style="font-size:11px;font-weight:700;color:var(--texto-suave);text-transform:none;letter-spacing:0"></span>
+        </div>
         <div id="ctrl-dash-prov-list" class="rank-list"></div>
       </div>
     </div>
@@ -1863,6 +1871,26 @@ function renderCtrlDashboard(){
     </div>
   `;
 
+  const dayMap = {};
+  rows.forEach(({r})=>{
+    const d = new Date(r.fecha);
+    if(isNaN(d)) return;
+    const key = r.fecha;
+    dayMap[key] = (dayMap[key]||0)+1;
+  });
+  const dayKeys = Object.keys(dayMap).sort().slice(-14);
+  const pnsChartEl = document.getElementById('ctrl-dash-chart-pns');
+  const maxPnDia = dayKeys.length ? Math.max(...dayKeys.map(k=>dayMap[k])) : 1;
+  pnsChartEl.innerHTML = dayKeys.length ? dayKeys.map(k=>{
+    const count = dayMap[k];
+    const [,m,d] = k.split('-');
+    return `<div class="bar-chart-col">
+      <div class="bar-chart-val">${count}</div>
+      <div class="bar-chart-bar" style="height:${Math.max(100*count/maxPnDia,3)}%;background:var(--rojo)"></div>
+      <div class="bar-chart-lbl">${d}/${m}</div>
+    </div>`;
+  }).join('') : '<div style="color:var(--texto-faint);font-size:12px;text-align:center;padding:60px 0;width:100%">Sin datos en el período</div>';
+
   const weekMap = {};
   rows.forEach(({r,l,perLineSat})=>{
     const sat = perLineSat ? l.saturacion : r.saturacion;
@@ -1902,9 +1930,17 @@ function renderCtrlDashboard(){
     const prov = r.proveedor_nombre || 'Sin proveedor';
     (provSat[prov] = provSat[prov]||[]).push(sat);
   });
+  const provAvgAll = Object.entries(provSat).map(([prov,vals])=>Math.round(vals.reduce((a,b)=>a+b,0)/vals.length));
   const provRanking = Object.entries(provSat)
     .map(([prov,vals])=>[prov, Math.round(vals.reduce((a,b)=>a+b,0)/vals.length)])
     .sort((a,b)=>a[1]-b[1]).slice(0,10);
+  const provAvgEl = document.getElementById('ctrl-dash-prov-avg');
+  if(provAvgAll.length){
+    const promedioEntreProveedores = Math.round(provAvgAll.reduce((a,b)=>a+b,0)/provAvgAll.length);
+    provAvgEl.textContent = `Promedio entre proveedores: ${promedioEntreProveedores}%`;
+  } else {
+    provAvgEl.textContent = '';
+  }
   document.getElementById('ctrl-dash-prov-list').innerHTML = provRanking.length
     ? provRanking.map(([prov,avg])=>{
         const color = avg>=80?'var(--verde)':avg>=50?'var(--naranja)':'var(--rojo)';
