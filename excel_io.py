@@ -1,5 +1,6 @@
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Font, PatternFill, Alignment
+from psycopg2.extras import execute_values
 from io import BytesIO
 from database import get_conn
 
@@ -186,4 +187,70 @@ def import_proveedores_excel(file_stream):
 
     conn.commit()
     conn.close()
+    return inserted, errors
+
+
+def export_pn_proveedores_excel():
+    conn = get_conn()
+    c = conn.cursor()
+    c.execute("SELECT numero_pieza, proveedor_nombre, proveedor_codigo FROM pn_proveedores ORDER BY numero_pieza")
+    rows = c.fetchall()
+    conn.close()
+
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "PN-Proveedores"
+    headers = ["PN", "Proveedor", "Código Proveedor"]
+    ws.append(headers)
+    header_fill = PatternFill(start_color="C8102E", end_color="C8102E", fill_type="solid")
+    for cell in ws[1]:
+        cell.fill = header_fill
+        cell.font = Font(color="FFFFFF", bold=True)
+
+    for r in rows:
+        ws.append([r["numero_pieza"], r["proveedor_nombre"], r["proveedor_codigo"]])
+
+    for col in ws.columns:
+        max_len = max((len(str(c.value)) for c in col if c.value is not None), default=10)
+        ws.column_dimensions[col[0].column_letter].width = min(max_len + 2, 40)
+
+    buf = BytesIO()
+    wb.save(buf)
+    buf.seek(0)
+    return buf
+
+
+def import_pn_proveedores_excel(file_stream):
+    """Import masivo vía execute_values (una sola vuelta a la base, en lotes de
+    1000 filas) en vez de un INSERT por fila — con archivos de miles de filas
+    (ej. 17.000+) un INSERT por fila puede tardar minutos y disparar un
+    timeout de gunicorn."""
+    wb = load_workbook(file_stream, data_only=True)
+    ws = wb.active
+
+    rows_to_insert = []
+    errors = []
+    for row_idx, row in enumerate(ws.iter_rows(min_row=2, values_only=True), start=2):
+        if not row or all(v is None for v in row):
+            continue
+        pn, proveedor, codigo = (list(row) + [None] * 3)[:3]
+        if not pn or not proveedor:
+            errors.append(f"Fila {row_idx}: falta PN o proveedor")
+            continue
+        rows_to_insert.append((str(pn).strip(), codigo, str(proveedor).strip()))
+
+    inserted = 0
+    if rows_to_insert:
+        conn = get_conn()
+        c = conn.cursor()
+        execute_values(c, """
+            INSERT INTO pn_proveedores (numero_pieza, proveedor_codigo, proveedor_nombre)
+            VALUES %s
+            ON CONFLICT (numero_pieza, proveedor_nombre) DO UPDATE SET
+                proveedor_codigo = EXCLUDED.proveedor_codigo
+        """, rows_to_insert, page_size=1000)
+        inserted = len(rows_to_insert)
+        conn.commit()
+        conn.close()
+
     return inserted, errors
