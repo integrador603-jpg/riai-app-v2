@@ -342,7 +342,7 @@ def list_control():
     c = conn.cursor()
     c.execute("""
         SELECT DISTINCT c.id, c.fecha, c.proveedor_nombre, c.emb_tipo,
-               c.saturacion, c.creado_en
+               c.emb_identico, c.saturacion, c.creado_en
         FROM control c
         LEFT JOIN control_lineas cl ON cl.control_id = c.id
         WHERE LOWER(c.proveedor_nombre) LIKE %s
