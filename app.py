@@ -2,7 +2,10 @@ from flask import Flask, jsonify, request, send_from_directory, session, send_fi
 from flask_cors import CORS
 from database import get_conn, init_db
 from auth import verify_user, create_user, init_default_admin, login_required, require_role
-from excel_io import export_riai_excel, export_proveedores_excel, import_riai_excel, import_proveedores_excel
+from excel_io import (
+    export_riai_excel, export_proveedores_excel, import_riai_excel, import_proveedores_excel,
+    export_pn_proveedores_excel, import_pn_proveedores_excel,
+)
 from pdf_generator import generate_riai_pdf
 from storage_r2 import upload_base64_image
 import os
@@ -116,8 +119,14 @@ def get_pieza(numero):
     c = conn.cursor()
     c.execute("SELECT * FROM piezas WHERE numero_pieza=%s", (numero,))
     row = c.fetchone()
+    resultado = dict(row) if row else {}
+    c.execute(
+        "SELECT proveedor_codigo, proveedor_nombre FROM pn_proveedores WHERE numero_pieza=%s ORDER BY proveedor_nombre",
+        (numero,)
+    )
+    resultado["proveedores"] = [dict(p) for p in c.fetchall()]
     conn.close()
-    return jsonify(dict(row)) if row else (jsonify({}), 200)
+    return jsonify(resultado), 200
 
 # ── RIAI ──────────────────────────────────────────────────────────────────
 RIAI_FIELDS = [
@@ -271,6 +280,22 @@ def import_proveedores():
     inserted, errors = import_proveedores_excel(file.stream)
     return jsonify({"status": "ok", "inserted": inserted, "errors": errors})
 
+@app.route("/api/export/pn_proveedores")
+@login_required
+def export_pn_proveedores():
+    buf = export_pn_proveedores_excel()
+    return send_file(buf, as_attachment=True, download_name="PN_Proveedores_export.xlsx",
+                     mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+
+@app.route("/api/import/pn_proveedores", methods=["POST"])
+@require_role("admin", "operador")
+def import_pn_proveedores():
+    if "file" not in request.files:
+        return jsonify({"error": "No se envió ningún archivo"}), 400
+    file = request.files["file"]
+    inserted, errors = import_pn_proveedores_excel(file.stream)
+    return jsonify({"status": "ok", "inserted": inserted, "errors": errors})
+
 @app.route("/api/export/imagenes")
 @login_required
 def export_imagenes():
@@ -326,7 +351,7 @@ def list_control():
     """, (f"%{q}%", f"%{q}%"))
     rows = [dict(r) for r in c.fetchall()]
     for r in rows:
-        c.execute("SELECT numero_pieza, cantidad FROM control_lineas WHERE control_id=%s ORDER BY orden", (r["id"],))
+        c.execute("SELECT numero_pieza, cantidad, saturacion FROM control_lineas WHERE control_id=%s ORDER BY orden", (r["id"],))
         r["lineas"] = [dict(x) for x in c.fetchall()]
     conn.close()
     return jsonify(rows)
@@ -433,5 +458,5 @@ def analizar_saturacion():
 # ── RUN ───────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     print("✅ Base de datos lista")
-    print("🚀 Servidor corriendo en http://localhost:5000")
+    print(" Servidor corriendo en http://localhost:5000")
     app.run(debug=True, host="0.0.0.0", port=5000)
