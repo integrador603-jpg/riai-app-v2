@@ -826,6 +826,18 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
         </th>
         <th>
           <div class="th-filter">
+            <span>PN</span>
+            <button type="button" class="th-filter-btn" id="th-filter-btn-cpn" onclick="toggleColFilter('cpn',event)" aria-label="Filtrar por PN">
+              <svg viewBox="0 0 24 24"><path d="M3 4h18l-7 8v6l-4 2v-8L3 4z"/></svg>
+            </button>
+            <div class="th-filter-pop" id="th-filter-pop-cpn">
+              <input type="text" id="cfilter-pn" autocomplete="off" placeholder="Buscar PN..." oninput="applyControlFilters()">
+              <div class="th-filter-actions"><button type="button" class="btn btn-secondary btn-xs" onclick="clearControlColFilter('cpn')">Limpiar</button></div>
+            </div>
+          </div>
+        </th>
+        <th>
+          <div class="th-filter">
             <span>Proveedor</span>
             <button type="button" class="th-filter-btn" id="th-filter-btn-cproveedor" onclick="toggleColFilter('cproveedor',event)" aria-label="Filtrar por proveedor">
               <svg viewBox="0 0 24 24"><path d="M3 4h18l-7 8v6l-4 2v-8L3 4z"/></svg>
@@ -852,18 +864,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
             </div>
           </div>
         </th>
-        <th>
-          <div class="th-filter">
-            <span>PN</span>
-            <button type="button" class="th-filter-btn" id="th-filter-btn-cpn" onclick="toggleColFilter('cpn',event)" aria-label="Filtrar por PN">
-              <svg viewBox="0 0 24 24"><path d="M3 4h18l-7 8v6l-4 2v-8L3 4z"/></svg>
-            </button>
-            <div class="th-filter-pop" id="th-filter-pop-cpn">
-              <input type="text" id="cfilter-pn" autocomplete="off" placeholder="Buscar PN..." oninput="applyControlFilters()">
-              <div class="th-filter-actions"><button type="button" class="btn btn-secondary btn-xs" onclick="clearControlColFilter('cpn')">Limpiar</button></div>
-            </div>
-          </div>
-        </th>
+
         <th>S/N</th><th>Cantidad</th><th>Saturación</th><th>Acciones</th>
       </tr></thead>
       <tbody id="ctrl-body"><tr><td colspan="8" style="text-align:center;color:#aaa;padding:24px">Cargando...</td></tr></tbody>
@@ -1516,6 +1517,7 @@ function clearCtrlForm(){
   ['ctrl-emb-largo','ctrl-emb-ancho','ctrl-emb-alto','ctrl-sec-largo','ctrl-sec-ancho','ctrl-sec-alto','ctrl-notas'].forEach(id=>setVal(id,''));
   embFotos = { same:{cerrada:null,abierta:null,etiqueta:null}, sec:{cerrada:null,abierta:null,etiqueta:null} };
   ctrlSaturacion = { same:null, sec:null };
+  pendingEmbalajeAnalysis = { same:null, sec:null };
   ['same-cerrada','same-abierta','same-etiqueta','sec-cerrada','sec-abierta','sec-etiqueta'].forEach(k=>{
     const btn=document.getElementById('fb-'+k); if(btn) btn.setAttribute('aria-pressed','false');
   });
@@ -1560,13 +1562,20 @@ function onCtrlEmbTipoChange(modo){
   }
 }
 
+let pendingEmbalajeAnalysis = { same:null, sec:null };
+
 async function analizarYActualizarSaturacionEmbalaje(modo, fotoBase64){
+  const satRef = ctrlSaturacion;       // referencia capturada AHORA, sobrevive aunque el formulario se cierre y reinicie
+  const esActual = () => satRef === ctrlSaturacion;
   const satPrefix = modo==='same' ? 'ctrl-same' : 'ctrl-sec';
-  setSatUI(satPrefix, null, true);
-  const pct = await analizarSaturacionFoto(fotoBase64);
-  if(pct===null){ ctrlSaturacion[modo] = null; setSatUI(satPrefix, 'error'); return; }
-  ctrlSaturacion[modo] = pct;
-  setSatUI(satPrefix, pct);
+  if(esActual()) setSatUI(satPrefix, null, true);
+  const promesa = analizarSaturacionFoto(fotoBase64).then(pct=>{
+    if(pct===null){ satRef[modo] = null; if(esActual()) setSatUI(satPrefix, 'error'); return; }
+    satRef[modo] = pct;
+    if(esActual()) setSatUI(satPrefix, pct);
+  });
+  pendingEmbalajeAnalysis[modo] = promesa;
+  await promesa;
 }
 
 function reintentarAnalisisEmbalaje(modo){
@@ -1801,14 +1810,14 @@ async function analizarLineaCarton(id, fotoBase64){
   if(!linea) return;
   linea._analizando = true; linea._satError = false;
   renderLineas('diff');
-  const pct = await analizarSaturacionFoto(fotoBase64);
-  const l2 = lineasDiff.find(l=>l.id===id);
-  if(l2){
-    l2._analizando = false;
-    if(pct===null){ l2._satError = true; }
-    else { l2.saturacion = pct; l2._satError = false; }
-  }
-  renderLineas('diff');
+  const promesa = analizarSaturacionFoto(fotoBase64).then(pct=>{
+    linea._analizando = false;
+    if(pct===null){ linea._satError = true; }
+    else { linea.saturacion = pct; linea._satError = false; }
+    if(lineasDiff.includes(linea)) renderLineas('diff');
+  });
+  linea._analysisPromise = promesa;
+  await promesa;
 }
 
 function reintentarAnalisisLinea(id){
@@ -1848,48 +1857,77 @@ async function saveControl(){
     payload.emb_largo = g('ctrl-emb-largo') || null;
     payload.emb_ancho = g('ctrl-emb-ancho') || null;
     payload.emb_alto = g('ctrl-emb-alto') || null;
-    payload.saturacion = ctrlSaturacion.same;
-    payload.lineas = lineasSame.map(l => ({
-      numero_pieza: l.numero_pieza, cantidad: l.cantidad || null,
-      tipo: null, largo: null, ancho: null, alto: null,
-      img_foto1: l.img_foto1, img_foto2: l.img_foto2, saturacion: l.saturacion,
-    }));
   } else {
     payload.emb_tipo = g('ctrl-sec-tipo');
     payload.emb_tipo_otro = g('ctrl-sec-tipo') === 'Otro' ? g('ctrl-sec-tipo-otro') : null;
     payload.emb_largo = g('ctrl-sec-largo') || null;
     payload.emb_ancho = g('ctrl-sec-ancho') || null;
     payload.emb_alto = g('ctrl-sec-alto') || null;
-    payload.saturacion = ctrlSaturacion.sec;
-    payload.lineas = lineasDiff.map(l => ({
-      numero_pieza: l.numero_pieza, cantidad: l.cantidad || null,
-      tipo: l.tipo, largo: l.largo || null, ancho: l.ancho || null, alto: l.alto || null,
-      img_foto1: l.img_foto1, img_foto2: l.img_foto2, saturacion: l.saturacion,
-    }));
   }
+
+  // Referencias "congeladas" al momento de guardar: sobreviven aunque el
+  // formulario se cierre y se abra uno nuevo (lineasSame/lineasDiff/
+  // ctrlSaturacion se reasignan a objetos nuevos en ese caso, pero estas
+  // constantes siguen apuntando a los de ESTE guardado).
+  const satRef = ctrlSaturacion;
+  const lineasSameRef = lineasSame;
+  const lineasDiffRef = lineasDiff;
+
+  // Análisis de saturación que puedan seguir en curso para este registro
+  // (embalaje y/o piezas) — se esperan en segundo plano antes de mandar
+  // el guardado, para no guardar la saturación vacía si todavía se está
+  // calculando.
+  const pendientes = [
+    pendingEmbalajeAnalysis.same, pendingEmbalajeAnalysis.sec,
+    ...lineasSameRef.map(l=>l._analysisPromise),
+    ...lineasDiffRef.map(l=>l._analysisPromise),
+  ].filter(Boolean);
 
   const id = document.getElementById('ctrl-id').value;
   const url = id ? `${API}/control/${id}` : `${API}/control`;
   const method = id ? 'PUT' : 'POST';
 
-  // Cerramos el formulario y liberamos la pantalla YA: el guardado (con fotos) sigue en segundo plano
+  // Cerramos el formulario y liberamos la pantalla YA: el guardado (con fotos
+  // y, si hace falta, la espera del análisis de saturación) sigue en segundo plano
   toggleCtrlForm(false);
   ctrlPendingSaves++; updateCtrlPendingIndicator();
-  toast(id?'Actualizando en segundo plano…':'Guardando en segundo plano…');
+  toast(pendientes.length
+    ? 'Guardando en segundo plano (esperando análisis de saturación)…'
+    : (id?'Actualizando en segundo plano…':'Guardando en segundo plano…'));
 
-  fetch(url, {method, headers:{'Content-Type':'application/json'}, credentials:'include', body:JSON.stringify(payload)})
-    .then(res=>{
+  (async()=>{
+    if(pendientes.length) await Promise.allSettled(pendientes);
+
+    if(same){
+      payload.saturacion = satRef.same;
+      payload.lineas = lineasSameRef.map(l => ({
+        numero_pieza: l.numero_pieza, cantidad: l.cantidad || null,
+        tipo: null, largo: null, ancho: null, alto: null,
+        img_foto1: l.img_foto1, img_foto2: l.img_foto2, saturacion: l.saturacion,
+      }));
+    } else {
+      payload.saturacion = satRef.sec;
+      payload.lineas = lineasDiffRef.map(l => ({
+        numero_pieza: l.numero_pieza, cantidad: l.cantidad || null,
+        tipo: l.tipo, largo: l.largo || null, ancho: l.ancho || null, alto: l.alto || null,
+        img_foto1: l.img_foto1, img_foto2: l.img_foto2, saturacion: l.saturacion,
+      }));
+    }
+
+    try{
+      const res = await fetch(url, {method, headers:{'Content-Type':'application/json'}, credentials:'include', body:JSON.stringify(payload)});
       if(res.ok || res.status===201){
         toast(id?'Registro actualizado':'Registro guardado');
       } else {
         toast('Error al guardar el registro. Revisalo en la lista.',false);
       }
-    })
-    .catch(()=>{ toast('Error de conexión al guardar el registro.',false); })
-    .finally(()=>{
+    }catch(e){
+      toast('Error de conexión al guardar el registro.',false);
+    }finally{
       ctrlPendingSaves=Math.max(0,ctrlPendingSaves-1); updateCtrlPendingIndicator();
       loadControl();
-    });
+    }
+  })();
 }
 
 let ctrlPendingSaves = 0;
@@ -1953,9 +1991,9 @@ function renderControlRows(rows){
   tbody.innerHTML=rows.map(({r,l,satMostrada})=>`
     <tr>
       <td>${r.fecha||'—'}</td>
+      <td><strong>${l.numero_pieza||'—'}</strong></td>
       <td>${r.proveedor_nombre||'—'}</td>
       <td>${r.emb_tipo||'—'}</td>
-      <td><strong>${l.numero_pieza||'—'}</strong></td>
       <td><span class="badge ${r.emb_identico===1?'badge-ok':'badge-draft'}">${r.emb_identico===1?'Sí':'No'}</span></td>
       <td>${l.cantidad!==null&&l.cantidad!==undefined&&l.cantidad!==''?l.cantidad:'—'}</td>
       <td>${satBarHtml(satMostrada)}</td>
