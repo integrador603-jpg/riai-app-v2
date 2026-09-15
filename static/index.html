@@ -1955,8 +1955,8 @@ function renderControlRows(rows){
       <td>${r.fecha||'—'}</td>
       <td>${r.proveedor_nombre||'—'}</td>
       <td>${r.emb_tipo||'—'}</td>
-      <td><span class="badge ${r.emb_identico===1?'badge-ok':'badge-draft'}">${r.emb_identico===1?'Sí':'No'}</span></td>
       <td><strong>${l.numero_pieza||'—'}</strong></td>
+      <td><span class="badge ${r.emb_identico===1?'badge-ok':'badge-draft'}">${r.emb_identico===1?'Sí':'No'}</span></td>
       <td>${l.cantidad!==null&&l.cantidad!==undefined&&l.cantidad!==''?l.cantidad:'—'}</td>
       <td>${satBarHtml(satMostrada)}</td>
       <td class="actions">
