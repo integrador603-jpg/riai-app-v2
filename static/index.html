@@ -706,9 +706,8 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
         </div>
       </div>
 
-      <div class="section-label">Piezas en el embalaje</div>
+      <div class="section-label">Pieza del embalaje</div>
       <div id="ctrl-lineas-same"></div>
-      <button type="button" class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="addLinea('same')">+ Agregar pieza</button>
     </div>
 
     <div id="ctrl-diff-block" style="display:none">
@@ -1481,6 +1480,7 @@ function clearCtrlForm(){
   });
   setSecSatUI(null);
   lineasSame=[]; lineasDiff=[]; openLineaId=null;
+  addLinea('same');
   renderLineas('same'); renderLineas('diff');
   onCtrlSameChange();
   onCtrlEmbTipoChange('same');
@@ -1492,6 +1492,7 @@ function onCtrlSameChange(){
   const same = checked ? checked.value==='si' : true;
   document.getElementById('ctrl-same-block').style.display=same?'block':'none';
   document.getElementById('ctrl-diff-block').style.display=same?'none':'block';
+  if(same && lineasSame.length===0) addLinea('same');
 }
 
 function selectEmbTipo(modo, btn){
@@ -1618,9 +1619,10 @@ function renderLineas(modo){
           <input type="file" id="up-${l.id}-2" accept="image/*" capture="environment" style="display:none" onchange="previewLineaImg(this,'${modo}','${l.id}','img_foto2')">
         </div>
         ${satBadgeLinea(l)}
+        ${modo==='diff' ? `
         <div style="display:flex;justify-content:flex-end;margin-top:10px">
           <button type="button" class="btn btn-danger btn-xs" onclick="removeLinea('${modo}','${l.id}')">Quitar pieza</button>
-        </div>
+        </div>` : ''}
       </div>
     </div>`;
   }).join('');
@@ -2005,7 +2007,7 @@ async function editControl(id){
     document.getElementById('ctrl-emb-ancho').value = d.emb_ancho || '';
     document.getElementById('ctrl-emb-alto').value = d.emb_alto || '';
     lineasSame = (d.lineas||[]).map(l => ({id:'ln'+(lineaCounter++), numero_pieza:l.numero_pieza, cantidad:l.cantidad, img_foto1:l.img_foto1, img_foto2:l.img_foto2, saturacion:l.saturacion}));
-    renderLineas('same');
+    if(!lineasSame.length) addLinea('same'); else renderLineas('same');
   } else {
     setEmbTipoBtns('sec', d.emb_tipo || 'Caja de cartón');
     if(d.emb_tipo_otro) document.getElementById('ctrl-sec-tipo-otro').value = d.emb_tipo_otro;
