@@ -168,7 +168,8 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
 .foto-view-btn.has-photo:hover{background:#d7f2df;border-color:var(--verde)}
 .foto-view-btn:disabled{cursor:not-allowed;opacity:.5}
 .foto-view-btn:disabled:hover{border-color:var(--borde-strong);color:var(--texto-suave);background:var(--surface)}
-.foto-view-btn .dot{font-size:12px;line-height:0;font-weight:700}
+.foto-view-btn .dot{display:inline-flex;line-height:0}
+.foto-view-btn .dot svg{width:13px;height:13px;fill:currentColor}
 
 /* ── TOAST ──────────────────────────────────────────────────────────── */
 .toast{position:fixed;bottom:28px;right:28px;padding:13px 22px;border-radius:var(--r-md);color:#fff;font-size:13px;font-weight:600;z-index:9999;opacity:0;transform:translateY(8px);transition:all .25s var(--ease);pointer-events:none;box-shadow:var(--shadow-lg)}
@@ -228,7 +229,8 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
 .emb-tipo-btn[aria-pressed="true"]{background:var(--rojo);border-color:var(--rojo);color:#fff}
 .foto-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 15px;border:1px solid var(--borde-strong);border-radius:var(--r-pill);background:var(--surface);cursor:pointer;font-size:12px;font-weight:600;color:var(--texto-suave);transition:all .15s var(--ease)}
 .foto-btn:hover{border-color:var(--rojo);color:var(--rojo)}
-.foto-btn .dot{color:var(--texto-faint);font-size:12px;line-height:0;font-weight:700}
+.foto-btn .dot{color:var(--texto-faint);display:inline-flex;line-height:0}
+.foto-btn .dot svg{width:13px;height:13px;fill:currentColor}
 .foto-btn[aria-pressed="true"]{background:var(--verde-tint);border-color:var(--verde);color:#1b7a37}
 .foto-btn[aria-pressed="true"] .dot{color:var(--verde)}
 .foto-btn.done{background:var(--verde-tint);border-color:var(--verde);color:#1b7a37}
@@ -696,9 +698,9 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
         <div class="fld" style="margin-top:14px">
           <label>Fotos</label>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
-            <button type="button" class="foto-btn" id="fb-same-cerrada" aria-pressed="false" onclick="document.getElementById('up-same-cerrada').click()"><span class="dot">✓</span> Caja cerrada</button>
-            <button type="button" class="foto-btn" id="fb-same-abierta" aria-pressed="false" onclick="document.getElementById('up-same-abierta').click()"><span class="dot">✓</span> Caja abierta</button>
-            <button type="button" class="foto-btn" id="fb-same-etiqueta" aria-pressed="false" onclick="document.getElementById('up-same-etiqueta').click()"><span class="dot">✓</span> Etiqueta proveedor</button>
+            <button type="button" class="foto-btn" id="fb-same-cerrada" aria-pressed="false" onclick="document.getElementById('up-same-cerrada').click()"><span class="dot"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg></span> Caja cerrada</button>
+            <button type="button" class="foto-btn" id="fb-same-abierta" aria-pressed="false" onclick="document.getElementById('up-same-abierta').click()"><span class="dot"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg></span> Caja abierta</button>
+            <button type="button" class="foto-btn" id="fb-same-etiqueta" aria-pressed="false" onclick="document.getElementById('up-same-etiqueta').click()"><span class="dot"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg></span> Etiqueta proveedor</button>
           </div>
           <input type="file" id="up-same-cerrada" accept="image/*" capture="environment" style="display:none" onchange="previewEmbImg(this,'same','cerrada')">
           <input type="file" id="up-same-abierta" accept="image/*" capture="environment" style="display:none" onchange="previewEmbImg(this,'same','abierta')">
@@ -742,9 +744,9 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
         <div class="fld" style="margin-top:14px">
           <label>Fotos</label>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
-            <button type="button" class="foto-btn" id="fb-sec-cerrada" aria-pressed="false" onclick="document.getElementById('up-sec-cerrada').click()"><span class="dot">✓</span> Caja cerrada</button>
-            <button type="button" class="foto-btn" id="fb-sec-abierta" aria-pressed="false" onclick="document.getElementById('up-sec-abierta').click()"><span class="dot">✓</span> Caja abierta</button>
-            <button type="button" class="foto-btn" id="fb-sec-etiqueta" aria-pressed="false" onclick="document.getElementById('up-sec-etiqueta').click()"><span class="dot">✓</span> Etiqueta proveedor</button>
+            <button type="button" class="foto-btn" id="fb-sec-cerrada" aria-pressed="false" onclick="document.getElementById('up-sec-cerrada').click()"><span class="dot"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg></span> Caja cerrada</button>
+            <button type="button" class="foto-btn" id="fb-sec-abierta" aria-pressed="false" onclick="document.getElementById('up-sec-abierta').click()"><span class="dot"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg></span> Caja abierta</button>
+            <button type="button" class="foto-btn" id="fb-sec-etiqueta" aria-pressed="false" onclick="document.getElementById('up-sec-etiqueta').click()"><span class="dot"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg></span> Etiqueta proveedor</button>
           </div>
           <input type="file" id="up-sec-cerrada" accept="image/*" capture="environment" style="display:none" onchange="previewEmbImg(this,'sec','cerrada')">
           <input type="file" id="up-sec-abierta" accept="image/*" capture="environment" style="display:none" onchange="previewEmbImg(this,'sec','abierta')">
@@ -1384,7 +1386,7 @@ function renderRIAI(d){
   const L=RLABELS[d.lang]||RLABELS.es;
   const ul=d.ul||'mm',uw=d.uw||'kg';
   const fv=(lbl,val)=>`<span class="riai-lbl">${lbl}</span><span class="riai-val">${val||'—'}</span>`;
-  const imgBox=(src,lbl)=>src&&src.length>10?`<button type="button" class="foto-view-btn has-photo" onclick="openLightbox('${src}')"><span class="dot">✓</span> ${lbl}</button>`:`<button type="button" class="foto-view-btn" disabled><span class="dot">○</span> ${lbl}</button>`;
+  const imgBox=(src,lbl)=>src&&src.length>10?`<button type="button" class="foto-view-btn has-photo" onclick="openLightbox('${src}')"><span class="dot"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg></span> ${lbl}</button>`:`<button type="button" class="foto-view-btn" disabled><span class="dot"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/></svg></span> ${lbl}</button>`;
   const pkgRow=(pkg,title)=>`
     <tr><td colspan="10" class="riai-subsec">${title}</td></tr>
     <tr>
@@ -1612,8 +1614,8 @@ function renderLineas(modo){
         <div class="fld" style="margin-top:12px">
           <label>Fotos</label>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
-            <button type="button" class="foto-btn" aria-pressed="${l.img_foto1?'true':'false'}" onclick="document.getElementById('up-${l.id}-1').click()"><span class="dot">✓</span> Foto 1</button>
-            <button type="button" class="foto-btn" aria-pressed="${l.img_foto2?'true':'false'}" onclick="document.getElementById('up-${l.id}-2').click()"><span class="dot">✓</span> Foto 2</button>
+            <button type="button" class="foto-btn" aria-pressed="${l.img_foto1?'true':'false'}" onclick="document.getElementById('up-${l.id}-1').click()"><span class="dot"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg></span> Foto 1</button>
+            <button type="button" class="foto-btn" aria-pressed="${l.img_foto2?'true':'false'}" onclick="document.getElementById('up-${l.id}-2').click()"><span class="dot"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg></span> Foto 2</button>
           </div>
           <input type="file" id="up-${l.id}-1" accept="image/*" capture="environment" style="display:none" onchange="previewLineaImg(this,'${modo}','${l.id}','img_foto1')">
           <input type="file" id="up-${l.id}-2" accept="image/*" capture="environment" style="display:none" onchange="previewLineaImg(this,'${modo}','${l.id}','img_foto2')">
@@ -2027,7 +2029,7 @@ async function viewControl(id){
   const d=await fetch(`${API}/control/${id}`,{credentials:'include'}).then(r=>r.json()).catch(()=>null);
   if(!d){toast('Error al cargar',false);return;}
   const same = d.emb_identico===1;
-  const imgBox=(src,lbl)=>src&&src.length>10?`<button type="button" class="foto-view-btn has-photo" onclick="openLightbox('${src}')"><span class="dot">✓</span> ${lbl}</button>`:`<button type="button" class="foto-view-btn" disabled><span class="dot">○</span> ${lbl}</button>`;
+  const imgBox=(src,lbl)=>src&&src.length>10?`<button type="button" class="foto-view-btn has-photo" onclick="openLightbox('${src}')"><span class="dot"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg></span> ${lbl}</button>`:`<button type="button" class="foto-view-btn" disabled><span class="dot"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/></svg></span> ${lbl}</button>`;
 
   let lineasHtml = (d.lineas||[]).map(l=>`
     <tr>
@@ -2037,8 +2039,8 @@ async function viewControl(id){
       <td>${l.largo&&l.ancho&&l.alto ? `${l.largo}×${l.ancho}×${l.alto}` : '—'}</td>
       <td>${l.saturacion!==null&&l.saturacion!==undefined?l.saturacion+'%':'—'}</td>
       <td><div style="display:flex;gap:6px;flex-wrap:wrap">${[
-        l.img_foto1?`<button type="button" class="foto-btn" aria-pressed="true" onclick="openLightbox('${l.img_foto1}')"><span class="dot">✓</span> Foto 1</button>`:'',
-        l.img_foto2?`<button type="button" class="foto-btn" aria-pressed="true" onclick="openLightbox('${l.img_foto2}')"><span class="dot">✓</span> Foto 2</button>`:''
+        l.img_foto1?`<button type="button" class="foto-btn" aria-pressed="true" onclick="openLightbox('${l.img_foto1}')"><span class="dot"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg></span> Foto 1</button>`:'',
+        l.img_foto2?`<button type="button" class="foto-btn" aria-pressed="true" onclick="openLightbox('${l.img_foto2}')"><span class="dot"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg></span> Foto 2</button>`:''
       ].filter(Boolean).join('') || '<span style="color:var(--texto-faint);font-size:11px">—</span>'}</div></td>
     </tr>`).join('');
 
@@ -2063,9 +2065,15 @@ async function viewControl(id){
       </tr>
     </table>
     <table>
+      ${same ? `
+      <tr><td colspan="2" class="riai-sec">PIEZA</td></tr>
+      <tr>
+        <td><span class="riai-lbl">PN</span><span class="riai-val">${(d.lineas&&d.lineas[0]&&d.lineas[0].numero_pieza)||'—'}</span></td>
+        <td><span class="riai-lbl">Cantidad</span><span class="riai-val">${(d.lineas&&d.lineas[0]&&d.lineas[0].cantidad)||'—'}</span></td>
+      </tr>` : `
       <tr><td colspan="6" class="riai-sec">PIEZAS</td></tr>
       <tr><td class="riai-subsec">PN</td><td class="riai-subsec">Cantidad</td><td class="riai-subsec">Tipo</td><td class="riai-subsec">Medidas</td><td class="riai-subsec">Saturación</td><td class="riai-subsec">Fotos</td></tr>
-      ${lineasHtml || '<tr><td colspan="6" style="text-align:center;color:#aaa">Sin piezas</td></tr>'}
+      ${lineasHtml || '<tr><td colspan="6" style="text-align:center;color:#aaa">Sin piezas</td></tr>'}`}
     </table>
   </div>`;
   document.getElementById('riai-preview-content').innerHTML=html;
