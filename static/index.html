@@ -194,7 +194,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
 .toast-ok{background:#1D1D1F}.toast-err{background:#E5473C}
 
 /* ── DASHBOARD STATS (si se usan) ──────────────────────────────────── */
-.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:20px}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:20px}
 .stat-card{background:var(--surface);border-radius:var(--r-lg);padding:20px;box-shadow:var(--shadow-sm);border:1px solid var(--borde);border-left:4px solid transparent;display:flex;align-items:center;gap:14px}
 .stat-accent-red{border-left-color:var(--rojo)}
 .stat-accent-green{border-left-color:var(--verde)}
@@ -728,6 +728,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
           <div class="sat-bar-wrap">
             <div class="sat-bar-bg"><div id="ctrl-same-sat-bar" class="sat-bar-fill" style="width:0%;background:#ccc"></div></div>
             <div id="ctrl-same-sat-pct" class="sat-pct" style="color:var(--texto-suave)">—</div>
+            <button type="button" class="btn btn-outline btn-xs" id="ctrl-same-sat-retry" style="display:none" onclick="reintentarAnalisisEmbalaje('same')">Reintentar</button>
           </div>
           <div class="auto-tag">Se calculará automáticamente al analizar la foto "Caja abierta"</div>
         </div>
@@ -782,6 +783,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
           <div class="sat-bar-wrap">
             <div class="sat-bar-bg"><div id="ctrl-sec-sat-bar" class="sat-bar-fill" style="width:0%;background:#ccc"></div></div>
             <div id="ctrl-sec-sat-pct" class="sat-pct" style="color:var(--texto-suave)">—</div>
+            <button type="button" class="btn btn-outline btn-xs" id="ctrl-sec-sat-retry" style="display:none" onclick="reintentarAnalisisEmbalaje('sec')">Reintentar</button>
           </div>
           <div class="auto-tag">Se calculará automáticamente al analizar la foto</div>
         </div>
@@ -862,9 +864,9 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
             </div>
           </div>
         </th>
-        <th>Cantidad</th><th>Saturación</th><th>Acciones</th>
+        <th>S/N</th><th>Cantidad</th><th>Saturación</th><th>Acciones</th>
       </tr></thead>
-      <tbody id="ctrl-body"><tr><td colspan="7" style="text-align:center;color:#aaa;padding:24px">Cargando...</td></tr></tbody>
+      <tbody id="ctrl-body"><tr><td colspan="8" style="text-align:center;color:#aaa;padding:24px">Cargando...</td></tr></tbody>
     </table></div>
   </div>
   </div><!-- /ctrl-list-block -->
@@ -892,8 +894,11 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
         <div id="ctrl-dash-chart-saturacion" class="bar-chart"></div>
       </div>
       <div class="card">
-        <div class="card-header">Distribución por tipo de embalaje</div>
-        <div id="ctrl-dash-tipo-list" class="rank-list"></div>
+        <div class="card-header">Saturación por tipo de embalaje</div>
+        <table class="data-table" style="font-size:12px">
+          <thead><tr><th>Tipo</th><th>Primario</th><th>Secundario</th></tr></thead>
+          <tbody id="ctrl-dash-tipo-sat"></tbody>
+        </table>
       </div>
       <div class="card">
         <div class="card-header" style="display:flex;align-items:center;justify-content:space-between">
@@ -1559,8 +1564,15 @@ async function analizarYActualizarSaturacionEmbalaje(modo, fotoBase64){
   const satPrefix = modo==='same' ? 'ctrl-same' : 'ctrl-sec';
   setSatUI(satPrefix, null, true);
   const pct = await analizarSaturacionFoto(fotoBase64);
+  if(pct===null){ ctrlSaturacion[modo] = null; setSatUI(satPrefix, 'error'); return; }
   ctrlSaturacion[modo] = pct;
   setSatUI(satPrefix, pct);
+}
+
+function reintentarAnalisisEmbalaje(modo){
+  const foto = embFotos[modo]?.abierta;
+  if(!foto) return;
+  analizarYActualizarSaturacionEmbalaje(modo, foto);
 }
 
 // ── FOTOS DEL EMBALAJE (único / secundario) ───────────────────────────────
@@ -1586,8 +1598,11 @@ function previewEmbImg(input, modo, tipo){
 function setSatUI(prefix, val, loading){
   const bar=document.getElementById(`${prefix}-sat-bar`);
   const pct=document.getElementById(`${prefix}-sat-pct`);
+  const retryBtn=document.getElementById(`${prefix}-sat-retry`);
   if(!bar||!pct) return;
+  if(retryBtn) retryBtn.style.display='none';
   if(loading){ bar.style.width='100%'; bar.style.background='var(--borde-strong)'; pct.textContent='...'; pct.style.color='var(--texto-suave)'; return; }
+  if(val==='error'){ bar.style.width='0%'; bar.style.background='#ccc'; pct.textContent='Error'; pct.style.color='var(--rojo)'; if(retryBtn) retryBtn.style.display='inline-flex'; return; }
   if(val===null||val===undefined){ bar.style.width='0%'; bar.style.background='#ccc'; pct.textContent='—'; pct.style.color='var(--texto-suave)'; return; }
   const color=val>=80?'var(--verde)':val>=50?'var(--naranja)':'var(--rojo)';
   bar.style.width=val+'%'; bar.style.background=color;
@@ -1703,6 +1718,10 @@ function renderLineas(modo){
 
 function satBadgeLinea(l){
   if(l._analizando) return `<div style="margin-top:8px;font-size:11px;color:var(--texto-suave);font-weight:600">Analizando saturación…</div>`;
+  if(l._satError) return `<div style="margin-top:8px;display:flex;align-items:center;gap:8px">
+      <span style="font-size:11px;color:var(--rojo);font-weight:700">No se pudo analizar la saturación</span>
+      <button type="button" class="btn btn-outline btn-xs" onclick="reintentarAnalisisLinea('${l.id}')">Reintentar</button>
+    </div>`;
   if(l.saturacion===null||l.saturacion===undefined) return '';
   const color=l.saturacion>=80?'var(--verde)':l.saturacion>=50?'var(--naranja)':'var(--rojo)';
   return `<div style="margin-top:8px;font-size:11px;color:${color};font-weight:700">Saturación: ${l.saturacion}%</div>`;
@@ -1769,17 +1788,33 @@ function previewLineaImg(input, modo, id, campo){
     if(modo==='diff' && campo==='img_foto2'){
       const linea = lineasDiff.find(l=>l.id===id);
       if(linea && linea.tipo==='Caja de cartón'){
-        linea._analizando = true;
-        renderLineas('diff');
-        const pct = await analizarSaturacionFoto(e.target.result);
-        const l2 = lineasDiff.find(l=>l.id===id);
-        if(l2){ l2.saturacion = pct; l2._analizando = false; }
-        renderLineas('diff');
+        await analizarLineaCarton(id, e.target.result);
       }
     }
   };
   r.readAsDataURL(f);
   input.value = '';
+}
+
+async function analizarLineaCarton(id, fotoBase64){
+  const linea = lineasDiff.find(l=>l.id===id);
+  if(!linea) return;
+  linea._analizando = true; linea._satError = false;
+  renderLineas('diff');
+  const pct = await analizarSaturacionFoto(fotoBase64);
+  const l2 = lineasDiff.find(l=>l.id===id);
+  if(l2){
+    l2._analizando = false;
+    if(pct===null){ l2._satError = true; }
+    else { l2.saturacion = pct; l2._satError = false; }
+  }
+  renderLineas('diff');
+}
+
+function reintentarAnalisisLinea(id){
+  const linea = lineasDiff.find(l=>l.id===id);
+  if(!linea || !linea.img_foto2) return;
+  analizarLineaCarton(id, linea.img_foto2);
 }
 
 // ── SAVE ──────────────────────────────────────────────────────────────────
@@ -1873,8 +1908,10 @@ async function loadControl(){
   controlDisplayRows=[];
   controlRows.forEach(r=>{
     const lineas = (r.lineas&&r.lineas.length) ? r.lineas : [{numero_pieza:null,cantidad:null,saturacion:null}];
-    const perLineSat = lineas.some(l=>l.saturacion!==null&&l.saturacion!==undefined);
-    lineas.forEach(l=>controlDisplayRows.push({r,l,perLineSat}));
+    lineas.forEach(l=>{
+      const satMostrada = (l.saturacion!==null && l.saturacion!==undefined) ? l.saturacion : r.saturacion;
+      controlDisplayRows.push({r,l,satMostrada});
+    });
   });
   applyControlFilters();
 }
@@ -1912,15 +1949,16 @@ function renderControlRows(rows){
   const tbody=document.getElementById('ctrl-body');
   const canEdit=currentUser?.rol!=='lectura';
   const canDelete=currentUser?.rol==='admin';
-  if(!rows.length){tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:#aaa;padding:24px">Sin registros</td></tr>';return;}
-  tbody.innerHTML=rows.map(({r,l,perLineSat})=>`
+  if(!rows.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;color:#aaa;padding:24px">Sin registros</td></tr>';return;}
+  tbody.innerHTML=rows.map(({r,l,satMostrada})=>`
     <tr>
       <td>${r.fecha||'—'}</td>
       <td>${r.proveedor_nombre||'—'}</td>
       <td>${r.emb_tipo||'—'}</td>
+      <td><span class="badge ${r.emb_identico===1?'badge-ok':'badge-draft'}">${r.emb_identico===1?'Sí':'No'}</span></td>
       <td><strong>${l.numero_pieza||'—'}</strong></td>
       <td>${l.cantidad!==null&&l.cantidad!==undefined&&l.cantidad!==''?l.cantidad:'—'}</td>
-      <td>${satBarHtml(perLineSat?l.saturacion:r.saturacion)}</td>
+      <td>${satBarHtml(satMostrada)}</td>
       <td class="actions">
         <button type="button" class="btn btn-outline btn-xs" onclick="viewControl(${r.id})">Ver</button>
         ${canEdit?`<button type="button" class="btn btn-secondary btn-xs" onclick="editControl(${r.id})">Editar</button>`:''}
@@ -1978,10 +2016,36 @@ function renderCtrlDashboard(){
     seenIds.add(r.id);
     if(!(r.img_cerrada || r.img_abierta || r.img_etiqueta)) sinFotos++;
   });
-  const satValues = rows.map(({r,l,perLineSat})=> perLineSat ? l.saturacion : r.saturacion).filter(v=>v!==null&&v!==undefined);
-  const satProm = satValues.length ? Math.round(satValues.reduce((a,b)=>a+b,0)/satValues.length) : null;
+  const satValues = rows.map(({satMostrada})=> satMostrada).filter(v=>v!==null&&v!==undefined);
   const pctBaja = satValues.length ? Math.round(100*satValues.filter(v=>v<50).length/satValues.length) : 0;
   const pnsDistintos = new Set(rows.map(({l})=>l.numero_pieza).filter(Boolean));
+
+  // ── Saturación primario vs secundario (+ desglose por tipo) ──────────────
+  const TIPOS_SAT = ["Caja de cartón","Caja de madera","Caja paletizada"];
+  const primarioValores = []; // {val, tipo}
+  const secundarioValores = [];
+  const primarioSeenSame = new Set();
+  const secundarioSeen = new Set();
+  rows.forEach(({r,l})=>{
+    if(r.emb_identico===1){
+      if(!primarioSeenSame.has(r.id) && r.saturacion!==null && r.saturacion!==undefined){
+        primarioSeenSame.add(r.id);
+        primarioValores.push({val:r.saturacion, tipo:r.emb_tipo});
+      }
+    } else {
+      if(l.tipo==='Caja de cartón' && l.saturacion!==null && l.saturacion!==undefined){
+        primarioValores.push({val:l.saturacion, tipo:'Caja de cartón'});
+      }
+      if(!secundarioSeen.has(r.id) && r.saturacion!==null && r.saturacion!==undefined){
+        secundarioSeen.add(r.id);
+        secundarioValores.push({val:r.saturacion, tipo:r.emb_tipo});
+      }
+    }
+  });
+  const promedioDe = arr => arr.length ? Math.round(arr.reduce((a,b)=>a+b.val,0)/arr.length) : null;
+  const promedioTipoDe = (arr,tipo) => { const f=arr.filter(x=>x.tipo===tipo); return f.length ? Math.round(f.reduce((a,b)=>a+b.val,0)/f.length) : null; };
+  const primarioProm = promedioDe(primarioValores);
+  const secundarioProm = promedioDe(secundarioValores);
 
   document.getElementById('ctrl-dash-stats').innerHTML = `
     <div class="stat-card stat-accent-red">
@@ -1990,7 +2054,11 @@ function renderCtrlDashboard(){
     </div>
     <div class="stat-card stat-accent-purple">
       <div class="stat-icon stat-icon-purple"><svg viewBox="0 0 24 24"><path d="M3 13h4v8H3v-8zm7-8h4v16h-4V5zm7 5h4v11h-4V10z"/></svg></div>
-      <div><div class="stat-num">${satProm!==null?satProm+'%':'—'}</div><div class="stat-label">Saturación promedio</div></div>
+      <div><div class="stat-num">${primarioProm!==null?primarioProm+'%':'—'}</div><div class="stat-label">Saturación — Primario</div></div>
+    </div>
+    <div class="stat-card stat-accent-purple">
+      <div class="stat-icon stat-icon-purple"><svg viewBox="0 0 24 24"><path d="M3 13h4v8H3v-8zm7-8h4v16h-4V5zm7 5h4v11h-4V10z"/></svg></div>
+      <div><div class="stat-num">${secundarioProm!==null?secundarioProm+'%':'—'}</div><div class="stat-label">Saturación — Secundario</div></div>
     </div>
     <div class="stat-card stat-accent-orange">
       <div class="stat-icon stat-icon-orange"><svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm1 15h-2v-2h2v2zm0-4h-2V9h2v4z"/></svg></div>
@@ -2005,6 +2073,14 @@ function renderCtrlDashboard(){
       <div><div class="stat-num">${seenIds.size-sinFotos}/${seenIds.size}</div><div class="stat-label">Registros con fotos</div></div>
     </div>
   `;
+
+  const fmtPct = v => v===null ? '<span style="color:var(--texto-faint)">—</span>' : `${v}%`;
+  document.getElementById('ctrl-dash-tipo-sat').innerHTML = TIPOS_SAT.map(tipo=>`
+    <tr>
+      <td>${tipo}</td>
+      <td>${fmtPct(promedioTipoDe(primarioValores,tipo))}</td>
+      <td>${fmtPct(promedioTipoDe(secundarioValores,tipo))}</td>
+    </tr>`).join('');
 
   const dayMap = {};
   rows.forEach(({r})=>{
@@ -2027,8 +2103,8 @@ function renderCtrlDashboard(){
   }).join('') : '<div style="color:var(--texto-faint);font-size:12px;text-align:center;padding:60px 0;width:100%">Sin datos en el período</div>';
 
   const weekMap = {};
-  rows.forEach(({r,l,perLineSat})=>{
-    const sat = perLineSat ? l.saturacion : r.saturacion;
+  rows.forEach(({r,l,satMostrada})=>{
+    const sat = satMostrada;
     if(sat===null||sat===undefined) return;
     const d = new Date(r.fecha);
     if(isNaN(d)) return;
@@ -2050,17 +2126,9 @@ function renderCtrlDashboard(){
     </div>`;
   }).join('') : '<div style="color:var(--texto-faint);font-size:12px;text-align:center;padding:60px 0;width:100%">Sin datos de saturación en el período</div>';
 
-  const tipoCount = {}; const tipoSeen = new Set();
-  rows.forEach(({r})=>{
-    if(tipoSeen.has(r.id)) return; tipoSeen.add(r.id);
-    const tipo = r.emb_tipo || 'Sin definir';
-    tipoCount[tipo] = (tipoCount[tipo]||0)+1;
-  });
-  renderRankList('ctrl-dash-tipo-list', Object.entries(tipoCount).sort((a,b)=>b[1]-a[1]), 'var(--azul)');
-
   const provSat = {};
-  rows.forEach(({r,l,perLineSat})=>{
-    const sat = perLineSat ? l.saturacion : r.saturacion;
+  rows.forEach(({r,l,satMostrada})=>{
+    const sat = satMostrada;
     if(sat===null||sat===undefined) return;
     const prov = r.proveedor_nombre || 'Sin proveedor';
     (provSat[prov] = provSat[prov]||[]).push(sat);
@@ -2086,11 +2154,10 @@ function renderCtrlDashboard(){
       }).join('')
     : '<div style="color:var(--texto-faint);font-size:12px;text-align:center;padding:20px 0">Sin datos</div>';
 
-  const pnRows = rows.filter(({l,r,perLineSat})=>{
-    const sat = perLineSat ? l.saturacion : r.saturacion;
-    return sat!==null && sat!==undefined && l.numero_pieza;
-  }).map(({r,l,perLineSat})=>({
-    pn:l.numero_pieza, prov:r.proveedor_nombre, tipo:r.emb_tipo, sat: perLineSat?l.saturacion:r.saturacion
+  const pnRows = rows.filter(({l,satMostrada})=>{
+    return satMostrada!==null && satMostrada!==undefined && l.numero_pieza;
+  }).map(({r,l,satMostrada})=>({
+    pn:l.numero_pieza, prov:r.proveedor_nombre, tipo:r.emb_tipo, sat: satMostrada
   })).sort((a,b)=>a.sat-b.sat).slice(0,10);
   document.getElementById('ctrl-dash-worst-pns').innerHTML = pnRows.length
     ? pnRows.map(x=>`<tr><td><strong>${x.pn}</strong></td><td>${x.prov||'—'}</td><td>${x.tipo||'—'}</td><td>${satBarHtml(x.sat)}</td></tr>`).join('')
