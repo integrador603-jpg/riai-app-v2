@@ -723,6 +723,14 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
           <input type="file" id="up-same-abierta" accept="image/*" capture="environment" style="display:none" onchange="previewEmbImg(this,'same','abierta')">
           <input type="file" id="up-same-etiqueta" accept="image/*" capture="environment" style="display:none" onchange="previewEmbImg(this,'same','etiqueta')">
         </div>
+        <div class="fld" id="ctrl-same-sat-wrap" style="margin-top:10px">
+          <label>Nivel de saturación</label>
+          <div class="sat-bar-wrap">
+            <div class="sat-bar-bg"><div id="ctrl-same-sat-bar" class="sat-bar-fill" style="width:0%;background:#ccc"></div></div>
+            <div id="ctrl-same-sat-pct" class="sat-pct" style="color:var(--texto-suave)">—</div>
+          </div>
+          <div class="auto-tag">Se calculará automáticamente al analizar la foto "Caja abierta"</div>
+        </div>
       </div>
 
       <div class="section-label">Pieza del embalaje</div>
@@ -1464,6 +1472,7 @@ let lineasSame = [];
 let lineasDiff = [];
 let lineaCounter = 0;
 let embFotos = { same:{cerrada:null,abierta:null,etiqueta:null}, sec:{cerrada:null,abierta:null,etiqueta:null} };
+let ctrlSaturacion = { same:null, sec:null };
 let openLineaId = null;
 const TIPOS_SATURABLES = ["Caja de cartón","Caja de madera","Caja paletizada"];
 
@@ -1496,10 +1505,12 @@ function clearCtrlForm(){
   setEmbTipoBtns('sec','Caja de cartón');
   ['ctrl-emb-largo','ctrl-emb-ancho','ctrl-emb-alto','ctrl-sec-largo','ctrl-sec-ancho','ctrl-sec-alto','ctrl-notas'].forEach(id=>setVal(id,''));
   embFotos = { same:{cerrada:null,abierta:null,etiqueta:null}, sec:{cerrada:null,abierta:null,etiqueta:null} };
+  ctrlSaturacion = { same:null, sec:null };
   ['same-cerrada','same-abierta','same-etiqueta','sec-cerrada','sec-abierta','sec-etiqueta'].forEach(k=>{
     const btn=document.getElementById('fb-'+k); if(btn) btn.setAttribute('aria-pressed','false');
   });
   setSecSatUI(null);
+  setSatUI('ctrl-same', null);
   lineasSame=[]; lineasDiff=[]; openLineaId=null;
   addLinea('same');
   renderLineas('same'); renderLineas('diff');
@@ -1530,10 +1541,21 @@ function onCtrlEmbTipoChange(modo){
   const tipoVal = modo==='same' ? document.getElementById('ctrl-emb-tipo').value : document.getElementById('ctrl-sec-tipo').value;
   const otroWrap = modo==='same' ? document.getElementById('ctrl-emb-tipo-otro-wrap') : document.getElementById('ctrl-sec-tipo-otro-wrap');
   if(otroWrap) otroWrap.style.display = tipoVal==='Otro' ? 'block' : 'none';
-  if(modo==='sec'){
-    const satWrap=document.getElementById('ctrl-sec-sat-wrap');
-    if(satWrap) satWrap.style.display = TIPOS_SATURABLES.includes(tipoVal) ? 'block' : 'none';
+  const satPrefix = modo==='same' ? 'ctrl-same' : 'ctrl-sec';
+  const satWrap = document.getElementById(satPrefix+'-sat-wrap');
+  if(satWrap){
+    const esSaturable = TIPOS_SATURABLES.includes(tipoVal);
+    satWrap.style.display = esSaturable ? 'block' : 'none';
+    if(!esSaturable){ ctrlSaturacion[modo] = null; setSatUI(satPrefix, null); }
   }
+}
+
+async function analizarYActualizarSaturacionEmbalaje(modo, fotoBase64){
+  const satPrefix = modo==='same' ? 'ctrl-same' : 'ctrl-sec';
+  setSatUI(satPrefix, null, true);
+  const pct = await analizarSaturacionFoto(fotoBase64);
+  ctrlSaturacion[modo] = pct;
+  setSatUI(satPrefix, pct);
 }
 
 // ── FOTOS DEL EMBALAJE (único / secundario) ───────────────────────────────
@@ -1544,19 +1566,44 @@ function previewEmbImg(input, modo, tipo){
     embFotos[modo][tipo] = e.target.result;
     const btn = document.getElementById(`fb-${modo}-${tipo}`);
     if(btn) btn.setAttribute('aria-pressed','true');
+
+    if(tipo==='abierta'){
+      const tipoEmbalaje = document.getElementById(modo==='same' ? 'ctrl-emb-tipo' : 'ctrl-sec-tipo')?.value || '';
+      if(TIPOS_SATURABLES.includes(tipoEmbalaje)){
+        analizarYActualizarSaturacionEmbalaje(modo, e.target.result);
+      }
+    }
   };
   r.readAsDataURL(f);
   input.value = '';
 }
 
-function setSecSatUI(val){
-  const bar=document.getElementById('ctrl-sec-sat-bar');
-  const pct=document.getElementById('ctrl-sec-sat-pct');
+function setSatUI(prefix, val, loading){
+  const bar=document.getElementById(`${prefix}-sat-bar`);
+  const pct=document.getElementById(`${prefix}-sat-pct`);
   if(!bar||!pct) return;
+  if(loading){ bar.style.width='100%'; bar.style.background='var(--borde-strong)'; pct.textContent='...'; pct.style.color='var(--texto-suave)'; return; }
   if(val===null||val===undefined){ bar.style.width='0%'; bar.style.background='#ccc'; pct.textContent='—'; pct.style.color='var(--texto-suave)'; return; }
   const color=val>=80?'var(--verde)':val>=50?'var(--naranja)':'var(--rojo)';
   bar.style.width=val+'%'; bar.style.background=color;
   pct.textContent=val+'%'; pct.style.color=color;
+}
+function setSecSatUI(val){ setSatUI('ctrl-sec', val); }
+
+async function analizarSaturacionFoto(base64img){
+  try{
+    const res = await fetch(`${API}/analizar-saturacion`, {
+      method:'POST', headers:{'Content-Type':'application/json'}, credentials:'include',
+      body: JSON.stringify({imagen: base64img})
+    });
+    const data = await res.json();
+    if(res.ok && data.saturacion!==undefined) return data.saturacion;
+    console.warn('No se pudo analizar la saturación:', data.error||data);
+    return null;
+  }catch(e){
+    console.warn('Error de conexión al analizar saturación:', e);
+    return null;
+  }
 }
 
 function satBarHtml(sat){
@@ -1650,6 +1697,7 @@ function renderLineas(modo){
 }
 
 function satBadgeLinea(l){
+  if(l._analizando) return `<div style="margin-top:8px;font-size:11px;color:var(--texto-suave);font-weight:600">Analizando saturación…</div>`;
   if(l.saturacion===null||l.saturacion===undefined) return '';
   const color=l.saturacion>=80?'var(--verde)':l.saturacion>=50?'var(--naranja)':'var(--rojo)';
   return `<div style="margin-top:8px;font-size:11px;color:${color};font-weight:700">Saturación: ${l.saturacion}%</div>`;
@@ -1679,9 +1727,21 @@ async function onLineaPNBlur(modo, id){
 function previewLineaImg(input, modo, id, campo){
   const f=input.files[0]; if(!f) return;
   const r=new FileReader();
-  r.onload=e=>{
+  r.onload=async e=>{
     updateLinea(modo, id, campo, e.target.result);
     renderLineas(modo);
+
+    if(modo==='diff' && campo==='img_foto2'){
+      const linea = lineasDiff.find(l=>l.id===id);
+      if(linea && linea.tipo==='Caja de cartón'){
+        linea._analizando = true;
+        renderLineas('diff');
+        const pct = await analizarSaturacionFoto(e.target.result);
+        const l2 = lineasDiff.find(l=>l.id===id);
+        if(l2){ l2.saturacion = pct; l2._analizando = false; }
+        renderLineas('diff');
+      }
+    }
   };
   r.readAsDataURL(f);
   input.value = '';
@@ -1718,7 +1778,7 @@ async function saveControl(){
     payload.emb_largo = g('ctrl-emb-largo') || null;
     payload.emb_ancho = g('ctrl-emb-ancho') || null;
     payload.emb_alto = g('ctrl-emb-alto') || null;
-    payload.saturacion = null;
+    payload.saturacion = ctrlSaturacion.same;
     payload.lineas = lineasSame.map(l => ({
       numero_pieza: l.numero_pieza, cantidad: l.cantidad || null,
       tipo: null, largo: null, ancho: null, alto: null,
@@ -1730,7 +1790,7 @@ async function saveControl(){
     payload.emb_largo = g('ctrl-sec-largo') || null;
     payload.emb_ancho = g('ctrl-sec-ancho') || null;
     payload.emb_alto = g('ctrl-sec-alto') || null;
-    payload.saturacion = null;
+    payload.saturacion = ctrlSaturacion.sec;
     payload.lineas = lineasDiff.map(l => ({
       numero_pieza: l.numero_pieza, cantidad: l.cantidad || null,
       tipo: l.tipo, largo: l.largo || null, ancho: l.ancho || null, alto: l.alto || null,
@@ -2027,6 +2087,8 @@ async function editControl(id){
     document.getElementById('ctrl-emb-largo').value = d.emb_largo || '';
     document.getElementById('ctrl-emb-ancho').value = d.emb_ancho || '';
     document.getElementById('ctrl-emb-alto').value = d.emb_alto || '';
+    ctrlSaturacion.same = d.saturacion!==undefined ? d.saturacion : null;
+    setSatUI('ctrl-same', ctrlSaturacion.same);
     lineasSame = (d.lineas||[]).map(l => ({id:'ln'+(lineaCounter++), numero_pieza:l.numero_pieza, cantidad:l.cantidad, img_foto1:l.img_foto1, img_foto2:l.img_foto2, saturacion:l.saturacion}));
     if(!lineasSame.length) addLinea('same'); else renderLineas('same');
   } else {
@@ -2035,7 +2097,8 @@ async function editControl(id){
     document.getElementById('ctrl-sec-largo').value = d.emb_largo || '';
     document.getElementById('ctrl-sec-ancho').value = d.emb_ancho || '';
     document.getElementById('ctrl-sec-alto').value = d.emb_alto || '';
-    setSecSatUI(d.saturacion);
+    ctrlSaturacion.sec = d.saturacion!==undefined ? d.saturacion : null;
+    setSecSatUI(ctrlSaturacion.sec);
     lineasDiff = (d.lineas||[]).map(l => ({id:'ln'+(lineaCounter++), numero_pieza:l.numero_pieza, cantidad:l.cantidad, tipo:l.tipo||'A granel', largo:l.largo, ancho:l.ancho, alto:l.alto, img_foto1:l.img_foto1, img_foto2:l.img_foto2, saturacion:l.saturacion}));
     renderLineas('diff');
   }
