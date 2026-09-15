@@ -1577,7 +1577,6 @@ function renderLineas(modo){
   }
   container.innerHTML = arr.map(l => {
     const isOpen = openLineaId === l.id;
-    const fotosOk = modo==='same' ? (l.img_foto1 && l.img_foto2) : (l.tipo==='Caja de cartón' ? (l.img_foto1 && l.img_foto2) : (l.img_foto1 || l.img_foto2));
     const fotosLabel = (l.img_foto1?1:0) + (l.img_foto2?1:0);
     const showMedidas = modo==='diff' ? l.tipo === 'Caja de cartón' : false;
 
@@ -1588,7 +1587,7 @@ function renderLineas(modo){
         <span class="linea-row-pn">${l.numero_pieza || 'Sin PN'}</span>
         <span class="linea-row-cant">Cant: ${l.cantidad || '—'}</span>
         ${modo==='diff' ? `<span class="linea-row-cant">${l.tipo||'—'}</span>` : ''}
-        <span class="linea-row-fotos ${fotosLabel>0?'ok':''}">${fotosLabel}/2 fotos</span>
+        ${modo==='diff' ? `<span class="linea-row-fotos ${fotosLabel>0?'ok':''}">${fotosLabel}/2 fotos</span>` : ''}
       </div>
       <div class="linea-row-body ${isOpen?'open':''}">
         <div class="g3">
@@ -1609,6 +1608,7 @@ function renderLineas(modo){
           <div class="fld"><label>Ancho (mm)</label><input type="number" value="${l.ancho}" oninput="updateLinea('diff','${l.id}','ancho',this.value)"></div>
           <div class="fld"><label>Alto (mm)</label><input type="number" value="${l.alto}" oninput="updateLinea('diff','${l.id}','alto',this.value)"></div>
         </div>`:''}
+        ${modo==='diff' ? `
         <div class="fld" style="margin-top:12px">
           <label>Fotos</label>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
@@ -1617,7 +1617,7 @@ function renderLineas(modo){
           </div>
           <input type="file" id="up-${l.id}-1" accept="image/*" capture="environment" style="display:none" onchange="previewLineaImg(this,'${modo}','${l.id}','img_foto1')">
           <input type="file" id="up-${l.id}-2" accept="image/*" capture="environment" style="display:none" onchange="previewLineaImg(this,'${modo}','${l.id}','img_foto2')">
-        </div>
+        </div>` : ''}
         ${satBadgeLinea(l)}
         ${modo==='diff' ? `
         <div style="display:flex;justify-content:flex-end;margin-top:10px">
