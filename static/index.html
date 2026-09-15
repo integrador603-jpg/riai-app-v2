@@ -171,6 +171,23 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{
 .foto-view-btn .dot{display:inline-flex;line-height:0}
 .foto-view-btn .dot svg{width:13px;height:13px;fill:currentColor}
 
+/* ── MINIATURAS DE FOTO EN VISTA PREVIA ────────────────────────────────── */
+.riai-photo-thumb{cursor:pointer;text-align:center}
+.riai-photo-thumb img{width:100%;height:100px;object-fit:cover;border-radius:var(--r-sm);border:1px solid var(--borde);display:block;transition:opacity .15s var(--ease)}
+.riai-photo-thumb:hover img{opacity:.85}
+.riai-photo-thumb-lbl{display:block;font-size:10.5px;font-weight:600;color:var(--texto-suave);margin-top:6px}
+.riai-photo-thumb.empty{cursor:default}
+.riai-photo-thumb-placeholder{height:100px;border:1px dashed var(--borde-strong);border-radius:var(--r-sm);background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--texto-faint)}
+
+/* ── LISTA COMPACTA DE PIEZAS (embalaje NO idéntico) EN VISTA PREVIA ─────── */
+.preview-piezas-list{display:flex;flex-direction:column}
+.preview-pieza-row{display:flex;align-items:center;gap:14px;padding:10px 14px;border-bottom:1px solid var(--borde);flex-wrap:wrap}
+.preview-pieza-row:last-child{border-bottom:none}
+.preview-pieza-pn{font-weight:700;font-size:12.5px;min-width:90px}
+.preview-pieza-detail{font-size:11.5px;color:var(--texto-suave)}
+.preview-pieza-thumbs{display:flex;gap:6px;margin-left:auto}
+.preview-pieza-thumb{width:34px;height:34px;object-fit:cover;border-radius:5px;border:1px solid var(--borde);cursor:pointer}
+
 /* ── TOAST ──────────────────────────────────────────────────────────── */
 .toast{position:fixed;bottom:28px;right:28px;padding:13px 22px;border-radius:var(--r-md);color:#fff;font-size:13px;font-weight:600;z-index:9999;opacity:0;transform:translateY(8px);transition:all .25s var(--ease);pointer-events:none;box-shadow:var(--shadow-lg)}
 .toast.show{opacity:1;transform:translateY(0)}
@@ -1386,7 +1403,9 @@ function renderRIAI(d){
   const L=RLABELS[d.lang]||RLABELS.es;
   const ul=d.ul||'mm',uw=d.uw||'kg';
   const fv=(lbl,val)=>`<span class="riai-lbl">${lbl}</span><span class="riai-val">${val||'—'}</span>`;
-  const imgBox=(src,lbl)=>src&&src.length>10?`<button type="button" class="foto-view-btn has-photo" onclick="openLightbox('${src}')"><span class="dot"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg></span> ${lbl}</button>`:`<button type="button" class="foto-view-btn" disabled><span class="dot"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/></svg></span> ${lbl}</button>`;
+  const imgBox=(src,lbl)=>src&&src.length>10
+    ? `<div class="riai-photo-thumb" onclick="openLightbox('${src}')"><img src="${src}" alt="${lbl}" loading="lazy"><span class="riai-photo-thumb-lbl">${lbl}</span></div>`
+    : `<div class="riai-photo-thumb empty"><div class="riai-photo-thumb-placeholder">Sin foto</div><span class="riai-photo-thumb-lbl">${lbl}</span></div>`;
   const pkgRow=(pkg,title)=>`
     <tr><td colspan="10" class="riai-subsec">${title}</td></tr>
     <tr>
@@ -2029,20 +2048,26 @@ async function viewControl(id){
   const d=await fetch(`${API}/control/${id}`,{credentials:'include'}).then(r=>r.json()).catch(()=>null);
   if(!d){toast('Error al cargar',false);return;}
   const same = d.emb_identico===1;
-  const imgBox=(src,lbl)=>src&&src.length>10?`<button type="button" class="foto-view-btn has-photo" onclick="openLightbox('${src}')"><span class="dot"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg></span> ${lbl}</button>`:`<button type="button" class="foto-view-btn" disabled><span class="dot"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/></svg></span> ${lbl}</button>`;
+  const imgBox=(src,lbl)=>src&&src.length>10
+    ? `<div class="riai-photo-thumb" onclick="openLightbox('${src}')"><img src="${src}" alt="${lbl}" loading="lazy"><span class="riai-photo-thumb-lbl">${lbl}</span></div>`
+    : `<div class="riai-photo-thumb empty"><div class="riai-photo-thumb-placeholder">Sin foto</div><span class="riai-photo-thumb-lbl">${lbl}</span></div>`;
 
-  let lineasHtml = (d.lineas||[]).map(l=>`
-    <tr>
-      <td>${l.numero_pieza||'—'}</td>
-      <td>${l.cantidad||'—'}</td>
-      <td>${l.tipo||'—'}</td>
-      <td>${l.largo&&l.ancho&&l.alto ? `${l.largo}×${l.ancho}×${l.alto}` : '—'}</td>
-      <td>${l.saturacion!==null&&l.saturacion!==undefined?l.saturacion+'%':'—'}</td>
-      <td><div style="display:flex;gap:6px;flex-wrap:wrap">${[
-        l.img_foto1?`<button type="button" class="foto-btn" aria-pressed="true" onclick="openLightbox('${l.img_foto1}')"><span class="dot"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg></span> Foto 1</button>`:'',
-        l.img_foto2?`<button type="button" class="foto-btn" aria-pressed="true" onclick="openLightbox('${l.img_foto2}')"><span class="dot"><svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg></span> Foto 2</button>`:''
-      ].filter(Boolean).join('') || '<span style="color:var(--texto-faint);font-size:11px">—</span>'}</div></td>
-    </tr>`).join('');
+  let lineasHtml = (d.lineas||[]).map(l=>{
+    const medidas = l.largo&&l.ancho&&l.alto ? `${l.largo}×${l.ancho}×${l.alto} mm` : '';
+    const thumbs = [
+      l.img_foto1?`<img class="preview-pieza-thumb" src="${l.img_foto1}" onclick="openLightbox('${l.img_foto1}')" alt="Foto 1">`:'',
+      l.img_foto2?`<img class="preview-pieza-thumb" src="${l.img_foto2}" onclick="openLightbox('${l.img_foto2}')" alt="Foto 2">`:''
+    ].filter(Boolean).join('');
+    return `
+    <div class="preview-pieza-row">
+      <span class="preview-pieza-pn">${l.numero_pieza||'—'}</span>
+      <span class="preview-pieza-detail">Cant: ${l.cantidad||'—'}</span>
+      <span class="preview-pieza-detail">${l.tipo||'—'}</span>
+      ${medidas?`<span class="preview-pieza-detail">${medidas}</span>`:''}
+      ${l.saturacion!==null&&l.saturacion!==undefined?satBarHtml(l.saturacion):''}
+      ${thumbs?`<div class="preview-pieza-thumbs">${thumbs}</div>`:''}
+    </div>`;
+  }).join('');
 
   const html = `<div class="riai-doc">
     <table>
@@ -2064,17 +2089,20 @@ async function viewControl(id){
         <td colspan="2">${imgBox(d.img_etiqueta,'Etiqueta proveedor')}</td>
       </tr>
     </table>
+    ${same ? `
     <table>
-      ${same ? `
       <tr><td colspan="2" class="riai-sec">PIEZA</td></tr>
       <tr>
         <td><span class="riai-lbl">PN</span><span class="riai-val">${(d.lineas&&d.lineas[0]&&d.lineas[0].numero_pieza)||'—'}</span></td>
         <td><span class="riai-lbl">Cantidad</span><span class="riai-val">${(d.lineas&&d.lineas[0]&&d.lineas[0].cantidad)||'—'}</span></td>
-      </tr>` : `
-      <tr><td colspan="6" class="riai-sec">PIEZAS</td></tr>
-      <tr><td class="riai-subsec">PN</td><td class="riai-subsec">Cantidad</td><td class="riai-subsec">Tipo</td><td class="riai-subsec">Medidas</td><td class="riai-subsec">Saturación</td><td class="riai-subsec">Fotos</td></tr>
-      ${lineasHtml || '<tr><td colspan="6" style="text-align:center;color:#aaa">Sin piezas</td></tr>'}`}
-    </table>
+      </tr>
+    </table>` : `
+    <div class="riai-block">
+      <div class="riai-sec">PIEZAS</div>
+      <div class="preview-piezas-list">
+        ${lineasHtml || '<div style="text-align:center;color:#aaa;padding:16px">Sin piezas</div>'}
+      </div>
+    </div>`}
   </div>`;
   document.getElementById('riai-preview-content').innerHTML=html;
   document.getElementById('modal-preview').classList.add('open');
