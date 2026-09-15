@@ -37,6 +37,14 @@ def init_db():
         descripcion     TEXT NOT NULL
     );
 
+    CREATE TABLE IF NOT EXISTS pn_proveedores (
+        id                SERIAL PRIMARY KEY,
+        numero_pieza      TEXT NOT NULL,
+        proveedor_codigo  TEXT,
+        proveedor_nombre  TEXT NOT NULL,
+        UNIQUE(numero_pieza, proveedor_nombre)
+    );
+
     CREATE TABLE IF NOT EXISTS riai (
         id              SERIAL PRIMARY KEY,
         fecha           TEXT,
@@ -188,6 +196,8 @@ def init_db():
     add_column_if_missing("control_lineas", "img_foto1", "TEXT")
     add_column_if_missing("control_lineas", "img_foto2", "TEXT")
 
+    c.execute("CREATE INDEX IF NOT EXISTS idx_pn_proveedores_pn ON pn_proveedores(numero_pieza)")
+    conn.commit()
+
     c.close()
     conn.close()
-    
