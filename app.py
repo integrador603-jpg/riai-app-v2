@@ -347,7 +347,7 @@ def list_control():
         LEFT JOIN control_lineas cl ON cl.control_id = c.id
         WHERE LOWER(c.proveedor_nombre) LIKE %s
            OR LOWER(cl.numero_pieza) LIKE %s
-        ORDER BY c.id DESC
+        ORDER BY c.fecha DESC, c.id DESC
     """, (f"%{q}%", f"%{q}%"))
     rows = [dict(r) for r in c.fetchall()]
     for r in rows:
